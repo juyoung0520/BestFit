@@ -7,4 +7,6 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorDivision">#e0e0e0</color>
+    <color name="colorPink">#ff6edb</color>
+    <color name="noColor">#00ff0000</color>
 </resources>
