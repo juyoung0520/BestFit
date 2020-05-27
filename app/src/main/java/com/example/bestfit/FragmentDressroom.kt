@@ -19,20 +19,25 @@ class FragmentDressroom : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dressroom, container, false)
 
+        setTabOfCategory(view)
+
+        activity!!.supportFragmentManager.beginTransaction().add(R.id.fragment_dressroom_layout_frame, FragmentDressroomCategory())
+            .commit()
+
+        return view
+    }
+
+    fun setTabOfCategory(view: View) {
         val category = arrayListOf<String>()
         category.add("아우터")
         category.add("상의")
         category.add("하의")
         category.add("신발")
 
-        view.fragment_dressroom_recyclerview.setHasFixedSize(true)
-        view.fragment_dressroom_recyclerview.adapter = DressroomCategoryRecyclerViewAdapter(category)
-        view.fragment_dressroom_recyclerview.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-
-        activity!!.supportFragmentManager.beginTransaction().add(R.id.fragment_dressroom_layout_frame, FragmentDressroomCategory())
-            .commit()
-
-        return view
+        for (title in category) {
+            val tab = view.fragment_dressroom_tab.newTab().setText(title)
+            view.fragment_dressroom_tab.addTab(tab)
+        }
     }
 
     inner class DressroomCategoryRecyclerViewAdapter(val category: ArrayList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
