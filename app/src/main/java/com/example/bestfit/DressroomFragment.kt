@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
 
 
 class DressroomFragment : Fragment() {
+    val db = FirebaseFirestore.getInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,20 +27,15 @@ class DressroomFragment : Fragment() {
     }
 
     fun setTabOfCategory(view: View) {
-        val category = arrayListOf<String>()
-        category.add("전체")
-        category.add("아우터")
-        category.add("상의")
-        category.add("원피스/세트")
-        category.add("바지")
-        category.add("치마")
-        category.add("신발")
+        db.collection("categories").orderBy("index").get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                for (title in category)
+                    view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
 
-        for (title in category)
-            view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
-
-        view.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(childFragmentManager, category)
-        view.fragment_dressroom_tab.setupWithViewPager(view.fragment_dressroom_viewpager)
+                view.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(childFragmentManager, category)
+                view.fragment_dressroom_tab.setupWithViewPager(view.fragment_dressroom_viewpager)
+            }
+        }
     }
 
     inner class TabOfCategoryPagerAdapter(fm: FragmentManager, private val catergory: ArrayList<String>) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {

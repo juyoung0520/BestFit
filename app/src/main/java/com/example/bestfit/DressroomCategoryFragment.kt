@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 
 class DressroomCategoryFragment : Fragment() {
+    val db = FirebaseFirestore.getInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,7 +27,7 @@ class DressroomCategoryFragment : Fragment() {
 
     fun setTabOfCategory(view: View) {
         val category = arrayListOf<String>()
-        category.add("가디건")
+        category.add("아우터")
         category.add("자켓")
         category.add("코트")
         category.add("점퍼")
