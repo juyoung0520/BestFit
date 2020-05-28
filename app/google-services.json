@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "701578184332",
+    "firebase_url": "https://bestfit-606bf.firebaseio.com",
+    "project_id": "bestfit-606bf",
+    "storage_bucket": "bestfit-606bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:701578184332:android:f90797a5d5c05c0251dda9",
+        "android_client_info": {
+          "package_name": "com.example.bestfit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "701578184332-4e1e3tlj9g65m9e5o42bia7e6vqj6642.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAScAYyjAQOz3SuqzlQ25qtyt-BXnX0pk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "701578184332-4e1e3tlj9g65m9e5o42bia7e6vqj6642.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
