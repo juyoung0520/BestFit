@@ -25,6 +25,15 @@
             android:layout_above="@+id/activity_login_layout_signin"
             android:layout_marginBottom="70dp"/>
 
+        <TextView
+            android:id="@+id/activity_signup_tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이메일"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_margin="10dp"/>
+
         <EditText
             android:id="@+id/activity_login_text_email"
             android:layout_width="match_parent"
@@ -34,6 +43,15 @@
             android:paddingStart="20dp"
             android:paddingLeft="20dp"/>
 
+        <TextView
+            android:id="@+id/fragment_signup_tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_margin="10dp"/>
+
         <EditText
             android:id="@+id/activity_login_text_password"
             android:layout_width="match_parent"
@@ -41,7 +59,6 @@
             android:inputType="textPassword"
             android:hint="password"
             android:background="@drawable/round_view"
-            android:layout_marginTop="10dp"
             android:paddingStart="20dp"
             android:paddingLeft="20dp" />
 
