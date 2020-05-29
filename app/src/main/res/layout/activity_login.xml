@@ -24,31 +24,18 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/activity_login_text_email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:hint="email"/>
 
-            <EditText
-                android:id="@+id/activity_login_text_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="email"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
+            android:id="@+id/activity_login_text_password"
+            android:inputType="textPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/activity_login_text_password"
-                android:inputType="textPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="password"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
+            android:layout_height="wrap_content"
+            android:hint="password"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
