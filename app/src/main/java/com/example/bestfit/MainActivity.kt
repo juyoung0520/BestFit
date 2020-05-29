@@ -8,10 +8,13 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     val auth = FirebaseAuth.getInstance()
+    val db = FirebaseFirestore.getInstance()
+
     var currentNavigationIndex: Int = 0
     var currentNavigation: ArrayList<ArrayList<Fragment>> = arrayListOf()
 
@@ -23,15 +26,22 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         // Navigation Init
         initNavigation()
+
+        // SetProfile Check
+        checkSetProfile()
     }
 
-    fun initNavigation() {
+    private fun initNavigation() {
         currentNavigation.clear()
 
         for (idx in 0..2)
             currentNavigation.add(arrayListOf())
 
         activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_dressroom
+    }
+
+    private fun checkSetProfile() {
+        db.collection("")
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {

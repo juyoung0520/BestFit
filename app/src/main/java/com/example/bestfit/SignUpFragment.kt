@@ -7,17 +7,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_signup.view.*
 
 class SignUpFragment : Fragment() {
-    val auth = FirebaseAuth.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view = inflater.inflate(R.layout.fragment_signup, container, false)
+        val view = inflater.inflate(R.layout.fragment_signup, container, false)
 
         view.fragment_signup_btn_signup.setOnClickListener{
             signUp(view)
@@ -32,6 +34,8 @@ class SignUpFragment : Fragment() {
 
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
+//                db.collection("accounts").document(email).set()
+
                 val signInActivity = activity as SignInActivity
                 signInActivity.startMainActivity()
             }
