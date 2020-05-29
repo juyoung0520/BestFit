@@ -17,6 +17,10 @@ class LoginActivity : AppCompatActivity() {
         activity_login_btn_signin.setOnClickListener {
             signin()
         }
+
+        activity_login_btn_signup.setOnClickListener {
+            signup()
+        }
     }
 
     override fun onStart() {
@@ -38,5 +42,9 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(baseContext, "login fail", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    fun signup() {
+        startActivity(Intent(this, SignupActivity::class.java))
     }
 }

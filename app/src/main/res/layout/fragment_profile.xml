@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/fragment_profile_iv"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/bestfile_profile"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/fragment_profile_tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이름"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/fragment_profile_edittext_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="이름" />
+
+        <TextView
+            android:id="@+id/fragment_profile_tv_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="성별"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_margin="10dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <RelativeLayout
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true">
+
+                <Button
+                    android:id="@+id/fragment_profile_btn_male"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:text="남자"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorBlack"
+                    android:layout_marginBottom="5dp"/>
+
+                <TextView
+                    android:id="@+id/fragment_profile_tv_height"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fragment_profile_btn_male"
+                    android:text="키"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
+                    android:layout_margin="10dp"/>
+
+                <EditText
+                    android:id="@+id/fragment_profile_edittext_height"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fragment_profile_tv_height"
+                    android:hint="키"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fragment_profile_tv_height"
+                    android:layout_alignParentRight="true"
+                    android:text="cm"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true">
+
+                <Button
+                    android:id="@+id/fragment_profile_btn_female"
+                    android:layout_width="170dp"
+                    android:layout_height="35dp"
+                    android:text="여자"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorBlack"
+                    android:layout_marginBottom="5dp"/>
+
+                <TextView
+                    android:id="@+id/fragment_profile_tv_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fragment_profile_btn_female"
+                    android:text="몸무게"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
+                    android:layout_margin="10dp"/>
+
+                <EditText
+                    android:id="@+id/fragment_profile_edittext_weight"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fragment_profile_tv_weight"
+                    android:hint="몸무게"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fragment_profile_tv_weight"
+                    android:layout_alignParentRight="true"
+                    android:text="Kg"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginTop="15dp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/fragment_signup_btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="회원가입"
+            android:textSize="18dp"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:background="@color/colorBlack"
+            android:layout_marginTop="70dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
