@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/activity_signup_tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이메일"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/activity_signup_edittext_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="이메일 입력" />
+
+        <TextView
+            android:id="@+id/activity_signup_tv_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/activity_signup_edittext_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="영문, 숫자, 특수문자 포함"/>
+
+        <Button
+            android:id="@+id/activity_signup_btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="다음"
+            android:textSize="18dp"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:background="@color/colorBlack"
+            android:layout_marginTop="30dp"/>
+
+   </LinearLayout>
+
+</RelativeLayout>
