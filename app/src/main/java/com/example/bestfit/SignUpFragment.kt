@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_signup.view.*
 
-class SignupFragment : Fragment() {
+class SignUpFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
