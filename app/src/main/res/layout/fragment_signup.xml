@@ -56,7 +56,7 @@
             android:textSize="18dp"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"
-            android:background="@color/colorBlack"
+            android:background="@drawable/round_view_btn"
             android:layout_marginTop="70dp"/>
 
    </LinearLayout>
