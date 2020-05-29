@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.example.bestfit.model.CategoryDTO
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
 
@@ -29,28 +30,33 @@ class DressroomFragment : Fragment() {
     fun setTabOfCategory(view: View) {
         db.collection("categories").orderBy("index").get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                for (title in category)
-                    view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
+                var categories = arrayListOf<CategoryDTO>()
 
-                view.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(childFragmentManager, category)
+                for (snapshot in task.result!!) {
+                    val categoryDTO = snapshot.toObject(CategoryDTO::class.java)
+                    categories.add(categoryDTO)
+
+                    view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
+                }
+
+                view.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(childFragmentManager, categories)
                 view.fragment_dressroom_tab.setupWithViewPager(view.fragment_dressroom_viewpager)
             }
         }
     }
 
-    inner class TabOfCategoryPagerAdapter(fm: FragmentManager, private val catergory: ArrayList<String>) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    inner class TabOfCategoryPagerAdapter(fm: FragmentManager, private val categories: ArrayList<CategoryDTO>) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getItem(position: Int): Fragment {
-            println("getItem $position")
             val fragment = DressroomCategoryFragment()
             return fragment
         }
 
         override fun getCount(): Int {
-            return catergory.size
+            return categories.size
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return catergory[position]
+            return categories[position].name.toString()
         }
     }
 }

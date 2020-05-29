@@ -20,40 +20,6 @@ class DressroomCategoryFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dressroom_category, container, false)
 
-        setTabOfCategory(view)
-
         return view
-    }
-
-    fun setTabOfCategory(view: View) {
-        val category = arrayListOf<String>()
-        category.add("아우터")
-        category.add("자켓")
-        category.add("코트")
-        category.add("점퍼")
-        category.add("야상")
-        category.add("패딩")
-
-        for (title in category)
-            view.fragment_dressroom_category_tab.addTab(view.fragment_dressroom_category_tab.newTab())
-
-        view.fragment_dressroom_category_viewpager.adapter = TabOfCategoryPagerAdapter(childFragmentManager, category)
-        view.fragment_dressroom_category_tab.setupWithViewPager(view.fragment_dressroom_category_viewpager)
-    }
-
-    inner class TabOfCategoryPagerAdapter(fm: FragmentManager, private val catergory: ArrayList<String>) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-        override fun getItem(position: Int): Fragment {
-            println("getItem $position")
-            val fragment = DressroomCategoryItemFragment()
-            return fragment
-        }
-
-        override fun getCount(): Int {
-            return catergory.size
-        }
-
-        override fun getPageTitle(position: Int): CharSequence {
-            return catergory[position]
-        }
     }
 }
