@@ -1,4 +1,4 @@
-package com.example.bestfit.model
+package com.example.bestfit
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

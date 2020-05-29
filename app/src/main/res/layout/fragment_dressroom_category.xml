@@ -5,21 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/fragment_dressroom_category_tab"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_dressroom_category_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabGravity="fill"
-        app:tabMode="scrollable" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorDivision"/>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/fragment_dressroom_category_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
