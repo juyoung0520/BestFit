@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             R.id.menu_bottom_nav_action_menu -> {
                 auth.signOut()
 
-                startActivity(Intent(this, LoginActivity::class.java))
+                startActivity(Intent(this, SignInActivity::class.java))
                 finish()
             }
         }

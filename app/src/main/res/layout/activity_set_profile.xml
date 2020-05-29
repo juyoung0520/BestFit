@@ -157,7 +157,7 @@
             android:id="@+id/fragment_signup_btn_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="회원가입"
+            android:text="설정 완료"
             android:textSize="18dp"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"

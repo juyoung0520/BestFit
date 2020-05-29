@@ -22,7 +22,7 @@
             android:layout_margin="10dp"/>
 
         <EditText
-            android:id="@+id/fragment_signup_edittext_email"
+            android:id="@+id/fragment_signup_text_email"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="이메일 입력"
@@ -40,7 +40,7 @@
             android:layout_margin="10dp"/>
 
         <EditText
-            android:id="@+id/fragment_signup_edittext_password"
+            android:id="@+id/fragment_signup_text_password"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="영문, 숫자, 특수문자 포함"
@@ -49,7 +49,7 @@
             android:paddingLeft="20dp"/>
 
         <Button
-            android:id="@+id/fragment_signup_btn_next"
+            android:id="@+id/fragment_signup_btn_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="가입 완료"
