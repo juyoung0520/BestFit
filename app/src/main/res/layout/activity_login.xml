@@ -8,29 +8,28 @@
     tools:context=".LoginActivity">
 
     <ImageView
-        android:id="@+id/activity_login_logo"
+        android:id="@+id/activity_login_iv_logo"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
         android:src="@drawable/bestfit_logo"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/activity_login_signin_layout"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"/>
+        android:layout_above="@+id/activity_login_layout_signin"/>
 
     <LinearLayout
-        android:id="@+id/activity_login_signin_layout"
-        android:orientation="vertical"
-        android:layout_centerInParent="true"
+        android:id="@+id/activity_login_layout_signin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp">
+            android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/activity_login_email"
+                android:id="@+id/activity_login_text_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="email"/>
@@ -39,12 +38,10 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp">
+            android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/activity_login_password"
+                android:id="@+id/activity_login_text_password"
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,37 +51,34 @@
 
 
         <RelativeLayout
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
            <Button
                android:id="@+id/activity_login_btn_signin"
+               android:layout_width="170dp"
+               android:layout_height="40dp"
                android:text="로그인"
                android:textStyle="bold"
                android:textColor="@color/colorWhite"
                android:background="@color/colorBlack"
-               android:layout_alignParentLeft="true"
-               android:layout_width="170dp"
-               android:layout_height="40dp"/>
+               android:layout_alignParentStart="true"
+               android:layout_alignParentLeft="true" />
 
             <Button
                 android:id="@+id/activity_login_btn_signup"
+                android:layout_width="170dp"
+                android:layout_height="40dp"
                 android:text="회원가입"
                 android:textStyle="bold"
                 android:textColor="@color/colorWhite"
                 android:background="@color/colorBlack"
-                android:layout_alignParentRight="true"
-                android:layout_width="170dp"
-                android:layout_height="40dp"/>
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
 
         </RelativeLayout>
 
-
     </LinearLayout>
-
-
 
 </RelativeLayout>
