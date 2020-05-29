@@ -7,14 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <ImageView
-        android:id="@+id/activity_login_iv_logo"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/bestfit_logo"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/activity_login_layout_signin"/>
-
     <LinearLayout
         android:id="@+id/activity_login_layout_signin"
         android:layout_width="match_parent"
@@ -24,23 +16,39 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp">
 
+        <ImageView
+            android:id="@+id/activity_login_iv_logo"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bestfit_logo"
+            android:layout_gravity="center_horizontal"
+            android:layout_above="@+id/activity_login_layout_signin"
+            android:layout_marginBottom="70dp"/>
+
         <EditText
             android:id="@+id/activity_login_text_email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="email"/>
+            android:layout_height="40dp"
+            android:hint="email"
+            android:background="@drawable/round_view"
+            android:paddingStart="20dp"
+            android:paddingLeft="20dp"/>
 
         <EditText
             android:id="@+id/activity_login_text_password"
-            android:inputType="textPassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="password"/>
+            android:layout_height="40dp"
+            android:inputType="textPassword"
+            android:hint="password"
+            android:background="@drawable/round_view"
+            android:layout_marginTop="10dp"
+            android:paddingStart="20dp"
+            android:paddingLeft="20dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="30dp">
 
            <Button
                android:id="@+id/activity_login_btn_signin"

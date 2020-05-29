@@ -7,17 +7,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
         android:orientation="vertical"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp">
 
         <ImageView
             android:id="@+id/fragment_profile_iv"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@drawable/bestfile_profile"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/bestfile_profile" />
 
         <TextView
             android:id="@+id/fragment_profile_tv_name"
@@ -27,14 +27,17 @@
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:layout_marginTop="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp" />
 
         <EditText
             android:id="@+id/fragment_profile_edittext_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="이름" />
+            android:layout_height="40dp"
+            android:hint="이름"
+            android:background="@drawable/round_view"
+            android:paddingStart="20dp"
+            android:paddingLeft="20dp"/>
 
         <TextView
             android:id="@+id/fragment_profile_tv_sex"
@@ -53,7 +56,6 @@
             <RelativeLayout
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true">
 
@@ -80,9 +82,12 @@
                 <EditText
                     android:id="@+id/fragment_profile_edittext_height"
                     android:layout_width="140dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_below="@+id/fragment_profile_tv_height"
-                    android:hint="키"/>
+                    android:hint="키"
+                    android:background="@drawable/round_view"
+                    android:paddingStart="20dp"
+                    android:paddingLeft="20dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -92,15 +97,14 @@
                     android:text="cm"
                     android:textStyle="bold"
                     android:textColor="@color/colorBlack"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="15dp" />
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="10dp" />
 
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true">
 
@@ -127,9 +131,12 @@
                 <EditText
                     android:id="@+id/fragment_profile_edittext_weight"
                     android:layout_width="140dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_below="@+id/fragment_profile_tv_weight"
-                    android:hint="몸무게"/>
+                    android:hint="몸무게"
+                    android:background="@drawable/round_view"
+                    android:paddingStart="20dp"
+                    android:paddingLeft="20dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -137,8 +144,9 @@
                     android:layout_below="@id/fragment_profile_tv_weight"
                     android:layout_alignParentRight="true"
                     android:text="Kg"
-                    android:textStyle="bold"
                     android:textColor="@color/colorBlack"
+
+                    android:textStyle="bold"
                     android:layout_marginTop="15dp" />
 
             </RelativeLayout>

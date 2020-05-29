@@ -7,10 +7,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
         android:orientation="vertical"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp">
 
         <TextView
             android:id="@+id/fragment_signup_tv_email"
@@ -24,8 +24,11 @@
         <EditText
             android:id="@+id/fragment_signup_edittext_email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="이메일 입력" />
+            android:layout_height="40dp"
+            android:hint="이메일 입력"
+            android:background="@drawable/round_view"
+            android:paddingStart="20dp"
+            android:paddingLeft="20dp" />
 
         <TextView
             android:id="@+id/fragment_signup_tv_password"
@@ -39,8 +42,11 @@
         <EditText
             android:id="@+id/fragment_signup_edittext_password"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="영문, 숫자, 특수문자 포함"/>
+            android:layout_height="40dp"
+            android:hint="영문, 숫자, 특수문자 포함"
+            android:background="@drawable/round_view"
+            android:paddingStart="20dp"
+            android:paddingLeft="20dp"/>
 
         <Button
             android:id="@+id/fragment_signup_btn_next"
