@@ -1,14 +1,17 @@
 package com.example.bestfit
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+    val auth = FirebaseAuth.getInstance()
     var currentNavigationIndex: Int = 0
     var currentNavigation: ArrayList<ArrayList<Fragment>> = arrayListOf()
 
@@ -35,6 +38,13 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         when (p0.itemId) {
             R.id.menu_bottom_nav_action_dressroom -> {
                 changeNavigation(1)
+            }
+
+            R.id.menu_bottom_nav_action_menu -> {
+                auth.signOut()
+
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
             }
         }
 
