@@ -1,9 +1,7 @@
 package com.example.bestfit
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -22,9 +20,23 @@ class DressroomFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dressroom, container, false)
 
+        setHasOptionsMenu(true)
+        initToolbar(view)
+
         setTabOfCategory(view)
 
         return view
+    }
+
+    fun initToolbar(view: View) {
+        val mainActivity: MainActivity = activity!! as MainActivity
+        mainActivity.setToolbar(view.fragment_dressroom_toolbar)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater.inflate(R.menu.menu_dressroom, menu)
     }
 
     fun setTabOfCategory(view: View) {
