@@ -8,19 +8,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="40dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp">
 
         <ImageView
-            android:id="@+id/fragment_profile_iv"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:src="@drawable/bestfit_set_profile"
+            android:layout_marginBottom="50dp"/>
+
+        <ImageView
+            android:id="@+id/activity_set_profile_iv"
             android:layout_width="125dp"
             android:layout_height="125dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/bestfile_profile" />
+            android:src="@drawable/bestfit_profile" />
 
         <TextView
-            android:id="@+id/fragment_profile_tv_name"
+            android:id="@+id/activity_set_profile_tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="이름"
@@ -31,7 +37,7 @@
             android:layout_marginLeft="10dp" />
 
         <EditText
-            android:id="@+id/fragment_profile_edittext_name"
+            android:id="@+id/activity_set_profile_edittext_name"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="이름"
@@ -40,7 +46,7 @@
             android:paddingLeft="20dp"/>
 
         <TextView
-            android:id="@+id/fragment_profile_tv_sex"
+            android:id="@+id/activity_set_profile_tv_sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="성별"
@@ -60,7 +66,7 @@
                 android:layout_alignParentLeft="true">
 
                 <Button
-                    android:id="@+id/fragment_profile_btn_male"
+                    android:id="@+id/activity_set_profile_btn_male"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:text="남자"
@@ -70,20 +76,20 @@
                     android:layout_marginBottom="5dp"/>
 
                 <TextView
-                    android:id="@+id/fragment_profile_tv_height"
+                    android:id="@+id/activity_set_profile_tv_height"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/fragment_profile_btn_male"
+                    android:layout_below="@id/activity_set_profile_btn_male"
                     android:text="키"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"
                     android:layout_margin="10dp"/>
 
                 <EditText
-                    android:id="@+id/fragment_profile_edittext_height"
+                    android:id="@+id/activity_set_profile_edittext_height"
                     android:layout_width="140dp"
                     android:layout_height="40dp"
-                    android:layout_below="@+id/fragment_profile_tv_height"
+                    android:layout_below="@+id/activity_set_profile_tv_height"
                     android:hint="키"
                     android:background="@drawable/round_view"
                     android:paddingStart="20dp"
@@ -92,7 +98,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/fragment_profile_tv_height"
+                    android:layout_below="@id/activity_set_profile_tv_height"
                     android:layout_alignParentRight="true"
                     android:text="cm"
                     android:textStyle="bold"
@@ -109,7 +115,7 @@
                 android:layout_alignParentRight="true">
 
                 <Button
-                    android:id="@+id/fragment_profile_btn_female"
+                    android:id="@+id/activity_set_profile_btn_female"
                     android:layout_width="170dp"
                     android:layout_height="35dp"
                     android:text="여자"
@@ -119,20 +125,20 @@
                     android:layout_marginBottom="5dp"/>
 
                 <TextView
-                    android:id="@+id/fragment_profile_tv_weight"
+                    android:id="@+id/activity_set_profile_tv_weight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/fragment_profile_btn_female"
+                    android:layout_below="@+id/activity_set_profile_btn_female"
                     android:text="몸무게"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"
                     android:layout_margin="10dp"/>
 
                 <EditText
-                    android:id="@+id/fragment_profile_edittext_weight"
+                    android:id="@+id/activity_set_profile_edittext_weight"
                     android:layout_width="140dp"
                     android:layout_height="40dp"
-                    android:layout_below="@+id/fragment_profile_tv_weight"
+                    android:layout_below="@+id/activity_set_profile_tv_weight"
                     android:hint="몸무게"
                     android:background="@drawable/round_view"
                     android:paddingStart="20dp"
@@ -141,7 +147,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/fragment_profile_tv_weight"
+                    android:layout_below="@id/activity_set_profile_tv_weight"
                     android:layout_alignParentRight="true"
                     android:text="kg"
                     android:textColor="@color/colorBlack"
@@ -154,7 +160,7 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/fragment_signup_btn_signup"
+            android:id="@+id/activity_set_profile_btn_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="설정 완료"
