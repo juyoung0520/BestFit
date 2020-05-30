@@ -12,8 +12,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-    val auth = FirebaseAuth.getInstance()
-    val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+    private val currentUid = auth.currentUser!!.uid
+    private val db = FirebaseFirestore.getInstance()
 
     var currentNavigationIndex: Int = 0
     var currentNavigation: ArrayList<ArrayList<Fragment>> = arrayListOf()
@@ -41,7 +42,23 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     private fun checkSetProfile() {
-        //db.collection("")
+        db.collection("accounts").document(currentUid).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                if (task.result?.data == null) {
+                    val intent = Intent(this, SetProfileActivity::class.java)
+                    startActivity(intent)
+                }
+                else if (task.result?.data?.get("message") == null) {
+                    val intent = Intent(this, SetProfileActivity::class.java)
+                    intent.putExtra("setProfile", true)
+                    startActivity(intent)
+                }
+            }
+        }
+    }
+
+    private fun setProfile(intent: Intent) {
+
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
