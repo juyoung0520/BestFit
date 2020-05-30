@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     private fun checkSetProfile() {
-        db.collection("")
+        //db.collection("")
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {

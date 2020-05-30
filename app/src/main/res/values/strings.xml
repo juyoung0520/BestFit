@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BestFit</string>
+    <string name="google_signin"><b>Google</b>로 로그인</string>
+    <string name="facebook_signin"><b>Facebook</b>으로 로그인</string>
 </resources>

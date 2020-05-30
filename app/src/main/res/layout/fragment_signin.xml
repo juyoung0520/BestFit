@@ -19,7 +19,7 @@
             android:src="@drawable/bestfit_logo"
             android:layout_gravity="center_horizontal"
             android:layout_above="@+id/fragment_signin_layout_signin"
-            android:layout_marginBottom="70dp"/>
+            android:layout_marginBottom="50dp"/>
 
         <TextView
             android:id="@+id/fragment_signin_tv_email"
@@ -84,6 +84,17 @@
                 android:background="@drawable/round_view_btn"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true" />
+
+            <TextView
+                android:id="@+id/fragment_signin_tv_goolge_signin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_signin_btn_signin"
+                android:layout_centerInParent="true"
+                android:text="@string/google_signin"
+                android:textSize="18dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginTop="20dp"/>
 
         </RelativeLayout>
 

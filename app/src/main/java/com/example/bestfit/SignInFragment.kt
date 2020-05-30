@@ -7,11 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.fragment_signin.view.*
 
 class SignInFragment : Fragment() {
     val auth = FirebaseAuth.getInstance()
+    var googleSignInClient : GoogleSignInClient ?= null
+    val GOOGLE_SININ_CODE = 9001
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +35,17 @@ class SignInFragment : Fragment() {
         view.fragment_signin_btn_signup.setOnClickListener {
             signUp()
         }
+
+        view.fragment_signin_tv_goolge_signin.setOnClickListener {
+            signInGoogle()
+        }
+
+        var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(activity!!, gso)
 
         return view
     }
@@ -49,5 +68,34 @@ class SignInFragment : Fragment() {
     fun signUp() {
         val signInActivity = activity as SignInActivity
         signInActivity.replaceFragment(SignUpFragment())
+    }
+
+    fun signInGoogle() {
+        var Intent = googleSignInClient?.signInIntent
+        startActivityForResult(Intent, GOOGLE_SININ_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == GOOGLE_SININ_CODE) {
+            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+
+            if (result!!.isSuccess) {
+                val account = result.signInAccount
+                val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
+
+                auth?.signInWithCredential(credential).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val signInActivity = activity as SignInActivity
+                        signInActivity.startMainActivity()
+                    }
+                    else {
+                        Toast.makeText(context, "login fail", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            }
+        }
     }
 }
