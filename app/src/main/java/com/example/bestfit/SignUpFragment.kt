@@ -34,8 +34,6 @@ class SignUpFragment : Fragment() {
 
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-//                db.collection("accounts").document(email).set()
-
                 val signInActivity = activity as SignInActivity
                 signInActivity.startMainActivity()
             }
