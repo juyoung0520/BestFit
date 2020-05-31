@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.fragment_signup.view.*
 
 class SignUpFragment : Fragment() {
     private val auth = FirebaseAuth.getInstance()
-    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +27,7 @@ class SignUpFragment : Fragment() {
         return view
     }
 
-    fun signUp(view: View) {
+    private fun signUp(view: View) {
         val email = view.fragment_signup_text_email.text.toString()
         val password = view.fragment_signup_text_password.text.toString()
 

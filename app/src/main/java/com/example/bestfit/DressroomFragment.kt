@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.fragment_dressroom.view.*
 
 
 class DressroomFragment : Fragment() {
-    val db = FirebaseFirestore.getInstance()
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +28,7 @@ class DressroomFragment : Fragment() {
         return view
     }
 
-    fun initToolbar(view: View) {
+    private fun initToolbar(view: View) {
         val mainActivity: MainActivity = activity!! as MainActivity
         mainActivity.setToolbar(view.fragment_dressroom_toolbar)
     }
@@ -39,7 +39,7 @@ class DressroomFragment : Fragment() {
         inflater.inflate(R.menu.menu_dressroom, menu)
     }
 
-    fun setTabOfCategory(view: View) {
+    private fun setTabOfCategory(view: View) {
         db.collection("categories").orderBy("index").get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 var categories = arrayListOf<CategoryDTO>()
