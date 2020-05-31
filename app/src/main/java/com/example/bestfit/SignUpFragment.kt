@@ -40,6 +40,18 @@ class SignUpFragment : Fragment() {
                 signInActivity.startMainActivity()
             }
             else {
+                if (task.exception?.message?.indexOf("badly formatted") != -1) {
+                    // 올바른 이메일 형식
+                }
+                else if (task.exception?.message?.indexOf("email address is already in use") != -1) {
+                    // 이미 존재하는 이메일
+
+                }
+                else if (task.exception?.message?.indexOf("password is invalid") != -1) {
+                    // 올바른 비밀번호 형식 최소 6자
+                }
+
+                println(task.exception)
                 Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show()
             }
         }

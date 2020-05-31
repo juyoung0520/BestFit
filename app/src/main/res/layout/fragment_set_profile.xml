@@ -37,7 +37,7 @@
             android:layout_marginLeft="10dp" />
 
         <EditText
-            android:id="@+id/activity_set_profile_edittext_name"
+            android:id="@+id/fragment_set_profile_text_nickname"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="이름"
@@ -86,11 +86,12 @@
                     android:layout_margin="10dp"/>
 
                 <EditText
-                    android:id="@+id/activity_set_profile_edittext_height"
+                    android:id="@+id/fragment_set_profile_text_height"
                     android:layout_width="140dp"
                     android:layout_height="40dp"
                     android:layout_below="@+id/activity_set_profile_tv_height"
                     android:hint="키"
+                    android:inputType="number"
                     android:background="@drawable/round_view"
                     android:paddingStart="20dp"
                     android:paddingLeft="20dp"/>
@@ -135,11 +136,12 @@
                     android:layout_margin="10dp"/>
 
                 <EditText
-                    android:id="@+id/activity_set_profile_edittext_weight"
+                    android:id="@+id/fragment_set_profile_text_weight"
                     android:layout_width="140dp"
                     android:layout_height="40dp"
                     android:layout_below="@+id/activity_set_profile_tv_weight"
                     android:hint="몸무게"
+                    android:inputType="number"
                     android:background="@drawable/round_view"
                     android:paddingStart="20dp"
                     android:paddingLeft="20dp"/>
@@ -160,7 +162,7 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/activity_set_profile_btn_signup"
+            android:id="@+id/fragment_set_profile_btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="설정 완료"

@@ -22,7 +22,7 @@ class SignInActivity : AppCompatActivity() {
         super.onStart()
 
         if (auth.currentUser != null) {
-            startMainActivity()
+//            startMainActivity()
         }
     }
 

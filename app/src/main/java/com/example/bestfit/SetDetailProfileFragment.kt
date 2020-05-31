@@ -16,4 +16,7 @@ class SetDetailProfileFragment  : Fragment() {
 
         return view
     }
+
+//    accountDTO.skip = true
+
 }

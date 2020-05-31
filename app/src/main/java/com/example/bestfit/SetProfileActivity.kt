@@ -17,7 +17,7 @@ class SetProfileActivity : AppCompatActivity() {
             replaceFragment(SetDetailProfileFragment())
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().replace(R.id.activity_set_profile_layout_frame, fragment).commit()
     }
 }
