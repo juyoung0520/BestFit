@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_signin.view.*
 
 class SignInFragment : Fragment() {
     private val auth = FirebaseAuth.getInstance()
-    private val GOOGLE_SIGNIN_CODE = 9001
+    private val GOOGLE_SIGNIN_CODE = 1210
 
     override fun onCreateView(
         inflater: LayoutInflater,
