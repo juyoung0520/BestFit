@@ -29,7 +29,7 @@ class SignInActivity : AppCompatActivity() {
 
     fun setToolbar(toolbar: Toolbar, setHomeButton: Boolean = false) {
         setSupportActionBar(toolbar)
-        supportActionBar?.title = ""
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         if (setHomeButton)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)

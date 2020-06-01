@@ -39,8 +39,8 @@ class SetProfileFragment  : Fragment() {
 
         db.collection("accounts").document(currentUid).set(accountDTO).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val setProfileActivity = activity as SetProfileActivity
-                setProfileActivity.replaceFragment(SetDetailProfileFragment())
+//                val setProfileActivity = activity as SetProfileActivity
+//                setProfileActivity.replaceFragment(SetDetailProfileFragment())
             }
         }
     }

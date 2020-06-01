@@ -29,17 +29,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_below="@+id/fragment_signup_toolbar">
-
-
-<!--        <ImageView-->
-<!--            android:layout_width="150dp"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:src="@drawable/bestfit_signup"-->
-<!--            android:layout_marginBottom="100dp"/>-->
 
         <TextView
             android:id="@+id/fragment_signup_tv_email"

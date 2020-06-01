@@ -47,8 +47,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 if (task.result?.data == null) {
                     val intent = Intent(this, SetProfileActivity::class.java)
                     startActivity(intent)
-                }
-                else if (task.result?.data?.get("skip") == null) {
+                } else if (task.result?.data?.get("skip") == null) {
                     val intent = Intent(this, SetProfileActivity::class.java)
                     intent.putExtra("setProfile", true)
                     startActivity(intent)
@@ -57,8 +56,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
     }
 
-    private fun setProfile(intent: Intent) {
+    fun setToolbar(toolbar: Toolbar, setHomeButton: Boolean = false) {
+        setSupportActionBar(toolbar)
 
+        if (setHomeButton)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
@@ -76,13 +78,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
 
         return true
-    }
-
-    fun setToolbar(toolbar: Toolbar, setHomeButton: Boolean = false) {
-        setSupportActionBar(toolbar)
-
-        if (setHomeButton)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     fun changeNavigation(newNavigationIndex: Int, bundle: Bundle? = null) {
