@@ -12,4 +12,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:background="@drawable/indicator_dot_off_view"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_margin="3dp"/>
+
+        <ImageView
+            android:background="@drawable/indicator_dot_on_view"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_margin="3dp"/>
+
+        <ImageView
+            android:background="@drawable/indicator_dot_off_view"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_margin="3dp"/>
+
+        <ImageView
+            android:background="@drawable/indicator_dot_off_view"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_margin="3dp"/>
+
+    </LinearLayout>
+
 </RelativeLayout>

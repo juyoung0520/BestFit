@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_dressroom.view.*
 import kotlinx.android.synthetic.main.fragment_signup.view.*
 
 class SignUpFragment : Fragment() {
@@ -20,11 +21,18 @@ class SignUpFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_signup, container, false)
 
+        initToolbar(view)
+
         view.fragment_signup_btn_signup.setOnClickListener{
             signUp(view)
         }
 
         return view
+    }
+
+    private fun initToolbar(view: View) {
+        val signInActivity = activity!! as SignInActivity
+        signInActivity.setToolbar(view.fragment_signup_toolbar, true)
     }
 
     private fun signUp(view: View) {

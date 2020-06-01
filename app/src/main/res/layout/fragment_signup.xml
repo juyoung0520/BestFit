@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/fragment_signup_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="회원 가입"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/fragment_signup_toolbar"
+        android:background="@color/colorBlack"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-       android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp">
+        android:layout_marginRight="30dp"
+        android:layout_below="@+id/fragment_signup_toolbar">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp">
 
-            <ImageView
-                android:background="@drawable/indicator_dot_off_view"
-                android:layout_width="13dp"
-                android:layout_height="13dp"
-                android:layout_margin="3dp"/>
-            <ImageView
-                android:background="@drawable/indicator_dot_on_view"
-                android:layout_width="13dp"
-                android:layout_height="13dp"
-                android:layout_margin="3dp"/>
-            <ImageView
-                android:background="@drawable/indicator_dot_off_view"
-                android:layout_width="13dp"
-                android:layout_height="13dp"
-                android:layout_margin="3dp"/>
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:src="@drawable/bestfit_signup"
-            android:layout_marginBottom="100dp"/>
+<!--        <ImageView-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:src="@drawable/bestfit_signup"-->
+<!--            android:layout_marginBottom="100dp"/>-->
 
         <TextView
             android:id="@+id/fragment_signup_tv_email"
