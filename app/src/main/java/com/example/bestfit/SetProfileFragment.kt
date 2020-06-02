@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.bestfit.model.AccountDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_set_profile.view.*
+import kotlinx.android.synthetic.main.fragment_set_profile_first.view.*
 
 class SetProfileFragment  : Fragment() {
     private val auth = FirebaseAuth.getInstance()
@@ -20,18 +20,18 @@ class SetProfileFragment  : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_set_profile, container, false)
+        val view = inflater.inflate(R.layout.fragment_set_profile_first, container, false)
 
-        view.fragment_set_profile_btn_submit.setOnClickListener {
-            setProfile(view)
-        }
+//        view.fragment_set_profile_btn_submit.setOnClickListener {
+//            setProfile(view)
+//        }
 
         return view
     }
 
     private fun setProfile(view: View) {
         val accountDTO = AccountDTO()
-        accountDTO.nickname = view.fragment_set_profile_text_nickname.text.toString()
+//        accountDTO.nickname = view.fragment_set_profile_text_nickname.text.toString()
 //        accountDTO.age
 //        accountDTO.sex
 //        accountDTO.height = view.fragment_set_profile_text_height.text.toString().toDouble()

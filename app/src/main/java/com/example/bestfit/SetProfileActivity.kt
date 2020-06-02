@@ -28,7 +28,6 @@ class SetProfileActivity : AppCompatActivity() {
         activity_set_profile_viewpager.adapter = ProfileFragmentPagerAdapter(supportFragmentManager, 2)
         activity_set_profile_viewpager.currentItem = initPosition
         activity_set_profile_indicator.setViewPager(activity_set_profile_viewpager)
-//        activity_set_profile_indicator.animatePageSelected(initPosition)
     }
 
     inner class ProfileFragmentPagerAdapter(fm: FragmentManager, private val fragmentSize: Int) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {

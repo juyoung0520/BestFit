@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/fragment_set_profile_toolbar"
+        android:id="@+id/fragment_set_profile_second_toolbar"
         android:layout_width="match_parent"
         android:layout_height="45dp">
 
@@ -21,7 +21,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/fragment_set_profile_toolbar"
+        android:layout_below="@id/fragment_set_profile_second_toolbar"
         android:background="@color/colorBlack"/>
 
     <LinearLayout
@@ -31,7 +31,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_below="@+id/fragment_set_profile_toolbar">
+        android:layout_below="@+id/fragment_set_profile_second_toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,13 +47,14 @@
                 android:layout_marginRight="5dp">
 
                 <TextView
-                    android:id="@+id/fragment_set_profile_tv_height"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="키"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"
-                    android:layout_margin="10dp"/>
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -61,7 +62,7 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/fragment_set_profile_text_height"
+                        android:id="@+id/fragment_set_profile_second_text_height"
                         android:layout_width="140dp"
                         android:layout_height="40dp"
                         android:hint="키"
@@ -76,6 +77,7 @@
                         android:text="cm"
                         android:textStyle="bold"
                         android:textColor="@color/colorBlack"
+                        android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp" />
 
                 </LinearLayout>
@@ -91,13 +93,14 @@
                 android:layout_marginLeft="5dp">
 
                 <TextView
-                    android:id="@+id/activity_set_profile_tv_weight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="몸무게"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"
-                    android:layout_margin="10dp"/>
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -105,7 +108,7 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/fragment_set_profile_text_weight"
+                        android:id="@+id/fragment_set_profile_second_text_weight"
                         android:layout_width="140dp"
                         android:layout_height="40dp"
                         android:hint="몸무게"
@@ -120,6 +123,7 @@
                         android:text="kg"
                         android:textColor="@color/colorBlack"
                         android:textStyle="bold"
+                        android:layout_marginStart="10dp"
                         android:layout_marginLeft="10dp"/>
 
                 </LinearLayout>
@@ -129,17 +133,81 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/activity_set_profile_tv_"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="멍충이 이진우"
+            android:text="자신의 신체 특징"
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
-            android:layout_margin="10dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="어깨"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_gravity="center"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/fragment_set_profile_second_btn_small"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:text="좁음"
+                        android:textColor="@drawable/selector_btn_textcolor"
+                        android:background="@drawable/round_view_btn_radio_left"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:layout_weight="1"/>
+
+                    <RadioButton
+                        android:id="@+id/fragment_set_profile_second_btn_medium"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:text="보통"
+                        android:textColor="@drawable/selector_btn_textcolor"
+                        android:background="@drawable/round_view_btn_radio_center"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:layout_weight="1"/>
+
+                    <RadioButton
+                        android:id="@+id/fragment_set_profile_second_btn_large"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:text="넓음"
+                        android:textColor="@drawable/selector_btn_textcolor"
+                        android:background="@drawable/round_view_btn_radio_right"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:layout_weight="1"/>
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
-
-
-
 
 </RelativeLayout>

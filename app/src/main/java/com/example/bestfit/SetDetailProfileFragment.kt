@@ -12,7 +12,7 @@ class SetDetailProfileFragment  : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_set_detail_profile, container, false)
+        val view = inflater.inflate(R.layout.fragment_set_profile_second, container, false)
 
         return view
     }
