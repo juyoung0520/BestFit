@@ -34,8 +34,8 @@ class SetProfileFragment  : Fragment() {
         accountDTO.nickname = view.fragment_set_profile_text_nickname.text.toString()
 //        accountDTO.age
 //        accountDTO.sex
-        accountDTO.height = view.fragment_set_profile_text_height.text.toString().toDouble()
-        accountDTO.weight = view.fragment_set_profile_text_weight.text.toString().toDouble()
+//        accountDTO.height = view.fragment_set_profile_text_height.text.toString().toDouble()
+//        accountDTO.weight = view.fragment_set_profile_text_weight.text.toString().toDouble()
 
         db.collection("accounts").document(currentUid).set(accountDTO).addOnCompleteListener { task ->
             if (task.isSuccessful) {
