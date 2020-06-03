@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import com.example.bestfit.model.AddItemActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                     val intent = Intent(this, SetProfileActivity::class.java)
                     startActivity(intent)
                 } else if (task.result?.data?.get("skip") == null) {
-                    val intent = Intent(this, SetProfileActivity::class.java)
+                    val intent = Intent(this, AddItemActivity::class.java)
                     intent.putExtra("setProfile", true)
                     startActivity(intent)
                 }
