@@ -3,10 +3,7 @@ package com.example.bestfit
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import kotlinx.android.synthetic.main.fragment_add_item.*
 
 class AddItemActivity : AppCompatActivity() {
     val items = arrayOf("아우터", "상의", "바지", "치마", "원피스/세트")
@@ -17,25 +14,25 @@ class AddItemActivity : AppCompatActivity() {
 
         val spinnerAdapter = ArrayAdapter(this, R.layout.spinner_item, items)
 
-        activity_add_item_spinner_category.adapter = spinnerAdapter
-        activity_add_item_spinner_category.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-
-                when(p2) {
-                    0 -> {
-
-                    }
-
-                    else -> {
-
-                    }
-                }
-            }
-
-        }
+//        activity_add_item_spinner_category.adapter = spinnerAdapter
+//        activity_add_item_spinner_category.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onNothingSelected(p0: AdapterView<*>?) {
+//            }
+//
+//            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+//
+//                when(p2) {
+//                    0 -> {
+//
+//                    }
+//
+//                    else -> {
+//
+//                    }
+//                }
+//            }
+//
+//        }
 
     }
 }
