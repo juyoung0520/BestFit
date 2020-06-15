@@ -38,11 +38,21 @@
         android:layout_marginRight="30dp"
         android:layout_below="@+id/fragment_add_item_first_toolbar">
 
+        <AutoCompleteTextView
+            android:id="@+id/fragment_add_item_first_actv_category"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="대분류"
+            android:textSize="15sp"
+            android:background="@drawable/edge_view_spinner"
+            android:dropDownHeight="300dp"
+            android:paddingStart="15dp"
+            android:paddingLeft="15dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="15dp">
+            android:orientation="horizontal">
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -56,7 +66,7 @@
                     android:layout_height="40dp"
                     android:spinnerMode="dropdown"
                     android:overlapAnchor="false"
-                    android:background="@drawable/edge_view_spinner" />
+                    android:background="@drawable/edge_view_spinner"/>
 
                 <ImageView
                     android:layout_width="40dp"
