@@ -1,33 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< Updated upstream
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/activity_add_item_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="상품 추가"
-            android:textColor="@color/colorBlack"
-            android:textSize="20sp"
-            android:layout_gravity="center_horizontal"/>
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorBlack"/>
-
-</LinearLayout>
-=======
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -53,4 +24,3 @@
         android:layout_margin="4dp" />
 
 </RelativeLayout>
->>>>>>> Stashed changes

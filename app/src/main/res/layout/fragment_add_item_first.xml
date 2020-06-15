@@ -1,171 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="30dp"
     tools:context=".AddItemActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/fragment_add_item_first_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="상품 추가"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal"
-        android:layout_marginBottom="15dp">
-
-        <Spinner
-            android:id="@+id/fragment_add_item_first_spinner_category"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:entries="@array/대분류"
-            android:spinnerMode="dropdown"
-            android:overlapAnchor="false"
-            android:background="@drawable/edge_view_spinner"
-            android:paddingStart="10dp"
-            android:paddingLeft="10dp" />
-
-        <LinearLayout
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.1"/>
-
-        <Spinner
-            android:id="@+id/fragment_add_item_first_spinner_sub_category"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:entries="@array/대분류"
-            android:spinnerMode="dropdown"
-            android:overlapAnchor="false"
-            android:background="@drawable/edge_view_spinner"
-            android:paddingStart="10dp"
-            android:paddingLeft="10dp" />
-
-    </LinearLayout>
+        android:layout_height="1dp"
+        android:layout_below="@id/fragment_add_item_first_toolbar"
+        android:background="@color/colorBlack"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_below="@+id/fragment_add_item_first_toolbar">
 
-<<<<<<< Updated upstream:app/src/main/res/layout/fragment_add_item_first.xml
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_add_item_first_recyclerview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-=======
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="15dp">
 
-            <Spinner
-                android:id="@+id/fragment_add_item_spinner_category"
+            <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:spinnerMode="dropdown"
-                android:overlapAnchor="false"
-                android:background="@drawable/edge_view_spinner" />
+                android:focusable="false">
+
+                <Spinner
+                    android:id="@+id/fragment_add_item_first_spinner_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:spinnerMode="dropdown"
+                    android:overlapAnchor="false"
+                    android:background="@drawable/edge_view_spinner" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/btn_dropdown"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:paddingBottom="5dp" />
+
+            </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="1dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.1"/>
-
-            <Spinner
-                android:id="@+id/fragment_add_item_spinner_sub_category"
+                android:id="@+id/fragment_add_item_first_layout_divider_category"
                 android:layout_width="0dp"
-                android:layout_height="45dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="0.1"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/fragment_add_item_first_layout_sub_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:spinnerMode="dropdown"
-                android:overlapAnchor="false"
-                android:background="@drawable/edge_view_spinner" />
+                android:focusable="false"
+                android:visibility="gone">
+
+                <Spinner
+                    android:id="@+id/fragment_add_item_first_spinner_sub_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:spinnerMode="dropdown"
+                    android:overlapAnchor="false"
+                    android:background="@drawable/edge_view_spinner" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/btn_dropdown"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:paddingBottom="5dp" />
+
+            </RelativeLayout>
 
         </LinearLayout>
-        
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="상품 사진"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_margin="15dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_add_item_recyclerview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
             <RelativeLayout
-                android:id="@+id/fragment_add_item_layout"
+                android:id="@+id/fragment_add_item_first_layout"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/edge_view">
->>>>>>> Stashed changes:app/src/main/res/layout/fragment_add_item.xml
+                android:background="@drawable/edge_view_spinner">
 
-        <RelativeLayout
-            android:id="@+id/fragment_add_item_first_layout"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/round_edge_view">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/bestfit_new"/>
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/bestfit_new"/>
+            </RelativeLayout>
 
-        </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_add_item_first_recyclerview_image"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="브랜드"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_margin="15dp"/>
+
+        <EditText
+            android:id="@+id/fragment_add_item_first_text_brand"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="브랜드/쇼핑몰"
+            android:background="@drawable/round_view"
+            android:paddingStart="20dp"
+            android:paddingLeft="20dp" />
+
+        <TextView
+            android:id="@+id/fragment_add_item_first_tv_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="상품명"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_margin="15dp"/>
+
+        <EditText
+            android:id="@+id/fragment_add_item_first_text_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="상품명"
+            android:background="@drawable/round_view"
+            android:paddingStart="20dp"
+            android:paddingLeft="20dp" />
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="사진 추가"
-        android:textColor="@color/colorBlack"/>
-
-    <TextView
-        android:id="@+id/fragment_add_item_first_tv_brand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="브랜드"
-        android:textColor="@color/colorBlack"
-        android:textStyle="bold"
-        android:layout_margin="15dp"/>
-
-    <EditText
-        android:id="@+id/fragment_add_item_first_text_brand"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:hint="브랜드/쇼핑몰"
-        android:background="@drawable/round_view"
-        android:paddingStart="20dp"
-        android:paddingLeft="20dp" />
-
-    <TextView
-        android:id="@+id/fragment_add_item_first_tv_item_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="상품명"
-        android:textColor="@color/colorBlack"
-        android:textStyle="bold"
-        android:layout_margin="15dp"/>
-
-    <EditText
-        android:id="@+id/fragment_add_item_first_text_item_name"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:hint="상품명"
-        android:background="@drawable/round_view"
-        android:paddingStart="20dp"
-        android:paddingLeft="20dp" />
-
-</LinearLayout>
+</RelativeLayout>

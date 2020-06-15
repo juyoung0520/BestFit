@@ -25,12 +25,12 @@ class SetProfileActivity : AppCompatActivity() {
         if (setProfile)
             initPosition = 1
 
-        activity_set_profile_viewpager.adapter = ProfileFragmentPagerAdapter(supportFragmentManager, 2)
+        activity_set_profile_viewpager.adapter = SetProfileFragmentPagerAdapter(supportFragmentManager, 2)
         activity_set_profile_viewpager.currentItem = initPosition
         activity_set_profile_indicator.setViewPager(activity_set_profile_viewpager)
     }
 
-    inner class ProfileFragmentPagerAdapter(fm: FragmentManager, private val fragmentSize: Int) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    inner class SetProfileFragmentPagerAdapter(fm: FragmentManager, private val fragmentSize: Int) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> SetProfileFragment()
