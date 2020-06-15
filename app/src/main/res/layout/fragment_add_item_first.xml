@@ -51,10 +51,61 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+<<<<<<< Updated upstream:app/src/main/res/layout/fragment_add_item_first.xml
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_add_item_first_recyclerview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+=======
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="15dp">
+
+            <Spinner
+                android:id="@+id/fragment_add_item_spinner_category"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown"
+                android:overlapAnchor="false"
+                android:background="@drawable/edge_view_spinner" />
+
+            <LinearLayout
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+
+            <Spinner
+                android:id="@+id/fragment_add_item_spinner_sub_category"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown"
+                android:overlapAnchor="false"
+                android:background="@drawable/edge_view_spinner" />
+
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_add_item_recyclerview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <RelativeLayout
+                android:id="@+id/fragment_add_item_layout"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/edge_view">
+>>>>>>> Stashed changes:app/src/main/res/layout/fragment_add_item.xml
 
         <RelativeLayout
             android:id="@+id/fragment_add_item_first_layout"

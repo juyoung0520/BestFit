@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         initNavigation()
 
         // SetProfile Check
-        checkSetProfile()
+//        checkSetProfile()
     }
 
     private fun initNavigation() {
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                     val intent = Intent(this, SetProfileActivity::class.java)
                     startActivity(intent)
                 } else if (task.result?.data?.get("skip") == null) {
-                    val intent = Intent(this, AddItemActivity::class.java)
+                    val intent = Intent(this, SetProfileActivity::class.java)
                     intent.putExtra("setProfile", true)
                     startActivity(intent)
                 }
@@ -61,6 +61,17 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         if (setHomeButton)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId) {
+            R.id.menu_dressroom_action_add -> {
+                startActivity(Intent(this, AddItemActivity::class.java))
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< Updated upstream
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -26,3 +27,30 @@
         android:background="@color/colorBlack"/>
 
 </LinearLayout>
+=======
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SetProfileActivity">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/activity_add_item_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/activity_add_item_indicator"/>
+
+    <me.relex.circleindicator.CircleIndicator
+        android:id="@+id/activity_add_item_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        app:ci_drawable="@drawable/indicator_dot_on_view"
+        app:ci_width="6dp"
+        app:ci_height="6dp"
+        android:layout_margin="4dp" />
+
+</RelativeLayout>
+>>>>>>> Stashed changes
