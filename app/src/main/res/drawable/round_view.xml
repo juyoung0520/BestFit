@@ -5,7 +5,10 @@
         <shape>
             <solid android:color="@color/colorBackground"/>
 
-            <corners
+<!--            <stroke-->
+<!--                android:width="1dp"/>-->
+
+           <corners
                 android:radius="100dp" />
         </shape>
     </item>

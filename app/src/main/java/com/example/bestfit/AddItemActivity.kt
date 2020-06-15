@@ -1,13 +1,12 @@
 
-package com.example.bestfit.model
+package com.example.bestfit
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import com.example.bestfit.R
-import kotlinx.android.synthetic.main.activity_add_item.*
+import kotlinx.android.synthetic.main.fragment_add_item.*
 
 class AddItemActivity : AppCompatActivity() {
     val items = arrayOf("아우터", "상의", "바지", "치마", "원피스/세트")
@@ -18,8 +17,8 @@ class AddItemActivity : AppCompatActivity() {
 
         val spinnerAdapter = ArrayAdapter(this, R.layout.spinner_item, items)
 
-        activity_add_item_spinner.adapter = spinnerAdapter
-        activity_add_item_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        activity_add_item_spinner_category.adapter = spinnerAdapter
+        activity_add_item_spinner_category.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
 
