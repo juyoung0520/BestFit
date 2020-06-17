@@ -34,20 +34,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:layout_below="@+id/fragment_add_item_first_toolbar">
 
-        <AutoCompleteTextView
-            android:id="@+id/fragment_add_item_first_actv_category"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:hint="대분류"
-            android:textSize="15sp"
-            android:background="@drawable/edge_view_spinner"
-            android:dropDownHeight="300dp"
-            android:paddingStart="15dp"
-            android:paddingLeft="15dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="상품 카테고리"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,13 +59,16 @@
                 android:layout_weight="1"
                 android:focusable="false">
 
-                <Spinner
-                    android:id="@+id/fragment_add_item_first_spinner_category"
+                <AutoCompleteTextView
+                    android:id="@+id/fragment_add_item_first_actv_category"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:spinnerMode="dropdown"
-                    android:overlapAnchor="false"
-                    android:background="@drawable/edge_view_spinner"/>
+                    android:hint="대분류"
+                    android:textSize="15sp"
+                    android:background="@drawable/edge_view_spinner"
+                    android:dropDownHeight="300dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"/>
 
                 <ImageView
                     android:layout_width="40dp"
@@ -94,13 +96,16 @@
                 android:focusable="false"
                 android:visibility="gone">
 
-                <Spinner
-                    android:id="@+id/fragment_add_item_first_spinner_sub_category"
+                <AutoCompleteTextView
+                    android:id="@+id/fragment_add_item_first_actv_sub_category"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:spinnerMode="dropdown"
-                    android:overlapAnchor="false"
-                    android:background="@drawable/edge_view_spinner" />
+                    android:hint="소분류"
+                    android:textSize="15sp"
+                    android:background="@drawable/edge_view_spinner"
+                    android:dropDownHeight="wrap_content"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"/>
 
                 <ImageView
                     android:layout_width="40dp"
@@ -120,7 +125,10 @@
             android:text="상품 사진"
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
-            android:layout_margin="15dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -155,7 +163,10 @@
             android:text="브랜드"
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
-            android:layout_margin="15dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <EditText
             android:id="@+id/fragment_add_item_first_text_brand"
@@ -164,16 +175,18 @@
             android:hint="브랜드/쇼핑몰"
             android:background="@drawable/round_view"
             android:paddingStart="20dp"
-            android:paddingLeft="20dp" />
+            android:paddingEnd="20dp" />
 
         <TextView
-            android:id="@+id/fragment_add_item_first_tv_item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="상품명"
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
-            android:layout_margin="15dp"/>
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"/>
 
         <EditText
             android:id="@+id/fragment_add_item_first_text_item_name"
@@ -182,7 +195,7 @@
             android:hint="상품명"
             android:background="@drawable/round_view"
             android:paddingStart="20dp"
-            android:paddingLeft="20dp" />
+            android:paddingEnd="20dp" />
 
     </LinearLayout>
 
