@@ -61,19 +61,26 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/fragment_set_profile_second_text_height"
+                    <NumberPicker
+                        android:id="@+id/fragment_set_profile_second_np_height"
                         android:layout_width="140dp"
                         android:layout_height="40dp"
-                        android:hint="키"
-                        android:inputType="number"
-                        android:background="@drawable/round_view"
-                        android:paddingStart="20dp"
-                        android:paddingLeft="20dp"/>
+                        android:background="@drawable/round_view"/>
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/fragment_set_profile_second_text_height"-->
+<!--                        android:layout_width="140dp"-->
+<!--                        android:layout_height="40dp"-->
+<!--                        android:hint="키"-->
+<!--                        android:inputType="number"-->
+<!--                        android:background="@drawable/round_view"-->
+<!--                        android:paddingStart="20dp"-->
+<!--                        android:paddingLeft="20dp"/>-->
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="cm"
                         android:textStyle="bold"
                         android:textColor="@color/colorBlack"
@@ -95,7 +102,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="몸무게"
+                    android:text="체중"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"
                     android:layout_marginStart="10dp"
@@ -107,19 +114,26 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/fragment_set_profile_second_text_weight"
+                    <NumberPicker
+                        android:id="@+id/fragment_set_profile_second_np_weight"
                         android:layout_width="140dp"
                         android:layout_height="40dp"
-                        android:hint="몸무게"
-                        android:inputType="number"
-                        android:background="@drawable/round_view"
-                        android:paddingStart="20dp"
-                        android:paddingLeft="20dp"/>
+                        android:background="@drawable/round_view"/>
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/fragment_set_profile_second_text_weight"-->
+<!--                        android:layout_width="140dp"-->
+<!--                        android:layout_height="40dp"-->
+<!--                        android:hint="몸무게"-->
+<!--                        android:inputType="number"-->
+<!--                        android:background="@drawable/round_view"-->
+<!--                        android:paddingStart="20dp"-->
+<!--                        android:paddingLeft="20dp"/>-->
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="kg"
                         android:textColor="@color/colorBlack"
                         android:textStyle="bold"
