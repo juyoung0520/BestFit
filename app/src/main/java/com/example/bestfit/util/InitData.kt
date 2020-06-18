@@ -7,6 +7,7 @@ object InitData {
     private val db = FirebaseFirestore.getInstance()
     val categoryDTOs = arrayListOf<CategoryDTO>()
     val categories = arrayListOf<String>()
+    val brands = arrayListOf<String>()
 
     fun initCategory() {
         db.collection("categories").orderBy("index").get().addOnCompleteListener { task ->
@@ -16,6 +17,14 @@ object InitData {
                     categoryDTOs.add(categoryDTO)
                     categories.add(categoryDTO.name!!)
                 }
+            }
+        }
+    }
+
+    fun initBrand() {
+        db.collection("brands").document("brands").get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+//                categories.addAll(task.result!!["brands"] as ArrayList<*>)
             }
         }
     }

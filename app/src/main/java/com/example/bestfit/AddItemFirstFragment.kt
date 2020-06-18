@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Filter
 import androidx.fragment.app.Fragment
-import com.example.bestfit.model.CategoryDTO
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
-import kotlinx.android.synthetic.main.spinner_item.view.*
 import com.example.bestfit.util.InitData
 
 class AddItemFirstFragment  : Fragment() {
@@ -22,6 +20,7 @@ class AddItemFirstFragment  : Fragment() {
         val view = inflater.inflate(R.layout.fragment_add_item_first, container, false)
 
         initCategory(view)
+        initBrand(view)
 
         return view
     }
@@ -29,13 +28,9 @@ class AddItemFirstFragment  : Fragment() {
 //    accountDTO.skip = true
 
     fun initCategory(view: View) {
-        println("hi")
         val categoryDTOs = InitData.categoryDTOs.subList(1, InitData.categoryDTOs.lastIndex + 1)
         val categories = InitData.categories.subList(1, InitData.categories.lastIndex + 1)
-
-        println(categoryDTOs)
-
-        val categoryAdapter = ArrayAdapter(context!!, R.layout.spinner_item, categories)
+        val categoryAdapter = ArrayAdapter(context!!, R.layout.dropdown_item, categories)
 
         view.fragment_add_item_first_actv_category.setAdapter(categoryAdapter)
         view.fragment_add_item_first_actv_category.keyListener = null
@@ -56,7 +51,7 @@ class AddItemFirstFragment  : Fragment() {
     }
 
     fun initSubCategory(view: View, subCategories: ArrayList<String>) {
-        val categoryAdapter = ArrayAdapter(context!!, R.layout.spinner_item, subCategories)
+        val categoryAdapter = ArrayAdapter(context!!, R.layout.dropdown_item, subCategories)
 
         view.fragment_add_item_first_actv_sub_category.setAdapter(categoryAdapter)
         view.fragment_add_item_first_actv_sub_category.keyListener = null
@@ -64,5 +59,15 @@ class AddItemFirstFragment  : Fragment() {
             (v as AutoCompleteTextView).showDropDown()
             false
         }
+    }
+
+    fun initBrand(view: View) {
+        val list = arrayListOf<String>()
+        list.add("나이키 Nike")
+        list.add("나야나 a")
+        list.add("아디다스 Adidas")
+
+        val categoryAdapter = ArrayAdapter(context!!, R.layout.dropdown_item, list)
+        view.fragment_add_item_first_actv_brand.setAdapter(categoryAdapter)
     }
 }

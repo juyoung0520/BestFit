@@ -29,14 +29,18 @@
         android:layout_below="@id/fragment_add_item_first_toolbar"
         android:background="@color/colorBlack"/>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_add_item_first_toolbar">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_below="@+id/fragment_add_item_first_toolbar">
+        android:layout_marginEnd="30dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -168,14 +172,25 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"/>
 
-        <EditText
-            android:id="@+id/fragment_add_item_first_text_brand"
+        <AutoCompleteTextView
+            android:id="@+id/fragment_add_item_first_actv_brand"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="브랜드/쇼핑몰"
             android:background="@drawable/round_view"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp" />
+            android:paddingEnd="20dp"
+            android:completionHint="TEST"
+            android:completionThreshold="1" />
+
+<!--        <EditText-->
+<!--            android:id="@+id/fragment_add_item_first_text_brand"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:hint="브랜드/쇼핑몰"-->
+<!--            android:background="@drawable/round_view"-->
+<!--            android:paddingStart="20dp"-->
+<!--            android:paddingEnd="20dp" />-->
 
         <TextView
             android:layout_width="wrap_content"
@@ -198,5 +213,7 @@
             android:paddingEnd="20dp" />
 
     </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>
