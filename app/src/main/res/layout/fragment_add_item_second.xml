@@ -7,7 +7,6 @@
     android:layout_margin="30dp">
 
     <TextView
-        android:id="@+id/fragment_add_item_second_tv_item_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="상품 정보"
@@ -59,7 +58,6 @@
             android:layout_marginLeft="40dp">
 
             <TextView
-                android:id="@+id/fragment_add_item_second_tv_item_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="선택 사이즈"
@@ -74,14 +72,13 @@
                 android:hint="S/M/L"
                 android:background="@drawable/round_view"
                 android:paddingStart="20dp"
-                android:paddingLeft="20dp" />
+                android:paddingEnd="20dp" />
 
         </LinearLayout>
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/fragment_add_item_second_tv_item_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="상세 후기"
@@ -90,18 +87,18 @@
         android:layout_margin="15dp"/>
 
     <EditText
-        android:id="@+id/fragment_add_item_first_text_item_review"
+        android:id="@+id/fragment_add_item_second_text_item_review"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:hint="가슴은 뜨겁게, 리뷰는 솔직하게! "
         android:background="@drawable/round_view_btn_gray"
         android:gravity="start"
         android:paddingTop="10dp"
-        android:paddingStart="10dp"
-        android:paddingLeft="10dp" />
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp" />
 
     <Button
-        android:id="@+id/fragment_set_profile_second_btn_submit"
+        android:id="@+id/fragment_add_item_second_btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="완료"
