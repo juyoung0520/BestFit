@@ -1,15 +1,18 @@
 package com.example.bestfit
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Filter
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import com.example.bestfit.util.InitData
+import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
+
 
 class AddItemFirstFragment  : Fragment() {
     override fun onCreateView(
@@ -30,7 +33,7 @@ class AddItemFirstFragment  : Fragment() {
     fun initCategory(view: View) {
         val categoryDTOs = InitData.categoryDTOs.subList(1, InitData.categoryDTOs.lastIndex + 1)
         val categories = InitData.categories.subList(1, InitData.categories.lastIndex + 1)
-        val categoryAdapter = ArrayAdapter(context!!, R.layout.dropdown_item, categories)
+        val categoryAdapter = ArrayAdapter(context!!, R.layout.item_dropdown, categories)
 
         view.fragment_add_item_first_actv_category.setAdapter(categoryAdapter)
         view.fragment_add_item_first_actv_category.keyListener = null
@@ -39,7 +42,6 @@ class AddItemFirstFragment  : Fragment() {
             false
         }
         view.fragment_add_item_first_actv_category.setOnItemClickListener { parent, _, position, id ->
-            println("position = $position, count = ${categoryAdapter.count}")
             if (view.fragment_add_item_first_layout_divider_category.visibility == View.GONE) {
                 view.fragment_add_item_first_layout_divider_category.visibility = View.VISIBLE
                 view.fragment_add_item_first_layout_sub_category.visibility = View.VISIBLE
@@ -51,7 +53,7 @@ class AddItemFirstFragment  : Fragment() {
     }
 
     fun initSubCategory(view: View, subCategories: ArrayList<String>) {
-        val categoryAdapter = ArrayAdapter(context!!, R.layout.dropdown_item, subCategories)
+        val categoryAdapter = ArrayAdapter(context!!, R.layout.item_dropdown, subCategories)
 
         view.fragment_add_item_first_actv_sub_category.setAdapter(categoryAdapter)
         view.fragment_add_item_first_actv_sub_category.keyListener = null
@@ -62,12 +64,17 @@ class AddItemFirstFragment  : Fragment() {
     }
 
     fun initBrand(view: View) {
-        val list = arrayListOf<String>()
-        list.add("나이키 Nike")
-        list.add("나야나 a")
-        list.add("아디다스 Adidas")
+        val brands = InitData.brands
+        val categoryAdapter = ArrayAdapter(context!!, R.layout.item_dropdown, brands)
 
-        val categoryAdapter = ArrayAdapter(context!!, R.layout.dropdown_item, list)
         view.fragment_add_item_first_actv_brand.setAdapter(categoryAdapter)
+        view.fragment_add_item_first_actv_brand.setOnTouchListener { v, event ->
+            (v as AutoCompleteTextView).text = null
+            false
+        }
+        view.fragment_add_item_first_actv_brand.setOnItemClickListener { parent, _, position, id ->
+            val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 }

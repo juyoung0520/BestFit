@@ -16,6 +16,7 @@ class SignInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signin)
 
         InitData.initCategory()
+        InitData.initBrand()
 
         replaceFragment(SignInFragment())
     }

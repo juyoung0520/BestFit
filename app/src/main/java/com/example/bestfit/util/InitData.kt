@@ -24,7 +24,7 @@ object InitData {
     fun initBrand() {
         db.collection("brands").document("brands").get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-//                categories.addAll(task.result!!["brands"] as ArrayList<*>)
+                brands.addAll(task.result!!["list"] as ArrayList<String>)
             }
         }
     }
