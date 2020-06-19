@@ -47,10 +47,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 if (task.result?.data == null) {
                     val intent = Intent(this, SetProfileActivity::class.java)
                     startActivity(intent)
-                } else if (task.result?.data?.get("skip") == null) {
-                    val intent = Intent(this, SetProfileActivity::class.java)
-                    intent.putExtra("setProfile", true)
-                    startActivity(intent)
                 }
             }
         }

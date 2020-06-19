@@ -17,108 +17,90 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp">
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="키"
-                    android:textColor="@color/colorBlack"
-                    android:textStyle="bold"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"/>
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="키"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"/>
 
                     <NumberPicker
                         android:id="@+id/fragment_set_profile_second_np_height"
-                        android:layout_width="140dp"
+                        android:layout_width="100dp"
                         android:layout_height="140dp"
-                        android:theme="@style/NumberPickerStyle"/>
-
-<!--                    <EditText-->
-<!--                        android:id="@+id/fragment_set_profile_second_text_height"-->
-<!--                        android:layout_width="140dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:hint="키"-->
-<!--                        android:inputType="number"-->
-<!--                        android:background="@drawable/round_view"-->
-<!--                        android:paddingStart="20dp"-->
-<!--                        android:paddingLeft="20dp"/>-->
+                        android:theme="@style/NumberPickerStyle"
+                        android:layout_centerHorizontal="true"/>
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="cm"
                         android:textStyle="bold"
                         android:textColor="@color/colorBlack"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp" />
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"/>
 
-                </LinearLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp">
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="체중"
-                    android:textColor="@color/colorBlack"
-                    android:textStyle="bold"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="10dp"/>
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="체중"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"/>
 
                     <NumberPicker
                         android:id="@+id/fragment_set_profile_second_np_weight"
-                        android:layout_width="140dp"
+                        android:layout_width="100dp"
                         android:layout_height="140dp"
-                        android:theme="@style/NumberPickerStyle"/>
-
-<!--                    <EditText-->
-<!--                        android:id="@+id/fragment_set_profile_second_text_weight"-->
-<!--                        android:layout_width="140dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:hint="몸무게"-->
-<!--                        android:inputType="number"-->
-<!--                        android:background="@drawable/round_view"-->
-<!--                        android:paddingStart="20dp"-->
-<!--                        android:paddingLeft="20dp"/>-->
+                        android:theme="@style/NumberPickerStyle"
+                        android:layout_centerHorizontal="true"/>
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="kg"
                         android:textColor="@color/colorBlack"
                         android:textStyle="bold"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"/>
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"/>
 
-                </LinearLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -200,7 +182,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="15dp">
 
             <TextView
                 android:layout_width="40dp"
@@ -259,7 +241,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="15dp">
 
             <TextView
                 android:layout_width="40dp"
@@ -314,17 +296,20 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/fragment_set_profile_second_btn_submit"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="다음"
-            android:textColor="@color/colorWhite"
-            android:textStyle="bold"
-            android:background="@drawable/btn_default"
-            android:layout_marginTop="15dp"
-            android:layout_gravity="end" />
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/fragment_set_profile_second_btn_submit"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="다음"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        android:background="@drawable/btn_default"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"/>
 
 </RelativeLayout>

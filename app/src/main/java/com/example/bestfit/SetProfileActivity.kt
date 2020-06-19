@@ -5,14 +5,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.example.bestfit.model.AccountDTO
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.activity_set_profile.*
 import kotlinx.android.synthetic.main.activity_signin.*
+import kotlinx.android.synthetic.main.fragment_set_profile_first.*
+import kotlinx.android.synthetic.main.fragment_set_profile_second.*
 
 class SetProfileActivity : AppCompatActivity() {
+    private val auth = FirebaseAuth.getInstance()
+    private val currentUid = auth.currentUser!!.uid
+    private val db = FirebaseFirestore.getInstance()
+    private val fragments = arrayListOf<Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,24 +54,22 @@ class SetProfileActivity : AppCompatActivity() {
     }
 
     private fun initViewPager() {
-        val setProfile = intent.getBooleanExtra("setProfile", false)
-        var initPosition = 0
-
-        if (setProfile)
-            initPosition = 1
-
-        activity_set_profile_viewpager.adapter = SetProfileFragmentPagerAdapter(supportFragmentManager, 2)
-        activity_set_profile_viewpager.currentItem = initPosition
+        activity_set_profile_viewpager.adapter = SetProfileFragmentPagerAdapter(supportFragmentManager, 3)
         activity_set_profile_indicator.setViewPager(activity_set_profile_viewpager)
     }
 
     inner class SetProfileFragmentPagerAdapter(fm: FragmentManager, private val fragmentSize: Int) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getItem(position: Int): Fragment {
-            return when (position) {
+            val fragment = when (position) {
                 0 -> SetProfileFirstFragment()
                 1 -> SetProfileSecondFragment()
+                2 -> SetProfileThirdFragment()
                 else -> Fragment()
             }
+
+            fragments.add(fragment)
+            println(fragments)
+            return fragment
         }
 
         override fun getCount(): Int {
@@ -88,5 +96,34 @@ class SetProfileActivity : AppCompatActivity() {
             return
 
         activity_set_profile_viewpager.currentItem = newPosition
+    }
+
+    fun submitSetProfile() {
+        val firstFragment = fragments[0] as SetProfileFirstFragment
+        val secondFragment = fragments[1] as SetProfileSecondFragment
+        val thirdFragment = fragments[2] as SetProfileThirdFragment
+
+        println(firstFragment)
+        println(secondFragment)
+        println(thirdFragment)
+
+        firstFragment.test()
+
+        println(firstFragment.view)
+        println(firstFragment)
+
+        val accountDTO = AccountDTO()
+        accountDTO.nickname = firstFragment.fragment_set_profile_first_text_nickname.text.toString()
+        accountDTO.sex = firstFragment.fragment_set_profile_first_btn_male.isChecked
+        accountDTO.birth = firstFragment.fragment_set_profile_first_np_birth.value
+        accountDTO.height = secondFragment.fragment_set_profile_second_np_height.value
+        accountDTO.weight = secondFragment.fragment_set_profile_second_np_weight.value
+
+        db.collection("accounts").document(currentUid).set(accountDTO).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                println(accountDTO)
+                finish()
+            }
+        }
     }
 }
