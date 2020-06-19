@@ -8,31 +8,10 @@
     android:orientation="vertical"
     tools:context=".AddItemActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/fragment_add_item_first_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="상품 추가"
-            android:textColor="@color/colorBlack"
-            android:textSize="20sp"
-            android:layout_gravity="center_horizontal"/>
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/fragment_add_item_first_toolbar"
-        android:background="@color/colorBlack"/>
-
     <ScrollView
+        android:id="@+id/fragment_add_item_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_add_item_first_toolbar">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -162,6 +141,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/fragment_add_item_first_tv_brand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="브랜드/쇼핑몰"
@@ -212,6 +192,10 @@
                 android:background="@drawable/round_view_btn"
                 android:layout_marginTop="15dp"
                 android:layout_gravity="end" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="500dp"/>
 
         </LinearLayout>
 

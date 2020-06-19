@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.bestfit.model.CategoryDTO
+import com.example.bestfit.util.InitData
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
 
@@ -40,24 +41,16 @@ class DressroomFragment : Fragment() {
     }
 
     private fun setTabOfCategory(view: View) {
-        db.collection("categories").orderBy("index").get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                var categories = arrayListOf<CategoryDTO>()
-
-                for (snapshot in task.result!!) {
-                    val categoryDTO = snapshot.toObject(CategoryDTO::class.java)
-                    categories.add(categoryDTO)
-
-                    view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
-                }
-
-                view.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(childFragmentManager, categories)
-                view.fragment_dressroom_tab.setupWithViewPager(view.fragment_dressroom_viewpager)
-            }
+        val categories = InitData.categories
+        for (i in categories) {
+            view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
         }
+
+        view.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(childFragmentManager, categories)
+        view.fragment_dressroom_tab.setupWithViewPager(view.fragment_dressroom_viewpager)
     }
 
-    inner class TabOfCategoryPagerAdapter(fm: FragmentManager, private val categories: ArrayList<CategoryDTO>) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    inner class TabOfCategoryPagerAdapter(fm: FragmentManager, private val categories: ArrayList<String>) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getItem(position: Int): Fragment {
             val fragment = DressroomCategoryFragment()
             return fragment
@@ -68,7 +61,7 @@ class DressroomFragment : Fragment() {
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return categories[position].name.toString()
+            return categories[position]
         }
     }
 }
