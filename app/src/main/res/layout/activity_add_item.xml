@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
-        app:ci_drawable="@drawable/indicator_dot_on_view"
+        app:ci_drawable="@drawable/indicator_default"
         app:ci_width="6dp"
         app:ci_height="6dp"
         android:layout_margin="4dp" />

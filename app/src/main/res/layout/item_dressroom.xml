@@ -14,14 +14,14 @@
             android:id="@+id/item_dressroom_iv_item"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/round_view_btn_gray"
+            android:background="@drawable/image_default"
             android:scaleType="centerCrop"/>
 
         <ImageView
             android:id="@+id/item_dressroom_iv_heart"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:src="@drawable/bestfit_heart"
+            android:src="@drawable/image_heart"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"

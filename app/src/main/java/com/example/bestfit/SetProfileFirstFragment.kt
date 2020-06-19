@@ -22,9 +22,9 @@ class SetProfileFirstFragment  : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_set_profile_first, container, false)
 
-//        view.fragment_set_profile_btn_submit.setOnClickListener {
-//            setProfile(view)
-//        }
+        view.fragment_set_profile_first_btn_submit.setOnClickListener {
+            submitAddItem()
+        }
 
         return view
     }
@@ -43,5 +43,10 @@ class SetProfileFirstFragment  : Fragment() {
 //                setProfileActivity.replaceFragment(SetDetailProfileFragment())
             }
         }
+    }
+
+    private fun submitAddItem() {
+        val setProfileActivity = activity as SetProfileActivity
+        setProfileActivity.changeViewPage(false)
     }
 }

@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:hint="이메일 입력"
-            android:background="@drawable/round_view"
+            android:background="@drawable/text_default"
             android:paddingStart="20dp"
             android:paddingEnd="20dp" />
 
@@ -50,7 +50,7 @@
             android:layout_height="40dp"
             android:inputType="textPassword"
             android:hint="영문, 숫자, 특수문자 포함"
-            android:background="@drawable/round_view"
+            android:background="@drawable/text_default"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"/>
 
@@ -62,7 +62,7 @@
             android:textSize="18sp"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"
-            android:background="@drawable/round_view_btn"
+            android:background="@drawable/btn_default"
             android:layout_marginTop="15dp"/>
 
    </LinearLayout>

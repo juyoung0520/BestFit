@@ -32,14 +32,14 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
-                    android:background="@drawable/square_edge_view"
+                    android:background="@drawable/image_edge"
                     android:gravity="center">
 
                     <ImageView
                         android:id="@+id/fragment_add_item_second_iv_size"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/bestfit_size" />
+                        android:src="@drawable/image_size" />
 
                 </RelativeLayout>
 
@@ -74,7 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:hint="S/M/L"
-                    android:background="@drawable/round_view"
+                    android:background="@drawable/text_default"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp" />
 
@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:hint="가슴은 뜨겁게, 리뷰는 솔직하게! "
-            android:background="@drawable/round_view_btn_gray"
+            android:background="@drawable/text_default"
             android:gravity="start"
             android:paddingTop="10dp"
             android:paddingStart="20dp"
@@ -108,7 +108,7 @@
             android:text="완료"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"
-            android:background="@drawable/round_view_btn"
+            android:background="@drawable/btn_default"
             android:layout_marginTop="15dp"
             android:layout_gravity="end" />
 

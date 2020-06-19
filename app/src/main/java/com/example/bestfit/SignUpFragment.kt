@@ -22,7 +22,7 @@ class SignUpFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_signup, container, false)
 
-        initToolbar(view)
+        initToolbar()
 
         view.fragment_signup_btn_signup.setOnClickListener{
             signUp(view)
@@ -31,7 +31,7 @@ class SignUpFragment : Fragment() {
         return view
     }
 
-    private fun initToolbar(view: View) {
+    private fun initToolbar() {
         val signInActivity = activity!! as SignInActivity
         signInActivity.activity_signin_tv_toolbar_title.text = "회원가입"
         signInActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
