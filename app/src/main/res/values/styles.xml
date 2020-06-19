@@ -15,4 +15,8 @@
         <item name="android:dividerHeight">2dp</item>
     </style>
 
+    <style name="NumberPickerStyle">
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

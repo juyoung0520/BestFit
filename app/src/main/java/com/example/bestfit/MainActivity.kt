@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         initNavigation()
 
         // SetProfile Check
-//        checkSetProfile()
+        checkSetProfile()
     }
 
     private fun initNavigation() {
