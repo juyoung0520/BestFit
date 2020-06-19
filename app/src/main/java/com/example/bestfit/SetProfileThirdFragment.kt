@@ -15,18 +15,20 @@ import kotlinx.android.synthetic.main.fragment_set_profile_second.view.*
 import kotlinx.android.synthetic.main.fragment_set_profile_third.view.*
 
 class SetProfileThirdFragment : Fragment() {
+    lateinit var fragmentView: View
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_set_profile_third, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_set_profile_third, container, false)
 
-        view.fragment_set_profile_third_btn_submit.setOnClickListener {
+        fragmentView.fragment_set_profile_third_btn_submit.setOnClickListener {
             submitSetProfile()
         }
 
-        return view
+        return fragmentView
     }
 
     private fun submitSetProfile() {

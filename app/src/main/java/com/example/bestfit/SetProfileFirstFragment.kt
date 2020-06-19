@@ -9,24 +9,22 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_set_profile_first.view.*
 
 class SetProfileFirstFragment  : Fragment() {
+    lateinit var fragmentView: View
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_set_profile_first, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_set_profile_first, container, false)
 
-        initNumberPicker(view)
+        initNumberPicker(fragmentView)
 
-        view.fragment_set_profile_first_btn_submit.setOnClickListener {
+        fragmentView.fragment_set_profile_first_btn_submit.setOnClickListener {
             submitSetProfile()
         }
 
-        return view
-    }
-
-    fun test() {
-        println("ASDDDDDDDDDDDDDDD")
+        return fragmentView
     }
 
     private fun initNumberPicker(view: View) {
@@ -41,4 +39,9 @@ class SetProfileFirstFragment  : Fragment() {
         val setProfileActivity = activity as SetProfileActivity
         setProfileActivity.changeViewPage(false)
     }
+
+//    fun getData(): Bundle {
+//        val bundle = Bundle()
+//        bundle.putString("nickname", view.)
+//    }
 }

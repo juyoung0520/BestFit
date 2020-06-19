@@ -42,6 +42,7 @@ class DressroomFragment : Fragment() {
 
     private fun setTabOfCategory(view: View) {
         val categories = InitData.categories
+        println(categories)
         for (i in categories) {
             view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
         }

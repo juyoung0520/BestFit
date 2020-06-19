@@ -10,6 +10,10 @@
         <item name="android:dropDownListViewStyle">@style/SpinnerStyle</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
     <style name="SpinnerStyle" parent="Widget.AppCompat.ListView.DropDown">
         <item name="android:divider">@color/colorDivision</item>
         <item name="android:dividerHeight">2dp</item>

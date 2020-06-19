@@ -20,9 +20,6 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signin)
 
-        InitData.initCategory()
-        InitData.initBrand()
-
         initToolbar()
 
         replaceFragment(SignInFragment())

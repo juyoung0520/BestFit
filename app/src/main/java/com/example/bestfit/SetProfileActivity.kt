@@ -16,7 +16,9 @@ import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.activity_set_profile.*
 import kotlinx.android.synthetic.main.activity_signin.*
 import kotlinx.android.synthetic.main.fragment_set_profile_first.*
+import kotlinx.android.synthetic.main.fragment_set_profile_first.view.*
 import kotlinx.android.synthetic.main.fragment_set_profile_second.*
+import kotlinx.android.synthetic.main.fragment_set_profile_second.view.*
 
 class SetProfileActivity : AppCompatActivity() {
     private val auth = FirebaseAuth.getInstance()
@@ -68,7 +70,6 @@ class SetProfileActivity : AppCompatActivity() {
             }
 
             fragments.add(fragment)
-            println(fragments)
             return fragment
         }
 
@@ -99,18 +100,9 @@ class SetProfileActivity : AppCompatActivity() {
     }
 
     fun submitSetProfile() {
-        val firstFragment = fragments[0] as SetProfileFirstFragment
-        val secondFragment = fragments[1] as SetProfileSecondFragment
-        val thirdFragment = fragments[2] as SetProfileThirdFragment
-
-        println(firstFragment)
-        println(secondFragment)
-        println(thirdFragment)
-
-        firstFragment.test()
-
-        println(firstFragment.view)
-        println(firstFragment)
+        val firstFragment = (fragments[0] as SetProfileFirstFragment).fragmentView
+        val secondFragment = (fragments[1] as SetProfileSecondFragment).fragmentView
+        val thirdFragment = (fragments[2] as SetProfileThirdFragment).fragmentView
 
         val accountDTO = AccountDTO()
         accountDTO.nickname = firstFragment.fragment_set_profile_first_text_nickname.text.toString()

@@ -14,20 +14,22 @@ import kotlinx.android.synthetic.main.fragment_set_profile_second.*
 import kotlinx.android.synthetic.main.fragment_set_profile_second.view.*
 
 class SetProfileSecondFragment : Fragment() {
+    lateinit var fragmentView: View
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_set_profile_second, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_set_profile_second, container, false)
 
-        initNumberPicker(view)
+        initNumberPicker(fragmentView)
 
-        view.fragment_set_profile_second_btn_submit.setOnClickListener {
+        fragmentView.fragment_set_profile_second_btn_submit.setOnClickListener {
             submitSetProfile()
         }
 
-        return view
+        return fragmentView
     }
 
     private fun initNumberPicker(view: View) {
