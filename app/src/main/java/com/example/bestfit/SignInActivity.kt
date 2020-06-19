@@ -1,12 +1,17 @@
 package com.example.bestfit
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.bestfit.util.InitData
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_add_item.*
+import kotlinx.android.synthetic.main.activity_signin.*
 
 class SignInActivity : AppCompatActivity() {
     private val auth = FirebaseAuth.getInstance()
@@ -18,6 +23,8 @@ class SignInActivity : AppCompatActivity() {
         InitData.initCategory()
         InitData.initBrand()
 
+        initToolbar()
+
         replaceFragment(SignInFragment())
     }
 
@@ -25,16 +32,27 @@ class SignInActivity : AppCompatActivity() {
         super.onStart()
 
         if (auth.currentUser != null) {
-//            startMainActivity()
+            startMainActivity()
         }
     }
 
-    fun setToolbar(toolbar: Toolbar, setHomeButton: Boolean = false) {
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 
-        if (setHomeButton)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                replaceFragment(SignInFragment())
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun initToolbar() {
+        setSupportActionBar(activity_signin_toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     fun startMainActivity() {

@@ -7,11 +7,36 @@
     android:layout_height="match_parent"
     tools:context=".SetProfileActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/activity_set_profile_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <TextView
+            android:id="@+id/activity_set_profile_tv_toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="회원 정보"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/activity_set_profile_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/activity_set_profile_toolbar"
+        android:background="@color/colorBlack"
+        android:orientation="horizontal" />
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/activity_set_profile_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/activity_set_profile_indicator"/>
+        android:layout_above="@+id/activity_set_profile_indicator"
+        android:layout_below="@+id/activity_set_profile_line"/>
     
     <me.relex.circleindicator.CircleIndicator
         android:id="@+id/activity_set_profile_indicator"

@@ -8,18 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="125dp"
+        android:layout_marginTop="30dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp">
-
-        <ImageView
-            android:id="@+id/fragment_signin_iv_logo"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/bestfit_logo"
-            android:layout_gravity="center_horizontal"
-            android:layout_above="@+id/fragment_signin_layout_signin"
-            android:layout_marginBottom="50dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -64,7 +55,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="15dp">
 
             <Button
                 android:id="@+id/fragment_signin_btn_signin"
@@ -88,19 +79,19 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true" />
 
-            <TextView
-                android:id="@+id/fragment_signin_tv_goolge_signin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/fragment_signin_btn_signin"
-                android:layout_centerInParent="true"
-                android:text="@string/google_signin"
-                android:textSize="18sp"
-                android:textColor="@color/colorPrimary"
-                android:layout_marginTop="20dp"/>
-
         </RelativeLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/fragment_signin_tv_goolge_signin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/google_signin"
+        android:textSize="18sp"
+        android:textColor="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"/>
 
 </RelativeLayout>

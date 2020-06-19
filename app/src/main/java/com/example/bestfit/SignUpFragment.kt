@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_signin.*
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
 import kotlinx.android.synthetic.main.fragment_signup.view.*
 
@@ -32,7 +33,8 @@ class SignUpFragment : Fragment() {
 
     private fun initToolbar(view: View) {
         val signInActivity = activity!! as SignInActivity
-        signInActivity.setToolbar(view.fragment_signup_toolbar, true)
+        signInActivity.activity_signin_tv_toolbar_title.text = "회원가입"
+        signInActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun signUp(view: View) {
