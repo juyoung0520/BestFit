@@ -27,8 +27,6 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        println("TEST")
-
         when (item.itemId) {
             android.R.id.home -> {
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -43,7 +41,7 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     private fun initToolbar() {
-        setSupportActionBar(fragment_add_item_toolbar)
+        setSupportActionBar(activity_add_item_toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

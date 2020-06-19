@@ -8,7 +8,7 @@
     tools:context=".SetProfileActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/fragment_add_item_toolbar"
+        android:id="@+id/activity_add_item_toolbar"
         android:layout_width="match_parent"
         android:layout_height="45dp">
 
@@ -23,10 +23,10 @@
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
-        android:id="@+id/fragment_add_item_line"
+        android:id="@+id/activity_add_item_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/fragment_add_item_toolbar"
+        android:layout_below="@id/activity_add_item_toolbar"
         android:background="@color/colorBlack"
         android:orientation="horizontal" />
 
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/activity_add_item_indicator"
-        android:layout_below="@+id/fragment_add_item_line"/>
+        android:layout_below="@+id/activity_add_item_line"/>
 
     <me.relex.circleindicator.CircleIndicator
         android:id="@+id/activity_add_item_indicator"

@@ -12,7 +12,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import kotlinx.android.synthetic.main.activity_signin.*
 import kotlinx.android.synthetic.main.fragment_signin.view.*
+import kotlin.math.sign
 
 class SignInFragment : Fragment() {
     private val auth = FirebaseAuth.getInstance()
@@ -24,6 +26,8 @@ class SignInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_signin, container, false)
+
+        initToolbar(view)
 
         view.fragment_signin_btn_signin.setOnClickListener {
             signIn(view)
@@ -61,6 +65,12 @@ class SignInFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun initToolbar(view: View) {
+        val signInActivity = activity!! as SignInActivity
+        signInActivity.activity_signin_tv_toolbar_title.text = "로그인"
+        signInActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     private fun signIn(view: View) {
