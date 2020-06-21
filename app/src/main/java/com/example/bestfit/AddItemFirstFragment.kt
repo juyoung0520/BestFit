@@ -10,28 +10,29 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
+import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.util.InitData
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 
 class AddItemFirstFragment  : Fragment() {
+    lateinit var fragmentView: View
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_add_item_first, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_add_item_first, container, false)
 
-        initCategory(view)
-        initBrand(view)
+        initCategory(fragmentView)
+        initBrand(fragmentView)
 
-        view.fragment_add_item_first_btn_submit.setOnClickListener {
+        fragmentView.fragment_add_item_first_btn_submit.setOnClickListener {
             submitAddItem()
         }
 
-        return view
+        return fragmentView
     }
-
-//    accountDTO.skip = true
 
     private fun initCategory(view: View) {
         val categoryDTOs = InitData.categoryDTOs.subList(1, InitData.categoryDTOs.lastIndex + 1)
@@ -50,12 +51,15 @@ class AddItemFirstFragment  : Fragment() {
                 view.fragment_add_item_first_layout_sub_category.visibility = View.VISIBLE
             }
 
+            view.fragment_add_item_first_actv_category.tag = categoryDTOs[position]
+            println("category: ${view.fragment_add_item_first_actv_category.tag}")
             view.fragment_add_item_first_actv_sub_category.text = null
             initSubCategory(view, categoryDTOs[position].sub!!)
         }
     }
 
     private fun initSubCategory(view: View, subCategories: ArrayList<String>) {
+        val categoryDTOs = InitData.categoryDTOs.subList(1, InitData.categoryDTOs.lastIndex + 1)
         val categoryAdapter = ArrayAdapter(context!!, R.layout.item_dropdown, subCategories)
 
         view.fragment_add_item_first_actv_sub_category.setAdapter(categoryAdapter)
@@ -63,6 +67,11 @@ class AddItemFirstFragment  : Fragment() {
         view.fragment_add_item_first_actv_sub_category.setOnTouchListener { v, event ->
             (v as AutoCompleteTextView).showDropDown()
             false
+        }
+        view.fragment_add_item_first_actv_sub_category.setOnItemClickListener { parent, _, position, id ->
+            val categoryDTO = view.fragment_add_item_first_actv_category.tag as CategoryDTO
+            println("sub: $categoryDTO")
+            view.fragment_add_item_first_actv_sub_category.tag = categoryDTO.subId!![position]
         }
     }
 

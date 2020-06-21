@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="200dp"
-    android:layout_height="300dp"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -44,7 +44,7 @@
         android:id="@+id/item_dressroom_tv_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="너의 팬티를 보여줘 SET"
+        android:text="너의 팬티를 보여줘 SET가다나다라마바사아자차타카타파아아마나팜남ㄴ팜파ㅏ마ㄴ아아아나나나나나"
         android:textColor="@color/colorBlack"
         android:textStyle="bold"
         android:layout_marginTop="3dp"

@@ -20,17 +20,16 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signin)
 
-        initToolbar()
-
-        replaceFragment(SignInFragment())
-    }
-
-    override fun onStart() {
-        super.onStart()
+        InitData.initData()
 
         if (auth.currentUser != null) {
             startMainActivity()
+            return
         }
+
+        initToolbar()
+
+        replaceFragment(SignInFragment())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

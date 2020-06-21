@@ -12,10 +12,23 @@ import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.example.bestfit.model.AccountDTO
+import com.example.bestfit.model.CategoryDTO
+import com.example.bestfit.model.ItemDTO
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.activity_add_item.view.*
+import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
+import kotlinx.android.synthetic.main.fragment_set_profile_first.view.*
+import kotlinx.android.synthetic.main.fragment_set_profile_second.view.*
 
 class AddItemActivity : AppCompatActivity() {
+    private val auth = FirebaseAuth.getInstance()
+    private val currentUid = auth.currentUser!!.uid
+    private val db = FirebaseFirestore.getInstance()
+    private val fragments = arrayListOf<Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,11 +66,14 @@ class AddItemActivity : AppCompatActivity() {
 
     inner class AddItemFragmentPagerAdapter(fm: FragmentManager, private val fragmentSize: Int) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getItem(position: Int): Fragment {
-            return when (position) {
+            val fragment = when (position) {
                 0 -> AddItemFirstFragment()
                 1 -> AddItemSecondFragment()
                 else -> Fragment()
             }
+
+            fragments.add(fragment)
+            return fragment
         }
 
         override fun getCount(): Int {
@@ -84,5 +100,28 @@ class AddItemActivity : AppCompatActivity() {
             return
 
         activity_add_item_viewpager.currentItem = newPosition
+    }
+
+    fun submitAddItem() {
+        val firstFragment = (fragments[0] as AddItemFirstFragment).fragmentView
+        val secondFragment = (fragments[1] as AddItemSecondFragment).fragmentView
+
+        val itemDTO = ItemDTO()
+        itemDTO.timestamp = System.currentTimeMillis()
+        itemDTO.categoryId = (firstFragment.fragment_add_item_first_actv_category.tag as CategoryDTO).id
+        itemDTO.subCategoryId = firstFragment.fragment_add_item_first_actv_sub_category.tag as String
+        itemDTO.name = firstFragment.fragment_add_item_first_text_item_name.text.toString()
+
+        db.collection("items").add(itemDTO).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val documentId = task.result!!.id
+
+                db.collection("accounts").document(currentUid).update("items", FieldValue.arrayUnion(documentId)).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        finish()
+                    }
+                }
+            }
+        }
     }
 }

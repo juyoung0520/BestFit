@@ -5,19 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.bestfit.model.AccountDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.activity_set_profile.*
-import kotlinx.android.synthetic.main.activity_signin.*
-import kotlinx.android.synthetic.main.fragment_set_profile_first.*
 import kotlinx.android.synthetic.main.fragment_set_profile_first.view.*
-import kotlinx.android.synthetic.main.fragment_set_profile_second.*
 import kotlinx.android.synthetic.main.fragment_set_profile_second.view.*
 
 class SetProfileActivity : AppCompatActivity() {

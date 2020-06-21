@@ -1,7 +1,9 @@
 package com.example.bestfit
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -9,6 +11,7 @@ import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.util.InitData
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
+import kotlin.concurrent.timer
 
 
 class DressroomFragment : Fragment() {
@@ -41,28 +44,37 @@ class DressroomFragment : Fragment() {
     }
 
     private fun setTabOfCategory(view: View) {
-        val categories = InitData.categories
-        println(categories)
-        for (i in categories) {
-            view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
-        }
+        timer(period = 300) {
+            if (InitData.initialization) {
+                val categoryDTOs = InitData.categoryDTOs
 
-        view.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(childFragmentManager, categories)
-        view.fragment_dressroom_tab.setupWithViewPager(view.fragment_dressroom_viewpager)
+                activity!!.runOnUiThread {
+                    for (i in categoryDTOs) {
+                        view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
+                    }
+
+                    view.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(childFragmentManager, categoryDTOs)
+                    view.fragment_dressroom_tab.setupWithViewPager(view.fragment_dressroom_viewpager)
+
+                    cancel()
+                }
+            }
+        }
     }
 
-    inner class TabOfCategoryPagerAdapter(fm: FragmentManager, private val categories: ArrayList<String>) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    inner class TabOfCategoryPagerAdapter(fm: FragmentManager, private val categoryDTOs: ArrayList<CategoryDTO>) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         override fun getItem(position: Int): Fragment {
             val fragment = DressroomCategoryFragment()
+
             return fragment
         }
 
         override fun getCount(): Int {
-            return categories.size
+            return categoryDTOs.size
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return categories[position]
+            return categoryDTOs[position].name!!
         }
     }
 }

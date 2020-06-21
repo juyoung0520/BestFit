@@ -12,14 +12,24 @@ import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
 
 
 class AddItemSecondFragment  : Fragment() {
+    lateinit var fragmentView: View
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_add_item_second, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_add_item_second, container, false)
 
-        return view
+        fragmentView.fragment_add_item_second_btn_submit.setOnClickListener {
+            submitAddItem()
+        }
+
+        return fragmentView
     }
 
+    private fun submitAddItem() {
+        val addItemActivity = activity as AddItemActivity
+        addItemActivity.submitAddItem()
+    }
 }

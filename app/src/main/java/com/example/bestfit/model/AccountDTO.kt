@@ -5,5 +5,6 @@ data class AccountDTO(
     var sex: Boolean? = null,
     var birth: Int? = null,
     var height: Int? = null,
-    var weight: Int? = null
+    var weight: Int? = null,
+    var items: ArrayList<String>? = null
 )
