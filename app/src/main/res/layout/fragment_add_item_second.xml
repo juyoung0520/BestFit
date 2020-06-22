@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:hint="가슴은 뜨겁게, 리뷰는 솔직하게! "
-            android:background="@drawable/text_default"
+            android:background="@drawable/text_big"
             android:gravity="start"
             android:paddingTop="10dp"
             android:paddingStart="20dp"

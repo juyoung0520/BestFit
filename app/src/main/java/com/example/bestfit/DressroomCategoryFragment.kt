@@ -39,6 +39,9 @@ class DressroomCategoryFragment : Fragment() {
         init {
             db.collection("accounts").document(currentUid).get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    if (task.result!!["items"] == null)
+                        return@addOnCompleteListener
+
                     val items = task.result!!["items"] as ArrayList<String>
                     var cnt = 0
 
