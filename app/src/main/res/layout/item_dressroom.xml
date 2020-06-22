@@ -2,13 +2,13 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="200dp"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/item_dressroom_layout_item"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="1dp">
 
         <ImageView
             android:id="@+id/item_dressroom_iv_item"
@@ -36,7 +36,7 @@
         android:text="브랜드"
         android:textColor="@color/colorDarkGray"
         android:textSize="13sp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="3dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"/>
 
@@ -44,10 +44,11 @@
         android:id="@+id/item_dressroom_tv_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="너의 팬티를 보여줘 SET가다나다라마바사아자차타카타파아아마나팜남ㄴ팜파ㅏ마ㄴ아아아나나나나나"
+        android:text="줘 SET가다나다fkdvjdfkvdfkvjdfkvjdfkvjdkfvjdfkvjdfkvjdfkvjdfkvjkfdvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdkfvjdfkvjdfkvjdkfvjdfkvjdfkvjdkfvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdkfvjdkffvjdkffjvkdfvjdkfvjdvjkfdvjkdfvjkdfvjkdfvjvdfkvdfkv라마바사아자차타카타파아아마나팜남ㄴ팜파ㅏ마ㄴ아아아나나나나나"
         android:textColor="@color/colorBlack"
         android:textStyle="bold"
         android:layout_marginTop="3dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"/>
 
