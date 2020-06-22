@@ -27,6 +27,10 @@ class AddItemFirstFragment  : Fragment() {
         initCategory(fragmentView)
         initBrand(fragmentView)
 
+        fragmentView.fragment_add_item_first_layout_image.setOnClickListener {
+            addImage()
+        }
+
         fragmentView.fragment_add_item_first_btn_submit.setOnClickListener {
             submitAddItem()
         }
@@ -52,14 +56,12 @@ class AddItemFirstFragment  : Fragment() {
             }
 
             view.fragment_add_item_first_actv_category.tag = categoryDTOs[position]
-            println("category: ${view.fragment_add_item_first_actv_category.tag}")
             view.fragment_add_item_first_actv_sub_category.text = null
             initSubCategory(view, categoryDTOs[position].sub!!)
         }
     }
 
     private fun initSubCategory(view: View, subCategories: ArrayList<String>) {
-        val categoryDTOs = InitData.categoryDTOs.subList(1, InitData.categoryDTOs.lastIndex + 1)
         val categoryAdapter = ArrayAdapter(context!!, R.layout.item_dropdown, subCategories)
 
         view.fragment_add_item_first_actv_sub_category.setAdapter(categoryAdapter)
@@ -70,7 +72,6 @@ class AddItemFirstFragment  : Fragment() {
         }
         view.fragment_add_item_first_actv_sub_category.setOnItemClickListener { parent, _, position, id ->
             val categoryDTO = view.fragment_add_item_first_actv_category.tag as CategoryDTO
-            println("sub: $categoryDTO")
             view.fragment_add_item_first_actv_sub_category.tag = categoryDTO.subId!![position]
         }
     }
@@ -96,6 +97,10 @@ class AddItemFirstFragment  : Fragment() {
 
             view.fragment_add_item_first_actv_brand.clearFocus()
         }
+    }
+
+    private fun addImage() {
+
     }
 
     private fun submitAddItem() {

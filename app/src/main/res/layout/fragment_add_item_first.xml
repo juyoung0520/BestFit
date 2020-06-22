@@ -119,7 +119,7 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:id="@+id/fragment_add_item_first_layout"
+                    android:id="@+id/fragment_add_item_first_layout_image"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center_vertical"

@@ -1,5 +1,6 @@
 package com.example.bestfit
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
@@ -16,31 +17,51 @@ import kotlin.concurrent.timer
 
 class DressroomFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
+    private lateinit var fragmentView: View
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_dressroom, container, false)
+        fragmentView = inflater.inflate(R.layout.fragment_dressroom, container, false)
 
         setHasOptionsMenu(true)
-        initToolbar(view)
+        initToolbar(fragmentView)
 
-        setTabOfCategory(view)
+        setTabOfCategory(fragmentView)
 
-        return view
+        return fragmentView
     }
 
-    private fun initToolbar(view: View) {
-        val mainActivity: MainActivity = activity!! as MainActivity
-        mainActivity.setToolbar(view.fragment_dressroom_toolbar)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            initAdapter()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
 
         inflater.inflate(R.menu.menu_dressroom, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_dressroom_action_add -> {
+                startActivityForResult(Intent(activity, AddItemActivity::class.java), 1)
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun initToolbar(view: View) {
+        val mainActivity: MainActivity = activity!! as MainActivity
+        mainActivity.setToolbar(view.fragment_dressroom_toolbar)
     }
 
     private fun setTabOfCategory(view: View) {
@@ -53,13 +74,17 @@ class DressroomFragment : Fragment() {
                         view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
                     }
 
-                    view.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(childFragmentManager, categoryDTOs)
-                    view.fragment_dressroom_tab.setupWithViewPager(view.fragment_dressroom_viewpager)
+                    initAdapter()
 
                     cancel()
                 }
             }
         }
+    }
+
+    private fun initAdapter() {
+        fragmentView.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(childFragmentManager, InitData.categoryDTOs)
+        fragmentView.fragment_dressroom_tab.setupWithViewPager(fragmentView.fragment_dressroom_viewpager)
     }
 
     inner class TabOfCategoryPagerAdapter(fm: FragmentManager, private val categoryDTOs: ArrayList<CategoryDTO>) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
