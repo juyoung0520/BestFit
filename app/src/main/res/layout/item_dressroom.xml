@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="220dp"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -35,21 +35,23 @@
         android:layout_height="wrap_content"
         android:text="브랜드"
         android:textColor="@color/colorDarkGray"
-        android:textSize="13sp"
+        android:textSize="10sp"
+        android:textStyle="bold"
         android:layout_marginTop="3dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"/>
+        android:layout_marginStart="7dp"
+        android:layout_marginLeft="7dp" />
 
     <TextView
         android:id="@+id/item_dressroom_tv_item_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="줘 SET가다나다fkdvjdfkvdfkvjdfkvjdfkvjdkfvjdfkvjdfkvjdfkvjdfkvjkfdvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdkfvjdfkvjdfkvjdkfvjdfkvjdfkvjdkfvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdkfvjdkffvjdkffjvkdfvjdkfvjdvjkfdvjkdfvjkdfvjkdfvjvdfkvdfkv라마바사아자차타카타파아아마나팜남ㄴ팜파ㅏ마ㄴ아아아나나나나나"
-        android:textColor="@color/colorBlack"
+        android:textSize="11sp"
         android:textStyle="bold"
+        android:textColor="@color/colorBlack"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"/>
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp" />
 
 </LinearLayout>
