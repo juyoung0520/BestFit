@@ -34,32 +34,21 @@ class DressroomCategoryFragment : Fragment() {
     }
 
     inner class ItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        private val allItemDTOs = arguments?.getParcelableArrayList<ItemDTO>("itemDTOs")!!
+        private val categoryId = arguments?.getString("categoryId", null)
         private val itemDTOs = arrayListOf<ItemDTO>()
 
         init {
-            db.collection("accounts").document(currentUid).get().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    if (task.result!!["items"] == null)
-                        return@addOnCompleteListener
-
-                    val items = task.result!!["items"] as ArrayList<String>
-                    var cnt = 0
-
-                    for (itemId in items) {
-                        db.collection("items").document(itemId).get().addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                itemDTOs.add(task.result!!.toObject(ItemDTO::class.java)!!)
-                                cnt += 1
-
-                                if (cnt >= items.size) {
-                                    println(itemDTOs)
-                                    notifyDataSetChanged()
-                                }
-                            }
-                        }
+            if (categoryId == null) {
+                itemDTOs.addAll(allItemDTOs)
+            } else {
+                for (item in allItemDTOs) {
+                    if (item.categoryId == categoryId) {
+                        itemDTOs.add(item)
                     }
                 }
             }
+            notifyDataSetChanged()
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -81,6 +70,8 @@ class DressroomCategoryFragment : Fragment() {
             val view = (holder as CustomViewHolder).itemView
 
             println("bind $position")
+
+            view.item_dressroom_tv_item_name.text = itemDTOs[position].name
         }
     }
 }
