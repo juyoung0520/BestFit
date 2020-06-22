@@ -1,6 +1,7 @@
 
 package com.example.bestfit
 
+import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -118,6 +119,7 @@ class AddItemActivity : AppCompatActivity() {
 
                 db.collection("accounts").document(currentUid).update("items", FieldValue.arrayUnion(documentId)).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        setResult(Activity.RESULT_OK)
                         finish()
                     }
                 }

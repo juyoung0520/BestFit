@@ -59,17 +59,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item!!.itemId) {
-            R.id.menu_dressroom_action_add -> {
-                startActivity(Intent(this, AddItemActivity::class.java))
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         when (p0.itemId) {
             R.id.menu_bottom_nav_action_dressroom -> {
