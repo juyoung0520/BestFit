@@ -1,21 +1,33 @@
 package com.example.bestfit
 
-import android.content.Context
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.util.InitData
+import com.jinu.imagepickerlib.PhotoPickerActivity
+import com.jinu.imagepickerlib.utils.YPhotoPickerIntent
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
+import kotlinx.android.synthetic.main.item_add_item_image.view.*
 
 class AddItemFirstFragment  : Fragment() {
     lateinit var fragmentView: View
+    private val ADD_IMAGE_CODE = 1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,9 +37,8 @@ class AddItemFirstFragment  : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_first, container, false)
 
         initCategory(fragmentView)
-        initBrand(fragmentView)
 
-        fragmentView.fragment_add_item_first_layout_image.setOnClickListener {
+        fragmentView.fragment_add_item_first_layout_add.setOnClickListener {
             addImage()
         }
 
@@ -36,6 +47,20 @@ class AddItemFirstFragment  : Fragment() {
         }
 
         return fragmentView
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        var images: ArrayList<String>? = null
+        if (resultCode == RESULT_OK && requestCode == ADD_IMAGE_CODE) {
+            if (data != null)
+                images = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS)
+
+            if (images != null) {
+                initImageReyclerview(images)
+            }
+        }
     }
 
     private fun initCategory(view: View) {
@@ -76,35 +101,85 @@ class AddItemFirstFragment  : Fragment() {
         }
     }
 
-    private fun initBrand(view: View) {
-        val brands = InitData.brands
-        val categoryAdapter = ArrayAdapter(context!!, R.layout.item_dropdown, brands)
+    private fun initImageReyclerview(images: ArrayList<String>) {
+        val view = fragmentView
 
-        view.fragment_add_item_first_actv_brand.setAdapter(categoryAdapter)
-        view.fragment_add_item_first_actv_brand.setOnFocusChangeListener { _, b ->
-            if (b) {
-                println("top ${view.fragment_add_item_first_tv_brand.top}")
-                view.fragment_add_item_scrollview.scrollTo(0, view.fragment_add_item_first_tv_brand.bottom)
-                view.fragment_add_item_first_actv_brand.text = null
-            }
-//            else {
-//                view.fragment_add_item_first_actv_brand.error = "직접 입력한 브랜드/쇼핑몰은 검색 결과에 제대로 노출되지 않을 수 있습니다."
-//            }
-        }
-        view.fragment_add_item_first_actv_brand.setOnItemClickListener { parent, _, position, id ->
-            val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        view.fragment_add_item_first_recyclerview_image.setHasFixedSize(true)
+        view.fragment_add_item_first_recyclerview_image.adapter = ImageRecyclerViewAdapter(images)
+        view.fragment_add_item_first_recyclerview_image.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
-            view.fragment_add_item_first_actv_brand.clearFocus()
-        }
+        while (view.fragment_add_item_first_recyclerview_image.itemDecorationCount > 0)
+            view.fragment_add_item_first_recyclerview_image.removeItemDecorationAt(0)
+
+        view.fragment_add_item_first_recyclerview_image.addItemDecoration(ItemDecoration())
     }
 
     private fun addImage() {
-
+        val intent = YPhotoPickerIntent(activity)
+        intent.setMaxSelectCount(10)
+        intent.setShowCamera(true)
+        intent.setShowGif(true)
+        intent.setSelectCheckBox(false)
+        intent.setMaxGrideItemCount(3)
+        startActivityForResult(intent, ADD_IMAGE_CODE)
     }
 
     private fun submitAddItem() {
         val addItemActivity = activity as AddItemActivity
         addItemActivity.changeViewPage(false)
+    }
+
+    inner class ImageRecyclerViewAdapter(private var images: ArrayList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_add_item_image, parent, false)
+
+            return CustomViewHolder(view)
+        }
+
+        inner class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
+        override fun getItemCount(): Int {
+            return images.size
+        }
+
+        @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            val view = (holder as CustomViewHolder).itemView
+
+            view.item_add_item_image_iv.clipToOutline = true
+            Glide.with(view).load(images[position]).apply(RequestOptions().centerCrop()).into(view.item_add_item_image_iv)
+
+            view.item_add_item_image_iv_delete.setOnClickListener {
+                images.removeAt(position)
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(position, images.size)
+            }
+        }
+    }
+
+    inner class ItemDecoration : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            super.getItemOffsets(outRect, view, parent, state)
+
+            val position = parent.getChildAdapterPosition(view)
+            val itemCount = state.itemCount
+            val space = dpToPx(5)
+
+            if (position != itemCount - 1)
+                outRect.right = space
+        }
+
+        private fun dpToPx(dp: Int): Int {
+            return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp.toFloat(),
+                resources.displayMetrics
+            ).toInt()
+        }
     }
 }

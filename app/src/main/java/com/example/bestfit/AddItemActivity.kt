@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.activity_add_item.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
+import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
 import kotlinx.android.synthetic.main.fragment_set_profile_first.view.*
 import kotlinx.android.synthetic.main.fragment_set_profile_second.view.*
 
@@ -111,7 +112,7 @@ class AddItemActivity : AppCompatActivity() {
         itemDTO.timestamp = System.currentTimeMillis()
         itemDTO.categoryId = (firstFragment.fragment_add_item_first_actv_category.tag as CategoryDTO).id
         itemDTO.subCategoryId = firstFragment.fragment_add_item_first_actv_sub_category.tag as String
-        itemDTO.name = firstFragment.fragment_add_item_first_text_item_name.text.toString()
+        itemDTO.name = secondFragment.fragment_add_item_second_text_item_name.text.toString()
 
         db.collection("items").add(itemDTO).addOnCompleteListener { task ->
             if (task.isSuccessful) {

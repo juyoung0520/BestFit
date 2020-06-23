@@ -45,8 +45,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
-    implementation 'com.google.firebase:firebase-messaging:20.2.0'
+    implementation 'com.google.firebase:firebase-messaging:20.2.1'
     implementation 'me.relex:circleindicator:2.1.4'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
 
+    implementation 'com.github.j1nu:imagepicker:0.0.3'
 
 }
