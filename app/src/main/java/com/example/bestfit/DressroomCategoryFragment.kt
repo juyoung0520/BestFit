@@ -126,12 +126,18 @@ class DressroomCategoryFragment : Fragment() {
 //            }
 
             when (spanIndex) {
-                0 -> outRect.right = dpToPx(4)
-                1 -> {
-                    outRect.left = dpToPx(2)
+                0 -> {
+                    outRect.left = dpToPx(6)
                     outRect.right = dpToPx(2)
                 }
-                2 -> outRect.left = dpToPx(4)
+                1 -> {
+                    outRect.left = dpToPx(4)
+                    outRect.right = dpToPx(4)
+                }
+                2 -> {
+                    outRect.left = dpToPx(2)
+                    outRect.right = dpToPx(6)
+                }
             }
         }
 

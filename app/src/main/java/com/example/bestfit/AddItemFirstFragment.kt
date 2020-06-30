@@ -160,7 +160,7 @@ class AddItemFirstFragment  : Fragment() {
             view.item_add_item_image_iv_delete.setOnClickListener {
                 images.removeAt(position)
                 notifyItemRemoved(position)
-                notifyItemRangeChanged(position, 1)
+                notifyItemRangeChanged(position, images.size)
             }
         }
     }
