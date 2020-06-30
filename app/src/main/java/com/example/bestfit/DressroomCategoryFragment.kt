@@ -1,21 +1,26 @@
 package com.example.bestfit
 
 import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
+import kotlinx.android.synthetic.main.item_add_item_image.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
+import java.io.File
 
 class DressroomCategoryFragment : Fragment() {
     private val auth = FirebaseAuth.getInstance()
@@ -42,20 +47,21 @@ class DressroomCategoryFragment : Fragment() {
     }
 
     inner class ItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        private val allItemDTOs = arguments?.getParcelableArrayList<ItemDTO>("itemDTOs")!!
-        private val categoryId = arguments?.getString("categoryId", null)
         private val itemDTOs = arrayListOf<ItemDTO>()
 
         init {
-            if (categoryId == null) {
+            val allItemDTOs = arguments?.getParcelableArrayList<ItemDTO>("itemDTOs")!!
+            val categoryId = arguments?.getString("categoryId", null)
+
+            if (categoryId == null)
                 itemDTOs.addAll(allItemDTOs)
-            } else {
+            else {
                 for (item in allItemDTOs) {
-                    if (item.categoryId == categoryId) {
+                    if (item.categoryId == categoryId)
                         itemDTOs.add(item)
-                    }
                 }
             }
+
             notifyDataSetChanged()
         }
 
@@ -74,10 +80,19 @@ class DressroomCategoryFragment : Fragment() {
             return itemDTOs.size
         }
 
+        @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val view = (holder as CustomViewHolder).itemView
 
             println("bind $position")
+
+            if (itemDTOs[position].images.size > 0) {
+                view.item_dressroom_iv_item.clipToOutline = true
+                Glide.with(view).load(itemDTOs[position].images[0]).apply(
+                    RequestOptions().placeholder(R.color.img_loding_placeholder)
+                        .error(R.color.image_loading_error_color).centerCrop()
+                ).into(view.item_dressroom_iv_item)
+            }
 
             view.item_dressroom_tv_item_name.text = itemDTOs[position].name
         }

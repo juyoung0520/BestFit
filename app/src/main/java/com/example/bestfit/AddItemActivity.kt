@@ -3,33 +3,32 @@ package com.example.bestfit
 
 import android.app.Activity
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.size
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.model.ItemDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_add_item.*
-import kotlinx.android.synthetic.main.activity_add_item.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
-import kotlinx.android.synthetic.main.fragment_set_profile_first.view.*
-import kotlinx.android.synthetic.main.fragment_set_profile_second.view.*
+import kotlinx.android.synthetic.main.fragment_add_item_third.view.*
+import java.io.File
 
 class AddItemActivity : AppCompatActivity() {
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
+    private val storage = FirebaseStorage.getInstance()
     private val fragments = arrayListOf<Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +61,7 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     private fun initViewPager() {
-        activity_add_item_viewpager.adapter = AddItemFragmentPagerAdapter(supportFragmentManager, 2)
+        activity_add_item_viewpager.adapter = AddItemFragmentPagerAdapter(supportFragmentManager, 3)
         activity_add_item_indicator.setViewPager(activity_add_item_viewpager)
     }
 
@@ -71,6 +70,7 @@ class AddItemActivity : AppCompatActivity() {
             val fragment = when (position) {
                 0 -> AddItemFirstFragment()
                 1 -> AddItemSecondFragment()
+                2 -> AddItemThirdFragment()
                 else -> Fragment()
             }
 
@@ -105,23 +105,65 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     fun submitAddItem() {
-        val firstFragment = (fragments[0] as AddItemFirstFragment).fragmentView
-        val secondFragment = (fragments[1] as AddItemSecondFragment).fragmentView
+        val firstFragment = fragments[0] as AddItemFirstFragment
+        val firstFragmentView = firstFragment.fragmentView
+        val secondFragment = fragments[1] as AddItemSecondFragment
+        val secondFragmentView = secondFragment.fragmentView
+        val thirdFragment = fragments[2] as AddItemThirdFragment
+        val thirdFragmentView = thirdFragment.fragmentView
 
         val itemDTO = ItemDTO()
         itemDTO.timestamp = System.currentTimeMillis()
-        itemDTO.categoryId = (firstFragment.fragment_add_item_first_actv_category.tag as CategoryDTO).id
-        itemDTO.subCategoryId = firstFragment.fragment_add_item_first_actv_sub_category.tag as String
-        itemDTO.name = secondFragment.fragment_add_item_second_text_item_name.text.toString()
+        itemDTO.categoryId = (firstFragmentView.fragment_add_item_first_actv_category.tag as CategoryDTO).id
+        itemDTO.subCategoryId = firstFragmentView.fragment_add_item_first_actv_sub_category.tag as String
+//        itemDTO.brandId
+        itemDTO.name = secondFragmentView.fragment_add_item_second_text_item_name.text.toString()
+        itemDTO.size = thirdFragmentView.fragment_add_item_third_text_size.text.toString()
+        itemDTO.review = thirdFragmentView.fragment_add_item_third_text_review.text.toString()
+
+        val imageUris = arrayListOf<Uri>()
+        for (image in firstFragment.itemImages) {
+            val uri = FileProvider.getUriForFile(this, "com.jinu.imagepickerlib.fileprovider", File(image))
+            imageUris.add(uri)
+        }
 
         db.collection("items").add(itemDTO).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val documentId = task.result!!.id
 
-                db.collection("accounts").document(currentUid).update("items", FieldValue.arrayUnion(documentId)).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        setResult(Activity.RESULT_OK)
-                        finish()
+                if (imageUris.size > 0) {
+                    val imageUrls = arrayOfNulls<String>(imageUris.size)
+                    var cnt = 0
+
+                    for ((idx, imageUri) in imageUris.withIndex()) {
+                        val storageRef = storage.reference.child("items").child(documentId).child(idx.toString())
+                        storageRef.putFile(imageUri).continueWithTask {
+                            return@continueWithTask storageRef.downloadUrl
+                        }.addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                imageUrls[idx] = task.result.toString()
+                                cnt += 1
+
+                                if (cnt >= imageUris.size) {
+                                    db.collection("items").document(documentId).update("images", imageUrls.asList())
+
+                                    db.collection("accounts").document(currentUid).update("items", FieldValue.arrayUnion(documentId)).addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            setResult(Activity.RESULT_OK)
+                                            finish()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    db.collection("accounts").document(currentUid).update("items", FieldValue.arrayUnion(documentId)).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            setResult(Activity.RESULT_OK)
+                            finish()
+                        }
                     }
                 }
             }

@@ -24,7 +24,6 @@ class DressroomFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
     private lateinit var fragmentView: View
     private val itemDTOs = arrayListOf<ItemDTO>()
-
     private var itemInitialization = false
 
     override fun onCreateView(
@@ -36,9 +35,8 @@ class DressroomFragment : Fragment() {
 
         setHasOptionsMenu(true)
         initToolbar(fragmentView)
-        initItem()
 
-        setTabOfCategory(fragmentView)
+        initItem(fragmentView)
 
         return fragmentView
     }
@@ -47,7 +45,7 @@ class DressroomFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            initAdapter()
+            initItem(fragmentView)
         }
     }
 
@@ -73,7 +71,7 @@ class DressroomFragment : Fragment() {
         mainActivity.setToolbar(view.fragment_dressroom_toolbar)
     }
 
-    private fun initItem() {
+    private fun initItem(view: View) {
         db.collection("accounts").document(currentUid).get().addOnCompleteListener {task ->
             if(task.isSuccessful) {
                 if(task.result!!["items"] == null)
@@ -86,31 +84,30 @@ class DressroomFragment : Fragment() {
                     db.collection("items").document(itemId).get().addOnCompleteListener {task ->
                         if(task.isSuccessful){
                             itemDTOs.add(task.result!!.toObject(ItemDTO::class.java)!!)
-
                             cnt += 1
 
                             if (cnt >= items.size) {
-                                println(itemDTOs)
+                                itemDTOs.sortByDescending { itemDTO -> itemDTO.timestamp }
+
                                 itemInitialization = true
+                                setTabOfCategory(view)
                             }
                         }
                     }
                 }
             }
         }
-
     }
 
     private fun setTabOfCategory(view: View) {
         timer(period = 300) {
             if (InitData.initialization && itemInitialization) {
-
                 val categoryDTOs = InitData.categoryDTOs
 
                 activity!!.runOnUiThread {
-                    for (i in categoryDTOs) {
+                    view.fragment_dressroom_tab.removeAllTabs()
+                    for (i in categoryDTOs)
                         view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
-                    }
 
                     initAdapter()
 

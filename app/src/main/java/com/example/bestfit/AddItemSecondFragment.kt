@@ -57,6 +57,6 @@ class AddItemSecondFragment  : Fragment() {
 
     private fun submitAddItem() {
         val addItemActivity = activity as AddItemActivity
-        addItemActivity.submitAddItem()
+        addItemActivity.changeViewPage(false)
     }
 }

@@ -39,10 +39,11 @@
                     android:gravity="center">
 
                     <ImageView
-                        android:id="@+id/fragment_add_item_second_iv_size"
+                        android:id="@+id/fragment_add_item_third_iv_size"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:src="@drawable/image_size" />
+                        android:src="@drawable/image_size"
+                        android:scaleType="centerCrop"/>
 
                 </RelativeLayout>
 
@@ -73,7 +74,7 @@
                     android:layout_margin="15dp"/>
 
                 <EditText
-                    android:id="@+id/fragment_add_item_first_text_item_size"
+                    android:id="@+id/fragment_add_item_third_text_size"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:hint="S/M/L"
@@ -97,7 +98,7 @@
             android:layout_marginBottom="10dp"/>
 
         <EditText
-            android:id="@+id/fragment_add_item_second_text_item_review"
+            android:id="@+id/fragment_add_item_third_text_review"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:hint="가슴은 뜨겁게, 리뷰는 솔직하게! "
@@ -107,17 +108,20 @@
             android:paddingStart="20dp"
             android:paddingEnd="20dp" />
 
-        <Button
-            android:id="@+id/fragment_add_item_second_btn_submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="완료"
-            android:textColor="@color/colorWhite"
-            android:textStyle="bold"
-            android:background="@drawable/btn_default"
-            android:layout_marginTop="15dp"
-            android:layout_gravity="end" />
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/fragment_add_item_third_btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="완료"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        android:background="@drawable/btn_default"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"/>
 
 </RelativeLayout>

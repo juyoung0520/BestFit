@@ -3,6 +3,7 @@ package com.example.bestfit
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.annotation.RequiresApi
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,9 +27,11 @@ import com.jinu.imagepickerlib.utils.YPhotoPickerIntent
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_add_item_image.view.*
+import java.io.File
 
 class AddItemFirstFragment  : Fragment() {
     lateinit var fragmentView: View
+    var itemImages: ArrayList<String> = arrayListOf()
     private val ADD_IMAGE_CODE = 1
 
     override fun onCreateView(
@@ -105,8 +109,11 @@ class AddItemFirstFragment  : Fragment() {
     private fun initImageReyclerview(images: ArrayList<String>) {
         val view = fragmentView
 
+        itemImages.clear()
+        itemImages.addAll(images)
+
         view.fragment_add_item_first_recyclerview_image.setHasFixedSize(true)
-        view.fragment_add_item_first_recyclerview_image.adapter = ImageRecyclerViewAdapter(images)
+        view.fragment_add_item_first_recyclerview_image.adapter = ImageRecyclerViewAdapter(itemImages)
         view.fragment_add_item_first_recyclerview_image.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
         while (view.fragment_add_item_first_recyclerview_image.itemDecorationCount > 0)
@@ -153,7 +160,7 @@ class AddItemFirstFragment  : Fragment() {
             view.item_add_item_image_iv_delete.setOnClickListener {
                 images.removeAt(position)
                 notifyItemRemoved(position)
-                notifyItemRangeChanged(position, images.size)
+                notifyItemRangeChanged(position, 1)
             }
         }
     }

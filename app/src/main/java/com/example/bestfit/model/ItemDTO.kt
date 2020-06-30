@@ -7,11 +7,20 @@ data class ItemDTO(
     var timestamp: Long? = null,
     var categoryId: String? = null,
     var subCategoryId: String? = null,
+    var images: ArrayList<String> = arrayListOf(),
     var brandId: String? = null,
-    var name: String? = null
-) : Parcelable {
+    var name: String? = null,
+    var sizeImage: String? = null,
+    var size: String? = null,
+    var review: String? = null
+
+    ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readValue(Long::class.java.classLoader) as? Long,
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readArrayList(String::class.java.classLoader) as ArrayList<String>,
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -23,8 +32,12 @@ data class ItemDTO(
         parcel.writeValue(timestamp)
         parcel.writeString(categoryId)
         parcel.writeString(subCategoryId)
+        parcel.writeSerializable(images)
         parcel.writeString(brandId)
         parcel.writeString(name)
+        parcel.writeString(sizeImage)
+        parcel.writeString(size)
+        parcel.writeString(review)
     }
 
     override fun describeContents(): Int {
@@ -40,4 +53,5 @@ data class ItemDTO(
             return arrayOfNulls(size)
         }
     }
+
 }
