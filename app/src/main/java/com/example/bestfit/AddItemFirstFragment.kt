@@ -23,6 +23,7 @@ import com.example.bestfit.util.InitData
 import com.jinu.imagepickerlib.PhotoPickerActivity
 import com.jinu.imagepickerlib.utils.YPhotoPickerIntent
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
+import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_add_item_image.view.*
 
 class AddItemFirstFragment  : Fragment() {

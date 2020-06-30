@@ -8,12 +8,12 @@
     <RelativeLayout
         android:id="@+id/item_dressroom_layout_item"
         android:layout_width="match_parent"
-        android:layout_height="1dp">
+        android:layout_height="160dp">
 
         <ImageView
             android:id="@+id/item_dressroom_iv_item"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="160dp"
             android:background="@drawable/image_default"
             android:scaleType="centerCrop"/>
 
@@ -43,14 +43,13 @@
 
     <TextView
         android:id="@+id/item_dressroom_tv_item_name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="줘 SET가다나다fkdvjdfkvdfkvjdfkvjdfkvjdkfvjdfkvjdfkvjdfkvjdfkvjkfdvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdkfvjdfkvjdfkvjdkfvjdfkvjdfkvjdkfvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdfkvjdkfvjdkffvjdkffjvkdfvjdkfvjdvjkfdvjkdfvjkdfvjkdfvjvdfkvdfkv라마바사아자차타카타파아아마나팜남ㄴ팜파ㅏ마ㄴ아아아나나나나나"
+        android:text="상품명"
         android:textSize="11sp"
         android:textStyle="bold"
         android:textColor="@color/colorBlack"
         android:layout_marginTop="3dp"
-        android:layout_marginBottom="10dp"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp" />
 

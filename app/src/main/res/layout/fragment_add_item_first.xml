@@ -132,8 +132,8 @@
                 android:id="@+id/fragment_add_item_first_recyclerview_image"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"/>
 
         </LinearLayout>
 
