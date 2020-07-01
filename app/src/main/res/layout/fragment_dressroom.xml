@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/fragment_dressroom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        app:title="나의 드레스룸"/>
+        app:title="나의 드레스룸" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/fragment_dressroom_tab"

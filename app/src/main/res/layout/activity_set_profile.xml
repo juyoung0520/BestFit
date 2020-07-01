@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="회원 정보"
             android:textColor="@color/colorBlack"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_gravity="center_horizontal" />
 
     </androidx.appcompat.widget.Toolbar>

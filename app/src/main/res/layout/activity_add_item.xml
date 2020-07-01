@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="상품 추가"
             android:textColor="@color/colorBlack"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_gravity="center_horizontal"/>
 
     </androidx.appcompat.widget.Toolbar>
@@ -30,12 +30,19 @@
         android:background="@color/colorBlack"
         android:orientation="horizontal" />
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/activity_add_item_viewpager"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/activity_add_item_indicator"
-        android:layout_below="@+id/activity_add_item_line"/>
+        android:layout_below="@+id/activity_add_item_line"
+        android:fillViewport="true">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/activity_add_item_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </ScrollView>
 
     <me.relex.circleindicator.CircleIndicator
         android:id="@+id/activity_add_item_indicator"

@@ -24,6 +24,7 @@ import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.util.InitData
 import com.jinu.imagepickerlib.PhotoPickerActivity
 import com.jinu.imagepickerlib.utils.YPhotoPickerIntent
+import kotlinx.android.synthetic.main.activity_signin.*
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_add_item_image.view.*
@@ -119,7 +120,7 @@ class AddItemFirstFragment  : Fragment() {
         while (view.fragment_add_item_first_recyclerview_image.itemDecorationCount > 0)
             view.fragment_add_item_first_recyclerview_image.removeItemDecorationAt(0)
 
-        view.fragment_add_item_first_recyclerview_image.addItemDecoration(ItemDecoration())
+//        view.fragment_add_item_first_recyclerview_image.addItemDecoration(ItemDecoration())
     }
 
     private fun addImage() {

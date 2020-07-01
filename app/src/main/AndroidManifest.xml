@@ -17,9 +17,9 @@
         android:requestLegacyExternalStorage="true">
 
         <activity android:name="com.jinu.imagepickerlib.PhotoPickerActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name="com.jinu.imagepickerlib.PhotoPagerActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <activity
             android:name=".SplashActivity"

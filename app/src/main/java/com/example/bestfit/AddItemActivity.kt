@@ -12,6 +12,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.model.ItemDTO
 import com.google.firebase.auth.FirebaseAuth
@@ -58,10 +59,32 @@ class AddItemActivity : AppCompatActivity() {
         setSupportActionBar(activity_add_item_toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
     }
 
     private fun initViewPager() {
         activity_add_item_viewpager.adapter = AddItemFragmentPagerAdapter(supportFragmentManager, 3)
+        activity_add_item_viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0 -> supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
+                    1, 2 -> supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+                }
+            }
+
+        })
         activity_add_item_indicator.setViewPager(activity_add_item_viewpager)
     }
 
