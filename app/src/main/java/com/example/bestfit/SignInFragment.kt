@@ -2,10 +2,13 @@ package com.example.bestfit
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -28,6 +31,26 @@ class SignInFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_signin, container, false)
 
         initToolbar(view)
+
+        view.fragment_signin_text_email.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+                //입력이 끝날때 작동
+                if (s.toString().contains("#")) {
+                    view.fragment_signin_layout_email.error = "#은 안돼용"
+                } else {
+                    view.fragment_signin_layout_email.error = null
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //입력하기 전에 작동
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                //타이핑이 되는 텍스트에 변화가 있으면 작동
+            }
+
+        })
 
         view.fragment_signin_btn_signin.setOnClickListener {
             signIn(view)
@@ -91,32 +114,26 @@ class SignInFragment : Fragment() {
 //        return
 
         if (email.isNullOrEmpty()) {
+            view.fragment_signin_text_email.error = "이메일을 입력해주세요."
+        } else {
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val signInActivity = activity as SignInActivity
+                    signInActivity.startMainActivity()
+                } else {
 
-        }
+                    if (task.exception?.message?.indexOf("badly formatted") != -1) {
+                        // 올바른 이메일 형식
+                    } else if (task.exception?.message?.indexOf("no user record") != -1) {
+                        // 존재하지 않는 이메일
 
-        if (password.isNullOrEmpty()) {
+                    } else if (task.exception?.message?.indexOf("password is invalid") != -1) {
+                        // 비밀번호 틀림
+                    }
 
-        }
-
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val signInActivity = activity as SignInActivity
-                signInActivity.startMainActivity()
-            }
-            else {
-                if (task.exception?.message?.indexOf("badly formatted") != -1) {
-                    // 올바른 이메일 형식
+                    println(task.exception?.message)
+                    Toast.makeText(context, "login fail", Toast.LENGTH_SHORT).show()
                 }
-                else if (task.exception?.message?.indexOf("no user record") != -1) {
-                    // 존재하지 않는 이메일
-
-                }
-                else if (task.exception?.message?.indexOf("password is invalid") != -1) {
-                    // 비밀번호 틀림
-                }
-
-                println(task.exception?.message)
-                Toast.makeText(context, "login fail", Toast.LENGTH_SHORT).show()
             }
         }
     }
