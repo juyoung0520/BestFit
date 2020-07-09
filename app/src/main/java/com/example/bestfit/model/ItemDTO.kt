@@ -32,7 +32,7 @@ data class ItemDTO(
         parcel.writeValue(timestamp)
         parcel.writeString(categoryId)
         parcel.writeString(subCategoryId)
-        parcel.writeSerializable(images)
+        parcel.writeStringList(images)
         parcel.writeString(brandId)
         parcel.writeString(name)
         parcel.writeString(sizeImage)
