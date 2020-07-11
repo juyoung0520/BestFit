@@ -50,26 +50,16 @@ class DressroomCategoryFragment : Fragment() {
         private val itemDTOs = arrayListOf<ItemDTO>()
 
         init {
-            val allItemDTOs = arguments?.getParcelableArrayList<ItemDTO>("itemDTOs")!!
-            val categoryId = arguments?.getString("categoryId", null)
+            val allItemDTOs = arguments?.getParcelableArrayList<ItemDTO>("itemDTOs")
 
-            if (categoryId == null)
+            if (allItemDTOs != null) {
                 itemDTOs.addAll(allItemDTOs)
-            else {
-                for (item in allItemDTOs) {
-                    if (item.categoryId == categoryId)
-                        itemDTOs.add(item)
-                }
+                notifyDataSetChanged()
             }
-
-            notifyDataSetChanged()
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom, parent, false)
-
-            val width = resources.displayMetrics.widthPixels / 3
-//            view.item_dressroom_layout_item.layoutParams.height = width
 
             return CustomViewHolder(view)
         }
@@ -82,8 +72,6 @@ class DressroomCategoryFragment : Fragment() {
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val view = (holder as CustomViewHolder).itemView
-
-            println("bind $position")
 
             if (itemDTOs[position].images.size > 0) {
                 view.item_dressroom_iv_item.clipToOutline = true
