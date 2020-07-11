@@ -13,7 +13,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 
-class ClearEditText : AppCompatEditText, TextWatcher, OnTouchListener, OnFocusChangeListener {
+class EditText : AppCompatEditText, TextWatcher, OnTouchListener, OnFocusChangeListener {
 
     private var clearDrawable: Drawable? = null
 
