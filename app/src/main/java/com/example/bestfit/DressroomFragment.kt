@@ -77,6 +77,9 @@ class DressroomFragment : Fragment() {
                 if(task.result!!["items"] == null)
                     return@addOnCompleteListener
 
+                itemDTOs.clear()
+                itemInitialization = false
+
                 val items = task.result!!["items"] as ArrayList<String>
                 var cnt = 0
 
