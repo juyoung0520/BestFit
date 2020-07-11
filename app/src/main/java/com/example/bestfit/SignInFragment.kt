@@ -35,11 +35,6 @@ class SignInFragment : Fragment() {
         view.fragment_signin_text_email.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {
                 //입력이 끝날때 작동
-                if (s.toString().contains("#")) {
-                    view.fragment_signin_layout_email.error = "#은 안돼용"
-                } else {
-                    view.fragment_signin_layout_email.error = null
-                }
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

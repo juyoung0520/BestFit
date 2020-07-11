@@ -25,7 +25,7 @@ class ClearEditText : AppCompatEditText, TextWatcher, OnTouchListener, OnFocusCh
 
         val tempDrawable = ContextCompat.getDrawable(context, R.drawable.abc_ic_clear_material)
         clearDrawable = DrawableCompat.wrap(tempDrawable!!)
-        DrawableCompat.setTintList(clearDrawable!!, hintTextColors)
+        DrawableCompat.setTint(clearDrawable!!,resources.getColor(R.color.colorBlack))
         clearDrawable!!.setBounds(0, 0, clearDrawable!!.getIntrinsicWidth(), clearDrawable!!.getIntrinsicHeight()
         )
 
@@ -47,6 +47,11 @@ class ClearEditText : AppCompatEditText, TextWatcher, OnTouchListener, OnFocusCh
     }
 
     override fun afterTextChanged(s: Editable?) {
+//        if (s.toString().contains("#")) {
+//            view.fragment_signin_layout_email.error = "#은 안돼용"
+//        } else {
+//            view.fragment_signin_layout_email.error = null
+//        }
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
