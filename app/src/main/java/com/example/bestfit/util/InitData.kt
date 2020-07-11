@@ -6,12 +6,15 @@ import com.google.firebase.firestore.FirebaseFirestore
 object InitData {
     private val db = FirebaseFirestore.getInstance()
     var initialization = false
+    var initializationCategory = false
+    var initializationBrand = false
     val categoryDTOs = arrayListOf<CategoryDTO>()
     val categories = arrayListOf<String>()
     val brands = arrayListOf<String>()
 
     fun initData() {
         initCategory()
+        initBrand()
     }
 
     private fun initCategory() {
@@ -23,7 +26,9 @@ object InitData {
                     categories.add(categoryDTO.name!!)
                 }
 
-                initBrand()
+                initializationCategory = true
+                if (initializationBrand)
+                    initialization = true
             }
         }
     }
@@ -32,8 +37,20 @@ object InitData {
         db.collection("brands").document("brands").get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 brands.addAll(task.result!!["list"] as ArrayList<String>)
-                initialization = true
+
+                initializationBrand = true
+                if (initializationCategory)
+                    initialization = true
             }
         }
+    }
+
+    fun getCategoryIndex(categoryId: String): Int {
+        for (categoryDTO in categoryDTOs) {
+            if (categoryId == categoryDTO.id)
+                return categoryDTO.index!!
+        }
+
+        return -1
     }
 }

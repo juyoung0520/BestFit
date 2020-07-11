@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -14,7 +13,6 @@ import com.example.bestfit.util.InitData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
-import kotlinx.android.synthetic.main.item_add_item_image.*
 import kotlin.concurrent.timer
 
 
@@ -23,8 +21,7 @@ class DressroomFragment : Fragment() {
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
     private lateinit var fragmentView: View
-    private val itemDTOs = arrayListOf<ItemDTO>()
-    private var itemInitialization = false
+    private val itemDTOs: ArrayList<ArrayList<ItemDTO>> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +33,7 @@ class DressroomFragment : Fragment() {
         setHasOptionsMenu(true)
         initToolbar(fragmentView)
 
-        initItem(fragmentView)
+        initTab(fragmentView)
 
         return fragmentView
     }
@@ -71,50 +68,56 @@ class DressroomFragment : Fragment() {
         mainActivity.setToolbar(view.fragment_dressroom_toolbar)
     }
 
+    private fun initTab(view: View) {
+        timer(period = 300) {
+            if (InitData.initialization) {
+                val categoryDTOs = InitData.categoryDTOs
+
+                activity!!.runOnUiThread {
+                    view.fragment_dressroom_tab.removeAllTabs()
+
+                    for (i in categoryDTOs)
+                        view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
+
+                    initItem(view)
+                    cancel()
+                }
+            }
+        }
+    }
+
     private fun initItem(view: View) {
+        itemDTOs.clear()
+
+        for (i in InitData.categories)
+            itemDTOs.add(arrayListOf())
+
         db.collection("accounts").document(currentUid).get().addOnCompleteListener {task ->
             if(task.isSuccessful) {
                 if(task.result!!["items"] == null)
                     return@addOnCompleteListener
-
-                itemDTOs.clear()
-                itemInitialization = false
 
                 val items = task.result!!["items"] as ArrayList<String>
                 var cnt = 0
 
                 for (itemId in items) {
                     db.collection("items").document(itemId).get().addOnCompleteListener {task ->
-                        if(task.isSuccessful){
-                            itemDTOs.add(task.result!!.toObject(ItemDTO::class.java)!!)
+                        if(task.isSuccessful) {
+                            val itemDTO = task.result!!.toObject(ItemDTO::class.java)!!
+                            val categoryIndex = InitData.getCategoryIndex(itemDTO.categoryId!!)
+
+                            itemDTOs[0].add(itemDTO)
+                            itemDTOs[categoryIndex].add(itemDTO)
                             cnt += 1
 
                             if (cnt >= items.size) {
-                                itemDTOs.sortByDescending { itemDTO -> itemDTO.timestamp }
+                                for (itemDTO in itemDTOs)
+                                    itemDTO.sortByDescending { itemDTO -> itemDTO.timestamp }
 
-                                itemInitialization = true
-                                setTabOfCategory(view)
+                                initAdapter()
                             }
                         }
                     }
-                }
-            }
-        }
-    }
-
-    private fun setTabOfCategory(view: View) {
-        timer(period = 300) {
-            if (InitData.initialization && itemInitialization) {
-                val categoryDTOs = InitData.categoryDTOs
-
-                activity!!.runOnUiThread {
-                    view.fragment_dressroom_tab.removeAllTabs()
-                    for (i in categoryDTOs)
-                        view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
-
-                    initAdapter()
-
-                    cancel()
                 }
             }
         }
@@ -130,8 +133,7 @@ class DressroomFragment : Fragment() {
             val fragment = DressroomCategoryFragment()
             val bundle = Bundle()
 
-            bundle.putString("categoryId", categoryDTOs[position].id)
-            bundle.putParcelableArrayList("itemDTOs", itemDTOs)
+            bundle.putParcelableArrayList("itemDTOs", itemDTOs[position])
             fragment.arguments = bundle
 
             return fragment
