@@ -75,7 +75,6 @@ class DressroomCategoryFragment : Fragment() {
         }
 
         inner class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
         override fun getItemCount(): Int {
             return itemDTOs.size
         }
@@ -95,6 +94,16 @@ class DressroomCategoryFragment : Fragment() {
             }
 
             view.item_dressroom_tv_item_name.text = itemDTOs[position].name
+            view.setOnClickListener {
+                val mainActivity = activity as MainActivity
+                val fragment = DetailFragment()
+                val bundle = Bundle()
+
+                bundle.putParcelable("itemDTO", itemDTOs[position])
+                bundle.putString("uid", currentUid)
+                fragment.arguments = bundle
+                mainActivity.changeFragment(fragment, bundle)
+            }
         }
     }
 

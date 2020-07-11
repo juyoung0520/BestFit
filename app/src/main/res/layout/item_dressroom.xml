@@ -34,9 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="브랜드"
-        android:textColor="@color/colorDarkGray"
-        android:textSize="10sp"
-        android:textStyle="bold"
+        android:textSize="12sp"
         android:layout_marginTop="3dp"
         android:layout_marginStart="7dp"
         android:layout_marginLeft="7dp" />
@@ -46,10 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="상품명"
-        android:textSize="11sp"
-        android:textStyle="bold"
+        android:textSize="14sp"
         android:textColor="@color/colorBlack"
-        android:layout_marginTop="3dp"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp" />
 
