@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -16,6 +17,7 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.activity_signin.*
+import kotlinx.android.synthetic.main.fragment_signin.*
 import kotlinx.android.synthetic.main.fragment_signin.view.*
 import kotlin.math.sign
 
@@ -32,20 +34,9 @@ class SignInFragment : Fragment() {
 
         initToolbar(view)
 
-        view.fragment_signin_text_email.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-                //입력이 끝날때 작동
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                //입력하기 전에 작동
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                //타이핑이 되는 텍스트에 변화가 있으면 작동
-            }
-
-        })
+        view.fragment_signin_text_email.doOnTextChanged { text, start, before, count ->
+            view.fragment_signin_layout_text_email.error = null
+        }
 
         view.fragment_signin_btn_signin.setOnClickListener {
             signIn(view)
@@ -109,7 +100,7 @@ class SignInFragment : Fragment() {
 //        return
 
         if (email.isNullOrEmpty()) {
-            view.fragment_signin_text_email.error = "이메일을 입력해주세요."
+            view.fragment_signin_layout_text_email.error = "이메일을 입력해주세요."
         } else {
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {

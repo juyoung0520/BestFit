@@ -1,4 +1,4 @@
-package com.example.bestfit
+package com.example.bestfit.view
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -12,9 +12,9 @@ import android.view.View.OnTouchListener
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import com.example.bestfit.R
 
-class EditText : AppCompatEditText, TextWatcher, OnTouchListener, OnFocusChangeListener {
-
+class ClearEditText : AppCompatEditText, TextWatcher, OnTouchListener, OnFocusChangeListener {
     private var clearDrawable: Drawable? = null
 
     constructor(context : Context) : super(context)
@@ -22,12 +22,10 @@ class EditText : AppCompatEditText, TextWatcher, OnTouchListener, OnFocusChangeL
     constructor(context: Context, attrs: AttributeSet, defStyleAttr : Int) : super(context, attrs, defStyleAttr)
 
     init {
-
         val tempDrawable = ContextCompat.getDrawable(context, R.drawable.abc_ic_clear_material)
         clearDrawable = DrawableCompat.wrap(tempDrawable!!)
-        DrawableCompat.setTint(clearDrawable!!,resources.getColor(R.color.colorBlack))
-        clearDrawable!!.setBounds(0, 0, clearDrawable!!.getIntrinsicWidth(), clearDrawable!!.getIntrinsicHeight()
-        )
+        DrawableCompat.setTint(clearDrawable!!, ContextCompat.getColor(context, R.color.colorBlack))
+        clearDrawable!!.setBounds(0, 0, clearDrawable!!.intrinsicWidth, clearDrawable!!.intrinsicHeight)
 
         setClearIconVisible(false)
         super.setOnTouchListener(this)
@@ -35,23 +33,12 @@ class EditText : AppCompatEditText, TextWatcher, OnTouchListener, OnFocusChangeL
         addTextChangedListener(this)
     }
 
-    private fun setClearIconVisible(visible: Boolean) {
-        clearDrawable?.setVisible(visible, false)
-        setCompoundDrawables(null, null, if (visible) clearDrawable else null, null)
-    }
-
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        if (isFocused) {
-            setClearIconVisible(s.length > 0)
-        }
+        if (isFocused)
+            setClearIconVisible(s.isNotEmpty())
     }
 
     override fun afterTextChanged(s: Editable?) {
-//        if (s.toString().contains("#")) {
-//            view.fragment_signin_layout_email.error = "#은 안돼용"
-//        } else {
-//            view.fragment_signin_layout_email.error = null
-//        }
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -59,11 +46,13 @@ class EditText : AppCompatEditText, TextWatcher, OnTouchListener, OnFocusChangeL
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         val x = event!!.x.toInt()
+
         if (clearDrawable!!.isVisible && x > width - paddingRight - clearDrawable!!.intrinsicWidth) {
             if (event.action == MotionEvent.ACTION_UP) {
                 error = null
-                setText(null)
+                text = null
             }
+
             return true
         }
 
@@ -71,10 +60,14 @@ class EditText : AppCompatEditText, TextWatcher, OnTouchListener, OnFocusChangeL
     }
 
     override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        if (hasFocus) {
-            setClearIconVisible(text!!.length > 0)
-        } else {
+        if (hasFocus)
+            setClearIconVisible(text!!.isNotEmpty())
+        else
             setClearIconVisible(false)
-        }
+    }
+
+    private fun setClearIconVisible(visible: Boolean) {
+        clearDrawable?.setVisible(visible, false)
+        setCompoundDrawables(null, null, if (visible) clearDrawable else null, null)
     }
 }
