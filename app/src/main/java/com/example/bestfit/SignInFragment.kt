@@ -32,7 +32,7 @@ class SignInFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_signin, container, false)
 
-        initToolbar(view)
+        initToolbar()
 
         view.fragment_signin_text_email.doOnTextChanged { text, start, before, count ->
             view.fragment_signin_layout_text_email.error = null
@@ -76,7 +76,7 @@ class SignInFragment : Fragment() {
         }
     }
 
-    private fun initToolbar(view: View) {
+    private fun initToolbar() {
         val signInActivity = activity!! as SignInActivity
         signInActivity.activity_signin_tv_toolbar_title.text = "로그인"
         signInActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
