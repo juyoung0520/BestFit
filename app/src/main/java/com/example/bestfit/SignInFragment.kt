@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -33,9 +35,29 @@ class SignInFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_signin, container, false)
 
         initToolbar(view)
-
+//        if (view.fragment_signin_layout_text_email.error != null) {
+//            view.fragment_signin_text_email.doOnTextChanged { text, start, before, count ->
+//                view.fragment_signin_layout_text_email.error = null
+//            }
+//        }
         view.fragment_signin_text_email.doOnTextChanged { text, start, before, count ->
-            view.fragment_signin_layout_text_email.error = null
+            if (view.fragment_signin_text_email.text != null && view.fragment_signin_text_password.text != null) {
+                view.fragment_signin_btn_signin.isEnabled = true
+                view.fragment_signin_btn_signin.setTextColor(resources.getColor(R.color.colorWhite))
+            } else {
+                view.fragment_signin_btn_signin.isEnabled = false
+                view.fragment_signin_btn_signin.setTextColor(resources.getColor(R.color.colorDarkGray))
+            }
+        }
+
+        view.fragment_signin_text_password.doOnTextChanged { text, start, before, count ->
+            if (view.fragment_signin_text_email.text != null && view.fragment_signin_text_password.text != null) {
+                view.fragment_signin_btn_signin.isEnabled = true
+                view.fragment_signin_btn_signin.setTextColor(resources.getColor(R.color.colorWhite))
+            } else {
+                view.fragment_signin_btn_signin.isEnabled = false
+                view.fragment_signin_btn_signin.setTextColor(resources.getColor(R.color.colorDarkGray))
+            }
         }
 
         view.fragment_signin_btn_signin.setOnClickListener {
@@ -82,26 +104,22 @@ class SignInFragment : Fragment() {
         signInActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
+    private fun checkText(view: View, text: Editable) : Boolean {
+        if (text!!.length > 0) {
+            return true
+        } else {
+            return false
+        }
+    }
+
     private fun signIn(view: View) {
         val email = view.fragment_signin_text_email.text.toString()
         val password = view.fragment_signin_text_password.text.toString()
 
-//        auth.fetchSignInMethodsForEmail(email).addOnCompleteListener { task ->
-//            println(task.exception)
-//            if (task.isSuccessful) {
-//                if (!task.result?.signInMethods.isNullOrEmpty()) {
-//                    // 이미 있는 이메일
-//                    println(task.result?.signInMethods)
-//                    println("이미 있어용~")
-//                }
-//            }
-//        }
-//
-//        return
-
-        if (email.isNullOrEmpty()) {
-            view.fragment_signin_layout_text_email.error = "이메일을 입력해주세요."
-        } else {
+        if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
+            return
+        }
+        else {
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val signInActivity = activity as SignInActivity
@@ -110,12 +128,15 @@ class SignInFragment : Fragment() {
 
                     if (task.exception?.message?.indexOf("badly formatted") != -1) {
                         // 올바른 이메일 형식
-                    } else if (task.exception?.message?.indexOf("no user record") != -1) {
-                        // 존재하지 않는 이메일
-
-                    } else if (task.exception?.message?.indexOf("password is invalid") != -1) {
-                        // 비밀번호 틀림
+                         view.fragment_signin_layout_text_email.error = "잘못된 형식의 이메일입니다."
                     }
+//                    else if (task.exception?.message?.indexOf("no user record") != -1) {
+//                        // 존재하지 않는 이메일
+//                        view.fragment_signin_layout_text_email.error = "존재하지 않는 이메일입니다."
+//                    } else if (task.exception?.message?.indexOf("password is invalid") != -1) {
+//                        // 비밀번호 틀림
+//                        view.fragment_signin_layout_text_email.error = "잘못된 형식의 이메일입니다."
+//                    }
 
                     println(task.exception?.message)
                     Toast.makeText(context, "login fail", Toast.LENGTH_SHORT).show()
