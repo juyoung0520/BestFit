@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,8 +28,9 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/fragment_add_item_third_layout_size"
                     android:layout_width="90dp"
-                    android:layout_height="120dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <RelativeLayout
@@ -39,7 +40,6 @@
                         android:gravity="center">
 
                         <ImageView
-                            android:id="@+id/fragment_add_item_third_iv_size"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:src="@drawable/image_size"
@@ -59,30 +59,118 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="150dp"
+                <ImageView
+                    android:id="@+id/fragment_add_item_third_iv_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/image_default"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="선택 사이즈"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"/>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/fragment_add_item_third_group_btn"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginLeft="40dp">
+                    app:singleSelection="true">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
-                        android:text="선택 사이즈"
-                        android:textColor="@color/colorBlack"
-                        android:textStyle="bold"
-                        android:layout_margin="15dp"/>
+                        android:text="FREE"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:minHeight="36dp"/>
 
-                    <EditText
-                        android:id="@+id/fragment_add_item_third_text_size"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:hint="S/M/L"
-                        android:background="@drawable/text_default"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/test"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="S/M/L"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:minHeight="36dp"/>
 
-                </LinearLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="90/95/100"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:minHeight="36dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="48/50/52"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:minHeight="36dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="1/2/3"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:minHeight="36dp"/>
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="S"
+                        style="?attr/materialButtonOutlinedStyle"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="M"
+                        style="?attr/materialButtonOutlinedStyle"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="l"
+                        style="?attr/materialButtonOutlinedStyle"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:text="xl"
+                        style="?attr/materialButtonOutlinedStyle"/>
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
 
             </LinearLayout>
 

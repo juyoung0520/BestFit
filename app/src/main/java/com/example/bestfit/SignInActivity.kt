@@ -20,8 +20,6 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signin)
 
-        InitData.initData()
-
         if (auth.currentUser != null) {
             startMainActivity()
             return
