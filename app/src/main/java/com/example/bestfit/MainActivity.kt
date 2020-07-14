@@ -54,9 +54,12 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     fun setToolbar(toolbar: Toolbar, setHomeButton: Boolean = false) {
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        if (setHomeButton)
+        if (setHomeButton) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+        }
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {

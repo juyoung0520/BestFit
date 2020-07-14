@@ -15,7 +15,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="상품 정보"
+                android:text="사이즈 정보"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
