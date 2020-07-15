@@ -9,6 +9,12 @@
         <item name="windowNoTitle">true</item>
         <item name="android:dropDownListViewStyle">@style/SpinnerStyle</item>
         <item name="android:actionMenuTextAppearance">@style/ToolbarMenu</item>
+        <item name="materialButtonStyle">@style/MaterialButton</item>
+    </style>
+
+    <style name="MaterialButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
     </style>
     
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">

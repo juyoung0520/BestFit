@@ -81,96 +81,48 @@
                 android:layout_marginBottom="10dp"/>
             
             <LinearLayout
+                android:id="@+id/fragment_add_item_third_layout_selected_size"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                
-                <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:id="@+id/fragment_add_item_third_group_btn"
+                android:layout_height="200dp"
+                android:orientation="horizontal"
+                android:background="@drawable/layout_edge_selector"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
+
+                <ScrollView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:singleSelection="true">
+                    android:scrollbars="vertical">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="120dp"
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/fragment_add_item_third_group_format"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:text="FREE"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp"
-                        android:minHeight="36dp"/>
+                        android:orientation="vertical"
+                        app:singleSelection="true"/>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/test"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:text="S/M/L"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp"
-                        android:minHeight="36dp"/>
+                </ScrollView>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:text="90/95/100"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp"
-                        android:minHeight="36dp"/>
+                <LinearLayout
+                    android:id="@+id/fragment_add_item_third_layout_divider"
+                    android:layout_width="1.5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorHintTransparent"
+                    android:orientation="horizontal" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:text="48/50/52"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp"
-                        android:minHeight="36dp"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:text="1/2/3"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp"
-                        android:minHeight="36dp"/>
-
-                </com.google.android.material.button.MaterialButtonToggleGroup>
-
-                <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:layout_width="wrap_content"
+                <ScrollView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center">
+                    android:scrollbars="vertical">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="80dp"
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/fragment_add_item_third_group_size"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="S"
-                        style="?attr/materialButtonOutlinedStyle"/>
+                        android:orientation="vertical"
+                        app:singleSelection="true"/>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:text="M"
-                        style="?attr/materialButtonOutlinedStyle"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:text="l"
-                        style="?attr/materialButtonOutlinedStyle"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:text="xl"
-                        style="?attr/materialButtonOutlinedStyle"/>
-
-                </com.google.android.material.button.MaterialButtonToggleGroup>
+                </ScrollView>
 
             </LinearLayout>
 
