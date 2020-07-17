@@ -37,23 +37,13 @@ class SignInFragment : Fragment() {
         initToolbar()
 
         view.fragment_signin_text_email.doOnTextChanged { text, start, before, count ->
-            if (view.fragment_signin_text_email.text != null && view.fragment_signin_text_password.text != null) {
-                view.fragment_signin_btn_signin.isEnabled = true
-                view.fragment_signin_btn_signin.setTextColor(resources.getColor(R.color.colorWhite))
-            } else {
-                view.fragment_signin_btn_signin.isEnabled = false
-                view.fragment_signin_btn_signin.setTextColor(resources.getColor(R.color.colorDarkGray))
-            }
+            view.fragment_signin_btn_signin.isEnabled =
+                !(view.fragment_signin_text_email.text.isNullOrEmpty() || view.fragment_signin_text_password.text.isNullOrEmpty())
         }
 
         view.fragment_signin_text_password.doOnTextChanged { text, start, before, count ->
-            if (view.fragment_signin_text_email.text != null && view.fragment_signin_text_password.text != null) {
-                view.fragment_signin_btn_signin.isEnabled = true
-                view.fragment_signin_btn_signin.setTextColor(resources.getColor(R.color.colorWhite))
-            } else {
-                view.fragment_signin_btn_signin.isEnabled = false
-                view.fragment_signin_btn_signin.setTextColor(resources.getColor(R.color.colorDarkGray))
-            }
+            view.fragment_signin_btn_signin.isEnabled =
+                !(view.fragment_signin_text_email.text.isNullOrEmpty() || view.fragment_signin_text_password.text.isNullOrEmpty())
         }
 
         view.fragment_signin_btn_signin.setOnClickListener {
