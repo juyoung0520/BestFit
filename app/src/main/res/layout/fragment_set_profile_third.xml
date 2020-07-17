@@ -11,7 +11,56 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp">
 
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="평소 사이즈"-->
+<!--            android:textColor="@color/colorBlack"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:layout_marginBottom="10dp"/>-->
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="200dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="상의"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"/>
+
+                    <NumberPicker
+                        android:id="@+id/fragment_np_height"
+                        android:layout_width="100dp"
+                        android:layout_height="130dp"
+                        android:theme="@style/NumberPickerStyle"
+                        android:layout_centerHorizontal="true"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+            
+        </LinearLayout>
 
     </LinearLayout>
 
