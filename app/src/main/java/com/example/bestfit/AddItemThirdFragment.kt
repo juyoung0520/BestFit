@@ -4,23 +4,13 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import com.example.bestfit.model.SizeFormatDTO
+import com.example.bestfit.util.InitData
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_add_item_third.view.*
 
 class AddItemThirdFragment  : Fragment() {
     lateinit var fragmentView: View
-
-    // arrayListOf("FREE", "S/M/L", "90/95/100", "26/28/30", "240/250/260", "1/2/3", "48/50/52", "75A/80B/85C")
-    private val sizeFormats: ArrayList<SizeFormatDTO> = arrayListOf(
-        SizeFormatDTO("FREE", arrayListOf()),
-        SizeFormatDTO("S/M/L", arrayListOf("XXXS", "XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL")),
-        SizeFormatDTO("90/95/100", arrayListOf("75", "80", "85", "90", "95", "100", "105", "110", "115")),
-        SizeFormatDTO("26/28/30", arrayListOf("23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36")),
-        SizeFormatDTO("240/250/260", arrayListOf("200", "205", "210", "215", "220", "225", "230", "235", "240", "245", "250", "255", "260", "265", "270", "275", "280", "285", "290", "295", "300")),
-        SizeFormatDTO("1/2/3", arrayListOf("1", "2", "3", "4")),
-        SizeFormatDTO("48/50/52", arrayListOf("46", "48", "50", "52", "54")),
-        SizeFormatDTO("75A/80B/85C", arrayListOf("60AA", "60A", "60B", "60C", "60D", "60E", "60F", "60G", "65AA", "65A", "65B", "65C", "65D", "65E", "65F", "65G", "70AA", "70A", "70B", "70C", "70D", "70E", "70F", "70G", "75AA", "75A", "75B", "75C", "75D", "75E", "75F", "75G", "80AA", "80A", "80B", "80C", "80D", "80E", "80F", "80G", "85AA", "85A", "85B", "85C", "85D", "85E", "85F", "85G", "90AA", "90A", "90B", "90C", "90D", "90E", "90F", "90G"))
-    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,10 +49,12 @@ class AddItemThirdFragment  : Fragment() {
     }
 
     private fun initSelectedSizeTable(view: View) {
+        val sizeFormats = InitData.sizeFormatDTOs
+
         for ((idx, format) in sizeFormats.withIndex()) {
             val formatButton = MaterialButton(view.context)
             formatButton.id = idx
-            formatButton.text = format.name
+            formatButton.text = format.format
 
             view.fragment_add_item_third_group_format.addView(formatButton, -1, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (40 * resources.displayMetrics.density).toInt()))
         }
@@ -86,7 +78,7 @@ class AddItemThirdFragment  : Fragment() {
             view.fragment_add_item_third_group_size.removeAllViews()
             val format = sizeFormats[group.checkedButtonId]
 
-            for (size in format.lists) {
+            for (size in format.list) {
                 val sizeButton = MaterialButton(view.context)
                 sizeButton.text = size
                 sizeButton.isCheckable = true // 이걸 해야 checked 된 상태로 add 되지 않음. (이유는 모름)

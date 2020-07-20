@@ -320,7 +320,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/fragment_set_profile_third_btn_submit"
+        android:id="@+id/fragment_set_profile_second_btn_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="입력 완료"

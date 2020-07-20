@@ -1,6 +1,9 @@
 package com.example.bestfit.model
 
 data class SizeFormatDTO(
-    var name: String? = null,
-    var lists: ArrayList<String> = arrayListOf()
+    var id: String? = null,
+    var index: Int? = null,
+    var format: String? = null,
+    var list: ArrayList<String> = arrayListOf(),
+    var listId: ArrayList<String> = arrayListOf()
 )
