@@ -103,8 +103,8 @@ class SetProfileActivity : AppCompatActivity() {
         accountDTO.nickname = firstFragment.fragment_set_profile_first_text_nickname.text.toString()
         accountDTO.sex = firstFragment.fragment_set_profile_first_btn_male.isChecked
        // accountDTO.birth = firstFragment.fragment_set_profile_first_np_birth.value
-        accountDTO.height = secondFragment.fragment_set_profile_second_np_height.value
-        accountDTO.weight = secondFragment.fragment_set_profile_second_np_weight.value
+//        accountDTO.height = secondFragment.fragment_set_profile_second_np_height.value
+//        accountDTO.weight = secondFragment.fragment_set_profile_second_np_weight.value
 
         db.collection("accounts").document(currentUid).set(accountDTO).addOnCompleteListener { task ->
             if (task.isSuccessful) {

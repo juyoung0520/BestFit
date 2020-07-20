@@ -36,6 +36,20 @@ class SignInFragment : Fragment() {
 
         initToolbar()
 
+        view.fragment_signin_text_email.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus)
+                view.fragment_signin_layout_text_email.hint = ""
+            else if (view.fragment_signin_text_email.text.isNullOrEmpty())
+                view.fragment_signin_layout_text_email.hint = "이메일"
+        }
+
+        view.fragment_signin_text_password.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus)
+                view.fragment_signin_layout_text_password.hint = ""
+            else if (view.fragment_signin_text_password.text.isNullOrEmpty())
+                view.fragment_signin_layout_text_password.hint = "비밀번호"
+        }
+
         view.fragment_signin_text_email.doOnTextChanged { text, start, before, count ->
             view.fragment_signin_btn_signin.isEnabled =
                 !(view.fragment_signin_text_email.text.isNullOrEmpty() || view.fragment_signin_text_password.text.isNullOrEmpty())

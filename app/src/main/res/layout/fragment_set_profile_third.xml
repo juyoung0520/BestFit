@@ -11,6 +11,38 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="프로필 메시지"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorDarkGray"
+            android:text="구체적인 신체 정보, 좋아하는 옷 스타일, SNS등 자유롭게 입력해주세요."
+            android:textSize="12sp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/fragment_set_profile_second_text_review"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:hint="프로필 메시지를 입력해주세요 !"
+            android:background="@drawable/text_big"
+            android:gravity="start"
+            android:paddingTop="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp" />
+
 <!--        <TextView-->
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="wrap_content"-->
