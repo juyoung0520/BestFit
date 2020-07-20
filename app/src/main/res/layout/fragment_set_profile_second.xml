@@ -446,11 +446,7 @@
 
     <Button
         android:id="@+id/fragment_set_profile_second_btn_submit"
-<<<<<<< Updated upstream
-        android:layout_width="match_parent"
-=======
         android:layout_width="80dp"
->>>>>>> Stashed changes
         android:layout_height="wrap_content"
         android:text="다음"
         android:textColor="@color/colorWhite"
