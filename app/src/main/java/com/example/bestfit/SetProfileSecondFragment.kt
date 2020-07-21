@@ -12,12 +12,15 @@ import androidx.annotation.Nullable
 import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import com.example.bestfit.model.AccountDTO
+import com.example.bestfit.util.InitData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
 import kotlinx.android.synthetic.main.fragment_set_profile_second.*
 import kotlinx.android.synthetic.main.fragment_set_profile_second.view.*
+import kotlinx.android.synthetic.main.item_dialogpicker.*
+import kotlinx.android.synthetic.main.item_dialogpicker.view.*
 import kotlin.math.max
 
 class SetProfileSecondFragment : Fragment() {
@@ -30,8 +33,6 @@ class SetProfileSecondFragment : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_set_profile_second, container, false)
 
-        initNumberPicker(fragmentView)
-
         fragmentView.fragment_set_profile_second_text_height.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 var defaultValue = 165
@@ -39,7 +40,58 @@ class SetProfileSecondFragment : Fragment() {
                 if (fragmentView.fragment_set_profile_second_text_height.text!!.isDigitsOnly())
                     defaultValue = fragmentView.fragment_set_profile_second_text_height.text.toString().toInt()
 
-                initDialogPicker(fragmentView.fragment_set_profile_second_text_height, 110, 230, defaultValue)
+                initDialogNumberPicker(fragmentView.fragment_set_profile_second_text_height, 110, 230, defaultValue, "cm")
+                v.clearFocus()
+            }
+        }
+
+        fragmentView.fragment_set_profile_second_text_weight.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                var defaultValue = 50
+
+                if (fragmentView.fragment_set_profile_second_text_weight.text!!.isDigitsOnly())
+                    defaultValue = fragmentView.fragment_set_profile_second_text_weight.text.toString().toInt()
+
+                initDialogNumberPicker(fragmentView.fragment_set_profile_second_text_weight, 10, 300, defaultValue, "kg")
+                v.clearFocus()
+            }
+        }
+
+        fragmentView.fragment_set_profile_second_text_top.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                val sizeFormatId = "01"
+                var defaultSizeId = "0104" // M
+
+                if (fragmentView.fragment_set_profile_second_text_top.text!!.isNotEmpty())
+                    defaultSizeId = InitData.getSizeId(sizeFormatId, fragmentView.fragment_set_profile_second_text_top.text.toString()) ?: defaultSizeId
+
+                initDialogPicker(fragmentView.fragment_set_profile_second_text_top, sizeFormatId, defaultSizeId)
+                v.clearFocus()
+            }
+        }
+
+        fragmentView.fragment_set_profile_second_text_bottom.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                val sizeFormatId = "03"
+                var defaultSizeId = "0305" // 28
+
+                if (fragmentView.fragment_set_profile_second_text_bottom.text!!.isNotEmpty())
+                    defaultSizeId = InitData.getSizeId(sizeFormatId, fragmentView.fragment_set_profile_second_text_bottom.text.toString()) ?: defaultSizeId
+
+                initDialogPicker(fragmentView.fragment_set_profile_second_text_bottom, sizeFormatId, defaultSizeId)
+                v.clearFocus()
+            }
+        }
+
+        fragmentView.fragment_set_profile_second_text_shoes.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                val sizeFormatId = "04"
+                var defaultSizeId = "0410" // 250
+
+                if (fragmentView.fragment_set_profile_second_text_shoes.text!!.isNotEmpty())
+                    defaultSizeId = InitData.getSizeId(sizeFormatId, fragmentView.fragment_set_profile_second_text_shoes.text.toString()) ?: defaultSizeId
+
+                initDialogPicker(fragmentView.fragment_set_profile_second_text_shoes, sizeFormatId, defaultSizeId)
                 v.clearFocus()
             }
         }
@@ -51,37 +103,45 @@ class SetProfileSecondFragment : Fragment() {
         return fragmentView
     }
 
-    private fun initDialogPicker(view: EditText, minValue: Int, maxValue: Int, defaultValue: Int) {
+    private fun initDialogNumberPicker(view: EditText, minValue: Int, maxValue: Int, defaultValue: Int, suffix: String) {
         val dialog = MaterialAlertDialogBuilder(context!!)
-        val picker = NumberPicker(context)
+        val dialogPickerView = LayoutInflater.from(context).inflate(R.layout.item_dialogpicker, null)
+        val picker = dialogPickerView.item_dialogpicker_np
 
-//        picker.layoutParams = ViewGroup.LayoutParams(100, ViewGroup.LayoutParams.WRAP_CONTENT)
         picker.minValue = minValue
         picker.maxValue = maxValue
         picker.value = defaultValue
         picker.wrapSelectorWheel = false
         picker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+        dialogPickerView.item_dialogpicker_tv_suffix.text = suffix
 
         dialog.setNegativeButton("취소", DialogInterface.OnClickListener { _, _ ->  })
         dialog.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
             view.setText(picker.value.toString())
         })
-        dialog.setView(picker)
+        dialog.setView(dialogPickerView)
         dialog.show()
     }
 
-    private fun initNumberPicker(view: View) {
-//        view.fragment_set_profile_second_np_height.minValue = 120
-//        view.fragment_set_profile_second_np_height.maxValue = 220
-//        view.fragment_set_profile_second_np_height.value = 165
-//        view.fragment_set_profile_second_np_height.wrapSelectorWheel = false
-//        view.fragment_set_profile_second_np_height.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-//
-//        view.fragment_set_profile_second_np_weight.minValue = 10
-//        view.fragment_set_profile_second_np_weight.maxValue = 250
-//        view.fragment_set_profile_second_np_weight.value = 50
-//        view.fragment_set_profile_second_np_weight.wrapSelectorWheel = false
-//        view.fragment_set_profile_second_np_weight.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+    private fun initDialogPicker(view: EditText, sizeFormatId: String, defaultSizeId: String) {
+        val dialog = MaterialAlertDialogBuilder(context!!)
+        val dialogPickerView = LayoutInflater.from(context).inflate(R.layout.item_dialogpicker, null)
+        val picker = dialogPickerView.item_dialogpicker_np
+        val displayedArray = InitData.sizeFormatDTOs[InitData.getSizeFormatIndex(sizeFormatId)].list.toTypedArray()
+
+        picker.minValue = 0
+        picker.maxValue = displayedArray.size - 1
+        picker.displayedValues = displayedArray
+        picker.value = InitData.getSizeIndex(sizeFormatId, defaultSizeId)
+        picker.wrapSelectorWheel = false
+        picker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+
+        dialog.setNegativeButton("취소", DialogInterface.OnClickListener { _, _ ->  })
+        dialog.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
+            view.setText(displayedArray[picker.value])
+        })
+        dialog.setView(dialogPickerView)
+        dialog.show()
     }
 
     private fun submitSetProfile() {

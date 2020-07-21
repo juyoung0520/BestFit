@@ -10,7 +10,9 @@
         android:orientation="vertical"
         android:layout_marginTop="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp">
+        android:layout_marginEnd="30dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,6 +49,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text=" "
+                        android:textStyle="bold"
                         android:gravity="end" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -69,9 +72,11 @@
                     app:suffixText=" kg">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/fragment_set_profile_second_text_weight"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text=" "
+                        android:textStyle="bold"
                         android:gravity="end"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -108,14 +113,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/TextInputLayoutStyle"
-                    app:prefixText="상의"
-                    app:suffixText="선택"
-                    app:suffixTextColor="@color/colorBlack">
+                    app:prefixText="상의">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/fragment_set_profile_second_text_top"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=" "
+                        android:text="선택"
+                        android:textStyle="bold"
                         android:gravity="end"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -134,14 +139,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/TextInputLayoutStyle"
-                    app:prefixText="하의"
-                    app:suffixText="선택"
-                    app:suffixTextColor="@color/colorBlack">
+                    app:prefixText="하의">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/fragment_set_profile_second_text_bottom"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=" "
+                        android:text="선택"
+                        android:textStyle="bold"
                         android:gravity="end"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -160,14 +165,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/TextInputLayoutStyle"
-                    app:prefixText="신발"
-                    app:suffixText="선택"
-                    app:suffixTextColor="@color/colorBlack">
+                    app:prefixText="신발">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/fragment_set_profile_second_text_shoes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text=" "
+                        android:text="선택"
+                        android:textStyle="bold"
                         android:gravity="end"/>
 
                 </com.google.android.material.textfield.TextInputLayout>

@@ -71,4 +71,34 @@ object InitData {
 
         return -1
     }
+
+    fun getSizeFormatIndex(sizeFormatId: String): Int {
+        for (format in sizeFormatDTOs) {
+            if (sizeFormatId == format.id)
+                return format.index!!
+        }
+
+        return -1
+    }
+
+    fun getSizeIndex(sizeFormatId: String, sizeId: String): Int {
+        val sizeIdList = sizeFormatDTOs[getSizeFormatIndex(sizeFormatId)].listId
+
+        for ((idx, id) in sizeIdList.withIndex()) {
+            if (sizeId == id)
+                return idx
+        }
+
+        return -1
+    }
+
+    fun getSizeId(sizeFormatId: String, sizeString: String): String? {
+        val sizeList = sizeFormatDTOs[getSizeFormatIndex(sizeFormatId)].list
+        val result = sizeList.indexOf(sizeString)
+
+        if (result != -1)
+            return sizeFormatDTOs[getSizeFormatIndex(sizeFormatId)].listId[result]
+
+        return null
+    }
 }
