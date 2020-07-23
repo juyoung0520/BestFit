@@ -23,6 +23,14 @@ class AddItemThirdFragment  : Fragment() {
 
         initSelectedSizeTable(fragmentView)
 
+        fragmentView.fragment_add_item_third_text_review.setOnTouchListener { view, motionEvent ->
+            fragmentView.fragment_add_item_third_scrollview.requestDisallowInterceptTouchEvent(true)
+            if (motionEvent.action == MotionEvent.ACTION_UP)
+                fragmentView.fragment_add_item_third_scrollview.requestDisallowInterceptTouchEvent(false)
+
+            return@setOnTouchListener false
+        }
+
         return fragmentView
     }
 

@@ -147,13 +147,16 @@
             <EditText
                 android:id="@+id/fragment_add_item_third_text_review"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:hint="가슴은 뜨겁게, 리뷰는 솔직하게! "
                 android:background="@drawable/text_big"
                 android:gravity="start"
+                android:lines="7"
+                android:scrollbars="vertical"
                 android:paddingTop="10dp"
                 android:paddingStart="20dp"
-                android:paddingEnd="20dp" />
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp"/>
 
         </LinearLayout>
 
