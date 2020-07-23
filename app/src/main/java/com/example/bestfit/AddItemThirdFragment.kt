@@ -19,6 +19,8 @@ class AddItemThirdFragment  : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_third, container, false)
 
+        fragmentView.fragment_add_item_third_text_review.setTextInputLayout(fragmentView.fragment_add_item_third_layout_text_review)
+
         setHasOptionsMenu(true)
 
         initSelectedSizeTable(fragmentView)

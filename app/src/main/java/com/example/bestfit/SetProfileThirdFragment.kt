@@ -24,6 +24,8 @@ class SetProfileThirdFragment : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_set_profile_third, container, false)
 
+        fragmentView.fragment_set_profile_third_text_review.setTextInputLayout(fragmentView.fragment_set_profile_third_layout_text_review)
+
 //        fragmentView.fragment_set_profile_third_btn_submit.setOnClickListener {
 //            submitSetProfile()
 //        }

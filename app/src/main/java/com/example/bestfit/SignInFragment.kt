@@ -93,14 +93,6 @@ class SignInFragment : Fragment() {
         signInActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
-    private fun checkText(view: View, text: Editable) : Boolean {
-        if (text!!.length > 0) {
-            return true
-        } else {
-            return false
-        }
-    }
-
     private fun signIn(view: View) {
         val email = view.fragment_signin_text_email.text.toString()
         val password = view.fragment_signin_text_password.text.toString()
@@ -119,13 +111,13 @@ class SignInFragment : Fragment() {
                         // 올바른 이메일 형식
                          view.fragment_signin_layout_text_email.error = "잘못된 형식의 이메일입니다."
                     }
-//                    else if (task.exception?.message?.indexOf("no user record") != -1) {
-//                        // 존재하지 않는 이메일
-//                        view.fragment_signin_layout_text_email.error = "존재하지 않는 이메일입니다."
-//                    } else if (task.exception?.message?.indexOf("password is invalid") != -1) {
-//                        // 비밀번호 틀림
-//                        view.fragment_signin_layout_text_email.error = "잘못된 형식의 이메일입니다."
-//                    }
+                    else if (task.exception?.message?.indexOf("no user record") != -1) {
+                        // 존재하지 않는 이메일
+                        view.fragment_signin_layout_text_email.error = "존재하지 않는 이메일입니다."
+                    } else if (task.exception?.message?.indexOf("password is invalid") != -1) {
+                        // 비밀번호 틀림
+                        view.fragment_signin_layout_text_email.error = "잘못된 형식의 이메일입니다."
+                    }
 
                     println(task.exception?.message)
                     Toast.makeText(context, "login fail", Toast.LENGTH_SHORT).show()

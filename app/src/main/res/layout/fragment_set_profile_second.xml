@@ -38,19 +38,20 @@
                 android:layout_marginRight="7.5dp">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/fragment_set_profile_second_layout_text_height"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/TextInputLayoutStyle"
                     app:prefixText="키"
                     app:suffixText=" cm">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.example.bestfit.view.EditText
                         android:id="@+id/fragment_set_profile_second_text_height"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text=" "
                         android:textStyle="bold"
-                        android:gravity="end" />
+                        android:gravity="end"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,13 +66,14 @@
                 android:layout_marginLeft="7.5dp">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/fragment_set_profile_second_layout_text_weight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/TextInputLayoutStyle"
                     app:prefixText="체중"
                     app:suffixText=" kg">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.example.bestfit.view.EditText
                         android:id="@+id/fragment_set_profile_second_text_weight"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -110,12 +112,13 @@
                 android:layout_marginRight="10dp">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/fragment_set_profile_second_layout_text_top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/TextInputLayoutStyle"
                     app:prefixText="상의">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.example.bestfit.view.EditText
                         android:id="@+id/fragment_set_profile_second_text_top"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -136,12 +139,13 @@
                 android:layout_marginEnd="5dp">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/fragment_set_profile_second_layout_text_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/TextInputLayoutStyle"
                     app:prefixText="하의">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.example.bestfit.view.EditText
                         android:id="@+id/fragment_set_profile_second_text_bottom"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -162,12 +166,13 @@
                 android:layout_marginLeft="10dp">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/fragment_set_profile_second_layout_text_shoes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/TextInputLayoutStyle"
                     app:prefixText="신발">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <com.example.bestfit.view.EditText
                         android:id="@+id/fragment_set_profile_second_text_shoes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

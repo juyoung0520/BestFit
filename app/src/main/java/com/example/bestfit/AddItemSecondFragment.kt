@@ -23,6 +23,8 @@ class AddItemSecondFragment  : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_second, container, false)
 
+        fragmentView.fragment_add_item_second_text_item_name.setTextInputLayout(fragmentView.fragment_add_item_second_layout_text_item_name)
+
         initBrand(fragmentView)
 
         fragmentView.fragment_add_item_second_btn_submit.setOnClickListener {

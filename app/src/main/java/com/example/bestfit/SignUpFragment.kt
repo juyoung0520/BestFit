@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_signin.*
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
+import kotlinx.android.synthetic.main.fragment_signin.view.*
 import kotlinx.android.synthetic.main.fragment_signup.view.*
 
 class SignUpFragment : Fragment() {
@@ -21,6 +22,10 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_signup, container, false)
+
+        view.fragment_signup_text_email.setTextInputLayout(view.fragment_signup_layout_text_email)
+        view.fragment_signup_text_password.setTextInputLayout(view.fragment_signup_layout_text_password)
+        view.fragment_signup_text_password_check.setTextInputLayout(view.fragment_signup_layout_text_password_check)
 
         initToolbar()
 
