@@ -21,9 +21,7 @@ class SetProfileFirstFragment  : Fragment() {
 
         fragmentView.fragment_set_profile_first_text_nickname.setTextInputLayout(fragmentView.fragment_set_profile_first_layout_text_nickname)
 
-//        initNumberPicker(fragmentView)
         initList(fragmentView)
-
 
         fragmentView.fragment_set_profile_first_btn_submit.setOnClickListener {
             submitSetProfile()
@@ -41,14 +39,6 @@ class SetProfileFirstFragment  : Fragment() {
         }
         view.fragment_set_profile_first_actv_birth.setAdapter(adapter)
     }
-
-//    private fun initNumberPicker(view: View) {
-//        view.fragment_set_profile_first_np_birth.minValue = 1920
-//        view.fragment_set_profile_first_np_birth.maxValue = 2020
-//        view.fragment_set_profile_first_np_birth.value = 2001
-//        view.fragment_set_profile_first_np_birth.wrapSelectorWheel = false
-//        view.fragment_set_profile_first_np_birth.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
-//    }
 
     private fun submitSetProfile() {
         val setProfileActivity = activity as SetProfileActivity

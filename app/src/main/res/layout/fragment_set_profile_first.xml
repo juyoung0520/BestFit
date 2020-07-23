@@ -18,7 +18,6 @@
             android:text="닉네임"
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
-            android:layout_marginTop="15dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp" />
 
@@ -28,6 +27,7 @@
             android:layout_height="wrap_content"
             style="@style/TextInputLayoutStyle"
             android:hint="닉네임"
+            app:hintAnimationEnabled="false"
             app:endIconMode="clear_text">
 
             <com.example.bestfit.view.EditText
@@ -46,47 +46,27 @@
             android:layout_marginTop="15dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="5dp"/>
 
-        <LinearLayout
-            android:layout_width="190dp"
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:singleSelection="true"
+            app:selectionRequired="true">
 
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="남자"
+                style="@style/ToggleButton"/>
 
-                <RadioButton
-                    android:id="@+id/fragment_set_profile_first_btn_male"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:text="남자"
-                    android:textColor="@drawable/radio_btn_selector_textcolor"
-                    android:background="@drawable/radio_btn_default"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_weight="1"/>
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="여자"
+                style="@style/ToggleButton"/>
 
-                <RadioButton
-                    android:id="@+id/fragment_set_profile_first_btn_female"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:text="여자"
-                    android:textColor="@drawable/radio_btn_selector_textcolor"
-                    android:background="@drawable/radio_btn_default"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"/>
-
-            </RadioGroup>
-
-        </LinearLayout>
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <TextView
         android:layout_width="wrap_content"
@@ -96,23 +76,13 @@
         android:textStyle="bold"
         android:layout_marginTop="15dp"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginEnd="10dp"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="출생 연도"-->
-<!--                android:textColor="@color/colorBlack"-->
-<!--                android:textStyle="bold"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:layout_marginStart="10dp"-->
-<!--                android:layout_marginEnd="10dp" />-->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
@@ -135,7 +105,7 @@
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp" />
+                android:layout_marginEnd="10dp" />
 
         </LinearLayout>
 
@@ -153,6 +123,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"/>
+        android:layout_marginRight="30dp"
+        style="@style/Widget.MaterialComponents.Button"/>
 
 </RelativeLayout>

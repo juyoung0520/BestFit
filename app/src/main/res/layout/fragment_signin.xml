@@ -28,8 +28,8 @@
             android:layout_height="wrap_content"
             style="@style/TextInputLayoutStyle"
             android:hint="이메일"
-            app:endIconMode="clear_text"
-            app:hintAnimationEnabled="false">
+            app:hintAnimationEnabled="false"
+            app:endIconMode="clear_text">
 
             <com.example.bestfit.view.EditText
                 android:id="@+id/fragment_signin_text_email"
@@ -46,7 +46,7 @@
             android:textStyle="bold"
             android:layout_marginTop="15dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginEnd="10dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_signin_layout_text_password"
@@ -55,8 +55,7 @@
             style="@style/TextInputLayoutStyle"
             android:hint="비밀번호"
             app:endIconMode="password_toggle"
-            app:hintAnimationEnabled="false"
-            android:layout_marginBottom="15dp">
+            app:hintAnimationEnabled="false">
 
             <com.example.bestfit.view.EditText
                 android:id="@+id/fragment_signin_text_password"
@@ -68,7 +67,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
 
             <Button
                 android:id="@+id/fragment_signin_btn_signin"

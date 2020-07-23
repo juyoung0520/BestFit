@@ -19,8 +19,8 @@
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -28,10 +28,10 @@
             android:textColor="@color/colorDarkGray"
             android:text="구체적인 신체 정보, 좋아하는 옷 스타일, SNS 등 자유롭게 입력해주세요."
             android:textSize="12sp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"/>
-
+        
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_set_profile_third_layout_text_review"
             android:layout_width="match_parent"
