@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/fragment_add_item_second_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -19,14 +20,16 @@
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginEnd="10dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_add_item_second_layout_actv_brand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/ExposedDropdownMenu"
             android:hint="브랜드/쇼핑몰"
-            style="@style/SpinnerTest">
+            app:hintAnimationEnabled="false"
+            app:endIconMode="none">
 
             <AutoCompleteTextView
                 android:id="@+id/fragment_add_item_second_actv_brand"
@@ -44,15 +47,15 @@
             android:textStyle="bold"
             android:layout_marginTop="15dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginEnd="10dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_add_item_second_layout_text_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/TextInputLayoutStyle"
-            android:hint="상품명">
+            style="@style/CorneredTextInputLayout"
+            android:hint="상품명"
+            app:hintAnimationEnabled="false">
 
             <com.example.bestfit.view.EditText
                 android:id="@+id/fragment_add_item_second_text_item_name"

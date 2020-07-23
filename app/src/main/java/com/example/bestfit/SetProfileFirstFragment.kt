@@ -21,7 +21,7 @@ class SetProfileFirstFragment  : Fragment() {
 
         fragmentView.fragment_set_profile_first_text_nickname.setTextInputLayout(fragmentView.fragment_set_profile_first_layout_text_nickname)
 
-        initList(fragmentView)
+        initBirth(fragmentView)
 
         fragmentView.fragment_set_profile_first_btn_submit.setOnClickListener {
             submitSetProfile()
@@ -30,13 +30,13 @@ class SetProfileFirstFragment  : Fragment() {
         return fragmentView
     }
 
-    private fun initList(view: View) {
-        val list : ArrayList<Int> = arrayListOf()
-        val adapter = ArrayAdapter(requireContext(), R.layout.item_list, list)
+    private fun initBirth(view: View) {
+        val years : ArrayList<Int> = arrayListOf()
 
-        for (birth in 2020 .. 1920) {
-            list.add(birth)
-        }
+        for (year in 2020 downTo 1920)
+            years.add(year)
+
+        val adapter = ArrayAdapter(context!!, R.layout.item_list, years)
         view.fragment_set_profile_first_actv_birth.setAdapter(adapter)
     }
 
@@ -44,9 +44,4 @@ class SetProfileFirstFragment  : Fragment() {
         val setProfileActivity = activity as SetProfileActivity
         setProfileActivity.changeViewPage(false)
     }
-
-//    fun getData(): Bundle {
-//        val bundle = Bundle()
-//        bundle.putString("nickname", view.)
-//    }
 }

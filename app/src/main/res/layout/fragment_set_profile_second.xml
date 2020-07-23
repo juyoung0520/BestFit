@@ -21,8 +21,7 @@
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginEnd="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,7 +40,7 @@
                     android:id="@+id/fragment_set_profile_second_layout_text_height"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/TextInputLayoutStyle"
+                    style="@style/CorneredTextInputLayout"
                     app:prefixText="키"
                     app:suffixText=" cm">
 
@@ -69,7 +68,7 @@
                     android:id="@+id/fragment_set_profile_second_layout_text_weight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/TextInputLayoutStyle"
+                    style="@style/CorneredTextInputLayout"
                     app:prefixText="체중"
                     app:suffixText=" kg">
 
@@ -95,8 +94,7 @@
             android:textStyle="bold"
             android:layout_marginTop="15dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginEnd="10dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -115,7 +113,7 @@
                     android:id="@+id/fragment_set_profile_second_layout_text_top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/TextInputLayoutStyle"
+                    style="@style/CorneredTextInputLayout"
                     app:prefixText="상의">
 
                     <com.example.bestfit.view.EditText
@@ -142,7 +140,7 @@
                     android:id="@+id/fragment_set_profile_second_layout_text_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/TextInputLayoutStyle"
+                    style="@style/CorneredTextInputLayout"
                     app:prefixText="하의">
 
                     <com.example.bestfit.view.EditText
@@ -169,7 +167,7 @@
                     android:id="@+id/fragment_set_profile_second_layout_text_shoes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/TextInputLayoutStyle"
+                    style="@style/CorneredTextInputLayout"
                     app:prefixText="신발">
 
                     <com.example.bestfit.view.EditText

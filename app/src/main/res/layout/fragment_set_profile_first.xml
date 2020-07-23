@@ -25,7 +25,7 @@
             android:id="@+id/fragment_set_profile_first_layout_text_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/TextInputLayoutStyle"
+            style="@style/CorneredTextInputLayout"
             android:hint="닉네임"
             app:hintAnimationEnabled="false"
             app:endIconMode="clear_text">
@@ -69,14 +69,14 @@
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="출생연도"
-        android:textColor="@color/colorBlack"
-        android:textStyle="bold"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="출생연도"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -86,13 +86,13 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                style="@style/SpinnerTest">
+                style="@style/ExposedDropdownMenu">
 
                 <AutoCompleteTextView
                     android:id="@+id/fragment_set_profile_first_actv_birth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dropDownHeight="250dp"
+                    android:dropDownHeight="230dp"
                     android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>

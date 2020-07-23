@@ -16,8 +16,9 @@
             android:id="@+id/fragment_signup_layout_text_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/TextInputLayoutStyle"
+            style="@style/CorneredTextInputLayout"
             android:hint="이메일"
+            app:hintAnimationEnabled="false"
             app:endIconMode="clear_text"
             android:layout_marginBottom="5dp">
 
@@ -32,8 +33,9 @@
             android:id="@+id/fragment_signup_layout_text_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/TextInputLayoutStyle"
+            style="@style/CorneredTextInputLayout"
             android:hint="비밀번호"
+            app:hintAnimationEnabled="false"
             app:endIconMode="password_toggle"
             android:layout_marginBottom="5dp">
 
@@ -49,10 +51,10 @@
             android:id="@+id/fragment_signup_layout_text_password_check"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/TextInputLayoutStyle"
+            style="@style/CorneredTextInputLayout"
             android:hint="비밀번호 확인"
-            app:endIconMode="password_toggle"
-            android:layout_marginBottom="15dp">
+            app:hintAnimationEnabled="false"
+            app:endIconMode="password_toggle">
 
             <com.example.bestfit.view.EditText
                 android:id="@+id/fragment_signup_text_password_check"
@@ -71,7 +73,8 @@
             android:textColor="@color/colorWhite"
             android:textStyle="bold"
             android:background="@drawable/btn_default"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="15dp"
+            style="@style/Widget.MaterialComponents.Button"/>
 
    </LinearLayout>
 

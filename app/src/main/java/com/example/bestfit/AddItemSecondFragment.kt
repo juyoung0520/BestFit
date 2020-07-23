@@ -7,9 +7,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
 import com.example.bestfit.util.InitData
+import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
 
 
@@ -22,6 +25,13 @@ class AddItemSecondFragment  : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_second, container, false)
+
+//        fragmentView.fragment_add_item_second_actv_brand.setOnFocusChangeListener { view, b ->
+//            if (b)
+//                fragmentView.fragment_add_item_second_layout_actv_brand.hint = ""
+//            else if (fragmentView.fragment_add_item_second_actv_brand.text.isNullOrEmpty())
+//                fragmentView.fragment_add_item_second_layout_actv_brand.hint = "브랜드/쇼핑몰"
+//        }
 
         fragmentView.fragment_add_item_second_text_item_name.setTextInputLayout(fragmentView.fragment_add_item_second_layout_text_item_name)
 
@@ -36,24 +46,22 @@ class AddItemSecondFragment  : Fragment() {
 
     private fun initBrand(view: View) {
         val brands = InitData.brands
-        val categoryAdapter = ArrayAdapter(context!!, R.layout.item_dropdown, brands)
+        val categoryAdapter = ArrayAdapter(context!!, R.layout.item_list, brands)
 
         view.fragment_add_item_second_actv_brand.setAdapter(categoryAdapter)
         view.fragment_add_item_second_actv_brand.setOnFocusChangeListener { _, b ->
             if (b) {
-//                println("top ${view.fragment_add_item_first_tv_brand.top}")
-//                view.fragment_add_item_scrollview.scrollTo(0, view.fragment_add_item_first_tv_brand.bottom)
+                view.fragment_add_item_second_layout_actv_brand.hint = ""
                 view.fragment_add_item_second_actv_brand.text = null
             }
+            else if (view.fragment_add_item_second_actv_brand.text.isNullOrEmpty())
+                view.fragment_add_item_second_layout_actv_brand.hint = "브랜드/쇼핑몰"
 //            else {
 //                view.fragment_add_item_first_actv_brand.error = "직접 입력한 브랜드/쇼핑몰은 검색 결과에 제대로 노출되지 않을 수 있습니다."
 //            }
         }
-        view.fragment_add_item_second_actv_brand.setOnItemClickListener { parent, _, position, id ->
-            val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-
-            view.fragment_add_item_second_actv_brand.clearFocus()
+        view.fragment_add_item_second_actv_brand.setOnItemClickListener { _, _, _, _ ->
+            view.fragment_add_item_second_text_item_name.requestFocus()
         }
     }
 

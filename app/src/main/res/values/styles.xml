@@ -12,6 +12,15 @@
         <item name="materialButtonStyle">@style/MaterialButton</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
+    <style name="ToolbarMenu">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
     <style name="MaterialButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
@@ -20,40 +29,31 @@
     <style name="ToggleButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
-        <item name="cornerRadius">10dp</item>
+        <item name="cornerRadius">15dp</item>
     </style>
     
-    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxCornerRadiusTopStart">20dp</item>
-        <item name="boxCornerRadiusTopEnd">20dp</item>
-        <item name="boxCornerRadiusBottomStart">20dp</item>
-        <item name="boxCornerRadiusBottomEnd">20dp</item>
+    <style name="CorneredTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">15dp</item>
+        <item name="boxCornerRadiusTopEnd">15dp</item>
+        <item name="boxCornerRadiusBottomStart">15dp</item>
+        <item name="boxCornerRadiusBottomEnd">15dp</item>
     </style>
 
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
+    <style name="ExposedDropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxCornerRadiusTopStart">15dp</item>
+        <item name="boxCornerRadiusTopEnd">15dp</item>
+        <item name="boxCornerRadiusBottomStart">15dp</item>
+        <item name="boxCornerRadiusBottomEnd">15dp</item>
     </style>
 
     <style name="SpinnerStyle" parent="Widget.AppCompat.ListView.DropDown">
-        <item name="android:divider">@color/colorDivision</item>
-        <item name="android:dividerHeight">2dp</item>
+<!--        <item name="android:divider">@color/colorDivision</item>-->
+<!--        <item name="android:dividerHeight">2dp</item>-->
     </style>
 
     <style name="NumberPickerStyle">
 <!--        <item name="android:textSize">20sp</item>-->
 <!--        <item name="android:textStyle">bold</item>-->
-    </style>
-
-    <style name="ToolbarMenu">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/colorBlack</item>
-    </style>
-
-    <style name="SpinnerTest" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-        <item name="boxCornerRadiusTopStart">10dp</item>
-        <item name="boxCornerRadiusTopEnd">10dp</item>
-        <item name="boxCornerRadiusBottomStart">10dp</item>
-        <item name="boxCornerRadiusBottomEnd">10dp</item>
     </style>
 
 </resources>
