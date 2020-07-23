@@ -17,7 +17,7 @@ import com.example.bestfit.R
 class ClearEditText : AppCompatEditText, TextWatcher, OnTouchListener, OnFocusChangeListener {
     private var clearDrawable: Drawable? = null
 
-    constructor(context : Context) : super(context)
+    constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet, defStyleAttr : Int) : super(context, attrs, defStyleAttr)
 
@@ -28,7 +28,6 @@ class ClearEditText : AppCompatEditText, TextWatcher, OnTouchListener, OnFocusCh
         clearDrawable!!.setBounds(0, 0, clearDrawable!!.intrinsicWidth, clearDrawable!!.intrinsicHeight)
 
         setClearIconVisible(false)
-        super.setOnTouchListener(this)
         super.setOnFocusChangeListener(this)
         addTextChangedListener(this)
     }

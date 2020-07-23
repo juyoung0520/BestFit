@@ -58,7 +58,7 @@
             app:hintAnimationEnabled="false"
             android:layout_marginBottom="15dp">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.example.bestfit.view.EditText
                 android:id="@+id/fragment_signin_text_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
