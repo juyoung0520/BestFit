@@ -32,14 +32,10 @@ class EditText : com.google.android.material.textfield.TextInputEditText, View.O
                     hint = textInputLayout!!.hint.toString()
 
                 textInputLayout!!.hint = ""
-
-                println("focus true $hint")
             }
             else if (text.isNullOrEmpty()) {
                 textInputLayout!!.hint = hint
                 hint = null
-
-                println("focus false")
             }
         }
     }

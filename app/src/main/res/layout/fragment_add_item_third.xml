@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/fragment_add_item_third_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -89,7 +94,8 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true">
 
-                <ScrollView
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/fragment_add_item_third_scrollview_format"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:scrollbars="vertical">
@@ -101,7 +107,7 @@
                         android:orientation="vertical"
                         app:singleSelection="true"/>
 
-                </ScrollView>
+                </androidx.core.widget.NestedScrollView>
 
                 <LinearLayout
                     android:id="@+id/fragment_add_item_third_layout_divider"
@@ -110,7 +116,8 @@
                     android:background="@color/colorHintTransparent"
                     android:orientation="horizontal" />
 
-                <ScrollView
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/fragment_add_item_third_scrollview_size"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scrollbars="vertical">
@@ -122,7 +129,7 @@
                         android:orientation="vertical"
                         app:singleSelection="true"/>
 
-                </ScrollView>
+                </androidx.core.widget.NestedScrollView>
 
             </LinearLayout>
 
@@ -150,4 +157,6 @@
 
         </LinearLayout>
 
-</RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
