@@ -6,14 +6,16 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.example.bestfit.model.AccountDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_set_profile.*
 import kotlinx.android.synthetic.main.fragment_set_profile_first.view.*
-import kotlinx.android.synthetic.main.fragment_set_profile_second.view.*
 
 class SetProfileActivity : AppCompatActivity() {
     private val auth = FirebaseAuth.getInstance()
@@ -33,9 +35,6 @@ class SetProfileActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-
                 changeViewPage(true)
                 return true
             }
@@ -47,16 +46,32 @@ class SetProfileActivity : AppCompatActivity() {
     private fun initToolbar() {
         setSupportActionBar(activity_set_profile_toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun initViewPager() {
-        activity_set_profile_viewpager.adapter = SetProfileFragmentPagerAdapter(supportFragmentManager, 3)
+        activity_set_profile_viewpager.adapter = SetProfileFragmentPagerAdapter(this, 3)
+        activity_set_profile_viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+
+                when (position) {
+                    0 -> supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    1, 2 -> {
+                        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+                    }
+                }
+            }
+        })
         activity_set_profile_indicator.setViewPager(activity_set_profile_viewpager)
     }
 
-    inner class SetProfileFragmentPagerAdapter(fm: FragmentManager, private val fragmentSize: Int) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-        override fun getItem(position: Int): Fragment {
+    inner class SetProfileFragmentPagerAdapter(fragmentActivity: FragmentActivity, private val fragmentSize: Int) : FragmentStateAdapter(fragmentActivity) {
+        override fun getItemCount(): Int {
+            return fragmentSize
+        }
+
+        override fun createFragment(position: Int): Fragment {
             val fragment = when (position) {
                 0 -> SetProfileFirstFragment()
                 1 -> SetProfileSecondFragment()
@@ -66,14 +81,6 @@ class SetProfileActivity : AppCompatActivity() {
 
             fragments.add(fragment)
             return fragment
-        }
-
-        override fun getCount(): Int {
-            return fragmentSize
-        }
-
-        override fun getPageTitle(position: Int): CharSequence {
-            return "SetProfileFragments"
         }
     }
 
@@ -88,10 +95,13 @@ class SetProfileActivity : AppCompatActivity() {
             finish()
             return
         }
-        else if (newPosition > activity_set_profile_viewpager.adapter!!.count)
+        else if (newPosition > activity_set_profile_viewpager.adapter!!.itemCount)
             return
 
         activity_set_profile_viewpager.currentItem = newPosition
+
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     fun submitSetProfile() {

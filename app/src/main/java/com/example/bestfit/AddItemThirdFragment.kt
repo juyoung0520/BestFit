@@ -19,11 +19,9 @@ class AddItemThirdFragment  : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_third, container, false)
 
-        fragmentView.fragment_add_item_third_text_review.setTextInputLayout(fragmentView.fragment_add_item_third_layout_text_review)
-
         setHasOptionsMenu(true)
 
-        initSelectedSizeTable(fragmentView)
+        fragmentView.fragment_add_item_third_text_review.setTextInputLayout(fragmentView.fragment_add_item_third_layout_text_review)
 
         fragmentView.fragment_add_item_third_text_review.setOnTouchListener { view, motionEvent ->
             fragmentView.fragment_add_item_third_scrollview.requestDisallowInterceptTouchEvent(true)
@@ -32,6 +30,8 @@ class AddItemThirdFragment  : Fragment() {
 
             return@setOnTouchListener false
         }
+
+        initSelectedSizeTable(fragmentView)
 
         return fragmentView
     }
@@ -51,11 +51,6 @@ class AddItemThirdFragment  : Fragment() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun submitAddItem() {
-        val addItemActivity = activity as AddItemActivity
-        addItemActivity.submitAddItem()
     }
 
     private fun initSelectedSizeTable(view: View) {
@@ -102,5 +97,10 @@ class AddItemThirdFragment  : Fragment() {
             if (!hasFocus)
                 view.fragment_add_item_third_layout_divider.setBackgroundColor(resources.getColor(R.color.colorHintTransparent))
         }
+    }
+
+    private fun submitAddItem() {
+        val addItemActivity = activity as AddItemActivity
+        addItemActivity.submitAddItem()
     }
 }

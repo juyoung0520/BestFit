@@ -10,9 +10,12 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.model.ItemDTO
 import com.google.firebase.auth.FirebaseAuth
@@ -44,9 +47,6 @@ class AddItemActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-
                 changeViewPage(true)
                 return true
             }
@@ -59,37 +59,29 @@ class AddItemActivity : AppCompatActivity() {
         setSupportActionBar(activity_add_item_toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
     }
 
     private fun initViewPager() {
-        activity_add_item_viewpager.adapter = AddItemFragmentPagerAdapter(supportFragmentManager, 3)
-        activity_add_item_viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-
-            }
-
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-
-            }
-
+        activity_add_item_viewpager.adapter = AddItemFragmentPagerAdapter(this, 3)
+        activity_add_item_viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+
                 when (position) {
                     0 -> supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
                     1, 2 -> supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
                 }
             }
-
         })
         activity_add_item_indicator.setViewPager(activity_add_item_viewpager)
     }
 
-    inner class AddItemFragmentPagerAdapter(fm: FragmentManager, private val fragmentSize: Int) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-        override fun getItem(position: Int): Fragment {
+    inner class AddItemFragmentPagerAdapter(fragmentActivity: FragmentActivity, private val fragmentSize: Int) : FragmentStateAdapter(fragmentActivity) {
+        override fun getItemCount(): Int {
+            return fragmentSize
+        }
+
+        override fun createFragment(position: Int): Fragment {
             val fragment = when (position) {
                 0 -> AddItemFirstFragment()
                 1 -> AddItemSecondFragment()
@@ -99,14 +91,6 @@ class AddItemActivity : AppCompatActivity() {
 
             fragments.add(fragment)
             return fragment
-        }
-
-        override fun getCount(): Int {
-            return fragmentSize
-        }
-
-        override fun getPageTitle(position: Int): CharSequence {
-            return "AddItemFragments"
         }
     }
 
@@ -121,10 +105,13 @@ class AddItemActivity : AppCompatActivity() {
             finish()
             return
         }
-        else if (newPosition > activity_add_item_viewpager.adapter!!.count)
+        else if (newPosition > activity_add_item_viewpager.adapter!!.itemCount)
             return
 
         activity_add_item_viewpager.currentItem = newPosition
+
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     fun submitAddItem() {

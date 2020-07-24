@@ -116,7 +116,6 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="다음"
-        android:textColor="@color/colorWhite"
         android:textStyle="bold"
         android:background="@drawable/btn_default"
         android:layout_alignParentEnd="true"

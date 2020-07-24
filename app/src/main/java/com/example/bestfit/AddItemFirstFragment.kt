@@ -26,6 +26,7 @@ import com.jinu.imagepickerlib.PhotoPickerActivity
 import com.jinu.imagepickerlib.utils.YPhotoPickerIntent
 import kotlinx.android.synthetic.main.activity_signin.*
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
+import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_add_item_image.view.*
 import java.io.File
@@ -42,8 +43,6 @@ class AddItemFirstFragment  : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_first, container, false)
 
-        initCategory(fragmentView)
-
         fragmentView.fragment_add_item_first_layout_add.setOnClickListener {
             addImage()
         }
@@ -51,6 +50,8 @@ class AddItemFirstFragment  : Fragment() {
         fragmentView.fragment_add_item_first_btn_submit.setOnClickListener {
             submitAddItem()
         }
+
+        initCategory(fragmentView)
 
         return fragmentView
     }
@@ -75,12 +76,13 @@ class AddItemFirstFragment  : Fragment() {
         val categoryAdapter = ArrayAdapter(context!!, R.layout.item_dropdown, categories)
 
         view.fragment_add_item_first_actv_category.setAdapter(categoryAdapter)
-        view.fragment_add_item_first_actv_category.keyListener = null
-        view.fragment_add_item_first_actv_category.setOnTouchListener { v, event ->
-            (v as AutoCompleteTextView).showDropDown()
-            false
+        view.fragment_add_item_first_actv_category.setOnFocusChangeListener { _, b ->
+            if (b)
+                view.fragment_add_item_first_layout_category.hint = ""
+            else if (view.fragment_add_item_first_actv_category.text.isNullOrEmpty())
+                view.fragment_add_item_first_layout_category.hint = "대분류"
         }
-        view.fragment_add_item_first_actv_category.setOnItemClickListener { parent, _, position, id ->
+        view.fragment_add_item_first_actv_category.setOnItemClickListener { _, _, position, _ ->
             if (view.fragment_add_item_first_layout_divider_category.visibility == View.GONE) {
                 view.fragment_add_item_first_layout_divider_category.visibility = View.VISIBLE
                 view.fragment_add_item_first_layout_sub_category.visibility = View.VISIBLE
@@ -96,12 +98,13 @@ class AddItemFirstFragment  : Fragment() {
         val categoryAdapter = ArrayAdapter(context!!, R.layout.item_dropdown, subCategories)
 
         view.fragment_add_item_first_actv_sub_category.setAdapter(categoryAdapter)
-        view.fragment_add_item_first_actv_sub_category.keyListener = null
-        view.fragment_add_item_first_actv_sub_category.setOnTouchListener { v, event ->
-            (v as AutoCompleteTextView).showDropDown()
-            false
+        view.fragment_add_item_first_actv_sub_category.setOnFocusChangeListener { _, b ->
+            if (b)
+                view.fragment_add_item_first_layout_sub_category.hint = ""
+            else if (view.fragment_add_item_first_actv_sub_category.text.isNullOrEmpty())
+                view.fragment_add_item_first_layout_sub_category.hint = "소분류"
         }
-        view.fragment_add_item_first_actv_sub_category.setOnItemClickListener { parent, _, position, id ->
+        view.fragment_add_item_first_actv_sub_category.setOnItemClickListener { _, _, position, _ ->
             val categoryDTO = view.fragment_add_item_first_actv_category.tag as CategoryDTO
             view.fragment_add_item_first_actv_sub_category.tag = categoryDTO.subId!![position]
         }
@@ -117,8 +120,8 @@ class AddItemFirstFragment  : Fragment() {
         view.fragment_add_item_first_recyclerview_image.adapter = ImageRecyclerViewAdapter(itemImages)
         view.fragment_add_item_first_recyclerview_image.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
-        while (view.fragment_add_item_first_recyclerview_image.itemDecorationCount > 0)
-            view.fragment_add_item_first_recyclerview_image.removeItemDecorationAt(0)
+//        while (view.fragment_add_item_first_recyclerview_image.itemDecorationCount > 0)
+//            view.fragment_add_item_first_recyclerview_image.removeItemDecorationAt(0)
 
 //        view.fragment_add_item_first_recyclerview_image.addItemDecoration(ItemDecoration())
     }

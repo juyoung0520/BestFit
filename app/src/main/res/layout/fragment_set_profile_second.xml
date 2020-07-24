@@ -28,61 +28,45 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                style="@style/CorneredTextInputLayout"
+                app:prefixText="키"
+                app:suffixText=" cm"
                 android:layout_weight="1"
                 android:layout_marginEnd="7.5dp"
                 android:layout_marginRight="7.5dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fragment_set_profile_second_layout_text_height"
+                <com.example.bestfit.view.EditText
+                    android:id="@+id/fragment_set_profile_second_text_height"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/CorneredTextInputLayout"
-                    app:prefixText="키"
-                    app:suffixText=" cm">
+                    android:text=" "
+                    android:textStyle="bold"
+                    android:gravity="end"/>
 
-                    <com.example.bestfit.view.EditText
-                        android:id="@+id/fragment_set_profile_second_text_height"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=" "
-                        android:textStyle="bold"
-                        android:gravity="end"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                style="@style/CorneredTextInputLayout"
+                app:prefixText="체중"
+                app:suffixText=" kg"
                 android:layout_weight="1"
                 android:layout_marginStart="7.5dp"
                 android:layout_marginLeft="7.5dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fragment_set_profile_second_layout_text_weight"
+                <com.example.bestfit.view.EditText
+                    android:id="@+id/fragment_set_profile_second_text_weight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/CorneredTextInputLayout"
-                    app:prefixText="체중"
-                    app:suffixText=" kg">
+                    android:text=" "
+                    android:textStyle="bold"
+                    android:gravity="end"/>
 
-                    <com.example.bestfit.view.EditText
-                        android:id="@+id/fragment_set_profile_second_text_weight"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=" "
-                        android:textStyle="bold"
-                        android:gravity="end"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
@@ -101,363 +85,72 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                style="@style/CorneredTextInputLayout"
+                app:prefixText="상의"
                 android:layout_weight="1"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fragment_set_profile_second_layout_text_top"
+                <com.example.bestfit.view.EditText
+                    android:id="@+id/fragment_set_profile_second_text_top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/CorneredTextInputLayout"
-                    app:prefixText="상의">
+                    android:text="선택"
+                    android:textStyle="bold"
+                    android:gravity="end"/>
 
-                    <com.example.bestfit.view.EditText
-                        android:id="@+id/fragment_set_profile_second_text_top"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="선택"
-                        android:textStyle="bold"
-                        android:gravity="end"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                style="@style/CorneredTextInputLayout"
+                app:prefixText="하의"
                 android:layout_weight="1"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fragment_set_profile_second_layout_text_bottom"
+                <com.example.bestfit.view.EditText
+                    android:id="@+id/fragment_set_profile_second_text_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/CorneredTextInputLayout"
-                    app:prefixText="하의">
+                    android:text="선택"
+                    android:textStyle="bold"
+                    android:gravity="end"/>
 
-                    <com.example.bestfit.view.EditText
-                        android:id="@+id/fragment_set_profile_second_text_bottom"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="선택"
-                        android:textStyle="bold"
-                        android:gravity="end"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                style="@style/CorneredTextInputLayout"
+                app:prefixText="신발"
                 android:layout_weight="1"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fragment_set_profile_second_layout_text_shoes"
+                <com.example.bestfit.view.EditText
+                    android:id="@+id/fragment_set_profile_second_text_shoes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/CorneredTextInputLayout"
-                    app:prefixText="신발">
+                    android:text="선택"
+                    android:textStyle="bold"
+                    android:gravity="end"/>
 
-                    <com.example.bestfit.view.EditText
-                        android:id="@+id/fragment_set_profile_second_text_shoes"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="선택"
-                        android:textStyle="bold"
-                        android:gravity="end"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
     </LinearLayout>
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal">-->
-
-
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="vertical"-->
-<!--                android:layout_marginEnd="10dp"-->
-<!--                android:layout_marginRight="10dp"-->
-<!--                android:layout_weight="1">-->
-
-<!--                <RelativeLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content">-->
-
-<!--                    <NumberPicker-->
-<!--                        android:id="@+id/fragment_set_profile_second_np_height"-->
-<!--                        android:layout_width="100dp"-->
-<!--                        android:layout_height="130dp"-->
-<!--                        android:theme="@style/NumberPickerStyle"-->
-<!--                        android:layout_centerHorizontal="true"/>-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:text="cm"-->
-<!--                        android:textStyle="bold"-->
-<!--                        android:textColor="@color/colorBlack"-->
-<!--                        android:layout_alignParentEnd="true"-->
-<!--                        android:layout_alignParentRight="true"-->
-<!--                        android:layout_centerVertical="true"/>-->
-
-<!--                </RelativeLayout>-->
-
-<!--            </LinearLayout>-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="vertical"-->
-<!--                android:layout_marginStart="10dp"-->
-<!--                android:layout_marginLeft="10dp"-->
-<!--                android:layout_weight="1">-->
-
-<!--                <RelativeLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content">-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="체중"-->
-<!--                        android:textColor="@color/colorBlack"-->
-<!--                        android:textStyle="bold"-->
-<!--                        android:layout_alignParentStart="true"-->
-<!--                        android:layout_alignParentLeft="true"-->
-<!--                        android:layout_centerVertical="true"/>-->
-
-<!--                    <NumberPicker-->
-<!--                        android:id="@+id/fragment_set_profile_second_np_weight"-->
-<!--                        android:layout_width="100dp"-->
-<!--                        android:layout_height="130dp"-->
-<!--                        android:theme="@style/NumberPickerStyle"-->
-<!--                        android:layout_centerHorizontal="true"/>-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:text="kg"-->
-<!--                        android:textColor="@color/colorBlack"-->
-<!--                        android:textStyle="bold"-->
-<!--                        android:layout_alignParentEnd="true"-->
-<!--                        android:layout_alignParentRight="true"-->
-<!--                        android:layout_centerVertical="true"/>-->
-
-<!--                </RelativeLayout>-->
-
-<!--            </LinearLayout>-->
-
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal">-->
-
-<!--            <TextView-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="어깨"-->
-<!--                android:textColor="@color/colorBlack"-->
-<!--                android:textStyle="bold"-->
-<!--                android:layout_gravity="center"/>-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <RadioGroup-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <RadioButton-->
-<!--                        android:id="@+id/fragment_set_profile_second_btn_small"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:text="좁음"-->
-<!--                        android:textColor="@drawable/radio_btn_selector_textcolor"-->
-<!--                        android:background="@drawable/radio_btn_left"-->
-<!--                        android:button="@null"-->
-<!--                        android:gravity="center"-->
-<!--                        android:layout_weight="1"/>-->
-
-<!--                    <RadioButton-->
-<!--                        android:id="@+id/fragment_set_profile_second_btn_medium"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:text="보통"-->
-<!--                        android:textColor="@drawable/radio_btn_selector_textcolor"-->
-<!--                        android:background="@drawable/radio_btn_center"-->
-<!--                        android:button="@null"-->
-<!--                        android:gravity="center"-->
-<!--                        android:layout_weight="1"/>-->
-
-<!--                    <RadioButton-->
-<!--                        android:id="@+id/fragment_set_profile_second_btn_large"-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:text="넓음"-->
-<!--                        android:textColor="@drawable/radio_btn_selector_textcolor"-->
-<!--                        android:background="@drawable/radio_btn_right"-->
-<!--                        android:button="@null"-->
-<!--                        android:gravity="center"-->
-<!--                        android:layout_weight="1"/>-->
-
-<!--                </RadioGroup>-->
-
-<!--            </LinearLayout>-->
-
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:layout_marginTop="15dp">-->
-
-<!--            <TextView-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="팔"-->
-<!--                android:textColor="@color/colorBlack"-->
-<!--                android:textStyle="bold"-->
-<!--                android:layout_gravity="center"/>-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <RadioGroup-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <RadioButton-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:text="짧음"-->
-<!--                        android:textColor="@drawable/radio_btn_selector_textcolor"-->
-<!--                        android:background="@drawable/radio_btn_left"-->
-<!--                        android:button="@null"-->
-<!--                        android:gravity="center"-->
-<!--                        android:layout_weight="1"/>-->
-
-<!--                    <RadioButton-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:text="보통"-->
-<!--                        android:textColor="@drawable/radio_btn_selector_textcolor"-->
-<!--                        android:background="@drawable/radio_btn_center"-->
-<!--                        android:button="@null"-->
-<!--                        android:gravity="center"-->
-<!--                        android:layout_weight="1"/>-->
-
-<!--                    <RadioButton-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:text="긺"-->
-<!--                        android:textColor="@drawable/radio_btn_selector_textcolor"-->
-<!--                        android:background="@drawable/radio_btn_right"-->
-<!--                        android:button="@null"-->
-<!--                        android:gravity="center"-->
-<!--                        android:layout_weight="1"/>-->
-
-<!--                </RadioGroup>-->
-
-<!--            </LinearLayout>-->
-
-<!--        </LinearLayout>-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:layout_marginTop="15dp">-->
-
-<!--            <TextView-->
-<!--                android:layout_width="40dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="다리"-->
-<!--                android:textColor="@color/colorBlack"-->
-<!--                android:textStyle="bold"-->
-<!--                android:layout_gravity="center"/>-->
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
-
-<!--                <RadioGroup-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="horizontal">-->
-
-<!--                    <RadioButton-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:text="짧음"-->
-<!--                        android:textColor="@drawable/radio_btn_selector_textcolor"-->
-<!--                        android:background="@drawable/radio_btn_left"-->
-<!--                        android:button="@null"-->
-<!--                        android:gravity="center"-->
-<!--                        android:layout_weight="1"/>-->
-
-<!--                    <RadioButton-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:text="보통"-->
-<!--                        android:textColor="@drawable/radio_btn_selector_textcolor"-->
-<!--                        android:background="@drawable/radio_btn_center"-->
-<!--                        android:button="@null"-->
-<!--                        android:gravity="center"-->
-<!--                        android:layout_weight="1"/>-->
-
-<!--                    <RadioButton-->
-<!--                        android:layout_width="0dp"-->
-<!--                        android:layout_height="40dp"-->
-<!--                        android:text="긺"-->
-<!--                        android:textColor="@drawable/radio_btn_selector_textcolor"-->
-<!--                        android:background="@drawable/radio_btn_right"-->
-<!--                        android:button="@null"-->
-<!--                        android:gravity="center"-->
-<!--                        android:layout_weight="1"/>-->
-
-<!--                </RadioGroup>-->
-
-<!--            </LinearLayout>-->
-
-<!--        </LinearLayout>-->
 
     <Button
         android:id="@+id/fragment_set_profile_second_btn_submit"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="다음"
-        android:textColor="@color/colorWhite"
         android:textStyle="bold"
         android:background="@drawable/btn_default"
         android:layout_alignParentEnd="true"

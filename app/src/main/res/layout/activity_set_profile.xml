@@ -31,14 +31,14 @@
         android:background="@color/colorBlack"
         android:orientation="horizontal" />
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/activity_set_profile_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/activity_set_profile_indicator"
         android:layout_below="@+id/activity_set_profile_line"/>
     
-    <me.relex.circleindicator.CircleIndicator
+    <me.relex.circleindicator.CircleIndicator3
         android:id="@+id/activity_set_profile_indicator"
         android:layout_width="match_parent"
         android:layout_height="48dp"

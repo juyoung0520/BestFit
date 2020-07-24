@@ -33,12 +33,6 @@ class SetProfileSecondFragment : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_set_profile_second, container, false)
 
-        fragmentView.fragment_set_profile_second_text_height.setTextInputLayout(fragmentView.fragment_set_profile_second_layout_text_height)
-        fragmentView.fragment_set_profile_second_text_weight.setTextInputLayout(fragmentView.fragment_set_profile_second_layout_text_weight)
-        fragmentView.fragment_set_profile_second_text_top.setTextInputLayout(fragmentView.fragment_set_profile_second_layout_text_top)
-        fragmentView.fragment_set_profile_second_text_bottom.setTextInputLayout(fragmentView.fragment_set_profile_second_layout_text_bottom)
-        fragmentView.fragment_set_profile_second_text_shoes.setTextInputLayout(fragmentView.fragment_set_profile_second_layout_text_shoes)
-
         fragmentView.fragment_set_profile_second_text_height.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 var defaultValue = 165
@@ -102,9 +96,9 @@ class SetProfileSecondFragment : Fragment() {
             }
         }
 
-//        fragmentView.fragment_set_profile_second_btn_submit.setOnClickListener {
-//            submitSetProfile()
-//        }
+        fragmentView.fragment_set_profile_second_btn_submit.setOnClickListener {
+            submitSetProfile()
+        }
 
         return fragmentView
     }

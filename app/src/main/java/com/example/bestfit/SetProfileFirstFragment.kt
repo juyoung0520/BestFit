@@ -21,11 +21,11 @@ class SetProfileFirstFragment  : Fragment() {
 
         fragmentView.fragment_set_profile_first_text_nickname.setTextInputLayout(fragmentView.fragment_set_profile_first_layout_text_nickname)
 
-        initBirth(fragmentView)
-
         fragmentView.fragment_set_profile_first_btn_submit.setOnClickListener {
             submitSetProfile()
         }
+
+        initBirth(fragmentView)
 
         return fragmentView
     }
