@@ -73,7 +73,7 @@
             <Button
                 android:id="@+id/fragment_signin_btn_signin"
                 android:layout_width="170dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:text="로그인"
                 android:textStyle="bold"
                 android:background="@drawable/btn_default"
@@ -85,7 +85,7 @@
             <Button
                 android:id="@+id/fragment_signin_btn_signup"
                 android:layout_width="170dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:text="회원가입"
                 android:textStyle="bold"
                 android:background="@drawable/btn_default"

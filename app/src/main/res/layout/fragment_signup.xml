@@ -12,6 +12,15 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이메일"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_signup_layout_text_email"
             android:layout_width="match_parent"
@@ -19,15 +28,26 @@
             style="@style/CorneredTextInputLayout"
             android:hint="이메일"
             app:hintAnimationEnabled="false"
-            app:endIconMode="clear_text"
-            android:layout_marginBottom="5dp">
+            app:endIconMode="none"
+            app:endIconDrawable="@drawable/ic_check"
+            app:endIconTint="@null">
 
             <com.example.bestfit.view.EditText
                 android:id="@+id/fragment_signup_text_email"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_signup_layout_text_password"
@@ -36,8 +56,7 @@
             style="@style/CorneredTextInputLayout"
             android:hint="비밀번호"
             app:hintAnimationEnabled="false"
-            app:endIconMode="password_toggle"
-            android:layout_marginBottom="5dp">
+            app:endIconMode="password_toggle">
 
             <com.example.bestfit.view.EditText
                 android:id="@+id/fragment_signup_text_password"
@@ -47,32 +66,50 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fragment_signup_layout_text_password_check"
+        <LinearLayout
+            android:id="@+id/fragment_signup_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/CorneredTextInputLayout"
-            android:hint="비밀번호 확인"
-            app:hintAnimationEnabled="false"
-            app:endIconMode="password_toggle">
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <com.example.bestfit.view.EditText
-                android:id="@+id/fragment_signup_text_password_check"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호 확인"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_signup_layout_text_password_check"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                style="@style/CorneredTextInputLayout"
+                android:hint="비밀번호 확인"
+                app:hintAnimationEnabled="false"
+                app:endIconMode="password_toggle">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.example.bestfit.view.EditText
+                    android:id="@+id/fragment_signup_text_password_check"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/fragment_signup_btn_signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="회원 가입"
-            android:textSize="18sp"
-            android:textColor="@color/colorWhite"
+            android:text="회원가입"
             android:textStyle="bold"
             android:background="@drawable/btn_default"
+            android:enabled="false"
             android:layout_marginTop="15dp"
             style="@style/Widget.MaterialComponents.Button"/>
 

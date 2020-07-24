@@ -6,6 +6,7 @@ import android.view.View
 import com.google.android.material.textfield.TextInputLayout
 
 class EditText : com.google.android.material.textfield.TextInputEditText, View.OnFocusChangeListener {
+    private var mOnFocusChangeListener: OnFocusChangeListener? = null
     private var textInputLayout: TextInputLayout? = null
     private var hint: String? = null
 
@@ -22,10 +23,16 @@ class EditText : com.google.android.material.textfield.TextInputEditText, View.O
     }
 
     override fun setOnFocusChangeListener(l: OnFocusChangeListener?) {
+        if (l != null)
+            mOnFocusChangeListener = l
+
         super.setOnFocusChangeListener(this)
     }
 
     override fun onFocusChange(p0: View?, p1: Boolean) {
+        if (mOnFocusChangeListener != null)
+            mOnFocusChangeListener!!.onFocusChange(p0, p1)
+
         if (textInputLayout != null) {
             if (p1) {
                 if (hint.isNullOrEmpty())
