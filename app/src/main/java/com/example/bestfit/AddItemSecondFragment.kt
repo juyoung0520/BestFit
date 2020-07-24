@@ -26,13 +26,6 @@ class AddItemSecondFragment  : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_second, container, false)
 
-//        fragmentView.fragment_add_item_second_actv_brand.setOnFocusChangeListener { view, b ->
-//            if (b)
-//                fragmentView.fragment_add_item_second_layout_actv_brand.hint = ""
-//            else if (fragmentView.fragment_add_item_second_actv_brand.text.isNullOrEmpty())
-//                fragmentView.fragment_add_item_second_layout_actv_brand.hint = "브랜드/쇼핑몰"
-//        }
-
         fragmentView.fragment_add_item_second_text_item_name.setTextInputLayout(fragmentView.fragment_add_item_second_layout_text_item_name)
 
         initBrand(fragmentView)
@@ -56,9 +49,6 @@ class AddItemSecondFragment  : Fragment() {
             }
             else if (view.fragment_add_item_second_actv_brand.text.isNullOrEmpty())
                 view.fragment_add_item_second_layout_actv_brand.hint = "브랜드/쇼핑몰"
-//            else {
-//                view.fragment_add_item_first_actv_brand.error = "직접 입력한 브랜드/쇼핑몰은 검색 결과에 제대로 노출되지 않을 수 있습니다."
-//            }
         }
         view.fragment_add_item_second_actv_brand.setOnItemClickListener { _, _, _, _ ->
             view.fragment_add_item_second_text_item_name.requestFocus()
