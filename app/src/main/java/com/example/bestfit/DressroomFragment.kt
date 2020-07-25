@@ -5,11 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
+import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
@@ -31,6 +34,7 @@ class DressroomFragment : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_dressroom, container, false)
 
         setHasOptionsMenu(true)
+
         initToolbar(fragmentView)
 
         initTab(fragmentView)
@@ -69,19 +73,10 @@ class DressroomFragment : Fragment() {
     }
 
     private fun initTab(view: View) {
-        timer(period = 300) {
+        timer(period = 100) {
             if (InitData.initialization) {
-                val categoryDTOs = InitData.categoryDTOs
-
-                activity!!.runOnUiThread {
-                    view.fragment_dressroom_tab.removeAllTabs()
-
-                    for (i in categoryDTOs)
-                        view.fragment_dressroom_tab.addTab(view.fragment_dressroom_tab.newTab())
-
-                    initItem(view)
-                    cancel()
-                }
+                initItem(view)
+                cancel()
             }
         }
     }
@@ -94,8 +89,11 @@ class DressroomFragment : Fragment() {
 
         db.collection("accounts").document(currentUid).get().addOnCompleteListener {task ->
             if(task.isSuccessful) {
-                if(task.result!!["items"] == null)
+                if(task.result!!["items"] == null) {
+                    initAdapter()
+
                     return@addOnCompleteListener
+                }
 
                 val items = task.result!!["items"] as ArrayList<String>
                 var cnt = 0
@@ -124,12 +122,18 @@ class DressroomFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        fragmentView.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(childFragmentManager, InitData.categoryDTOs)
-        fragmentView.fragment_dressroom_tab.setupWithViewPager(fragmentView.fragment_dressroom_viewpager)
+        fragmentView.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(activity!!)
+        TabLayoutMediator(fragmentView.fragment_dressroom_tab, fragmentView.fragment_dressroom_viewpager) { tab, position ->
+            tab.text = InitData.categoryDTOs[position].name
+        }.attach()
     }
 
-    inner class TabOfCategoryPagerAdapter(fm: FragmentManager, private val categoryDTOs: ArrayList<CategoryDTO>) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-        override fun getItem(position: Int): Fragment {
+    inner class TabOfCategoryPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
+        override fun getItemCount(): Int {
+            return InitData.categoryDTOs.size
+        }
+
+        override fun createFragment(position: Int): Fragment {
             val fragment = DressroomCategoryFragment()
             val bundle = Bundle()
 
@@ -137,14 +141,6 @@ class DressroomFragment : Fragment() {
             fragment.arguments = bundle
 
             return fragment
-        }
-
-        override fun getCount(): Int {
-            return categoryDTOs.size
-        }
-
-        override fun getPageTitle(position: Int): CharSequence {
-            return categoryDTOs[position].name!!
         }
     }
 }
