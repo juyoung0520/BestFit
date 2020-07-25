@@ -3,7 +3,6 @@ package com.example.bestfit
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Rect
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
@@ -11,11 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import androidx.annotation.RequiresApi
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -24,12 +20,8 @@ import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.util.InitData
 import com.jinu.imagepickerlib.PhotoPickerActivity
 import com.jinu.imagepickerlib.utils.YPhotoPickerIntent
-import kotlinx.android.synthetic.main.activity_signin.*
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
-import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
-import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_add_item_image.view.*
-import java.io.File
 
 class AddItemFirstFragment  : Fragment() {
     lateinit var fragmentView: View

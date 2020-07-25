@@ -2,6 +2,7 @@ package com.example.bestfit
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import com.example.bestfit.model.SizeFormatDTO
 import com.example.bestfit.util.InitData
@@ -11,6 +12,8 @@ import kotlinx.android.synthetic.main.fragment_add_item_third.view.*
 
 class AddItemThirdFragment  : Fragment() {
     lateinit var fragmentView: View
+    var selectedSizeFormatId: String? = null
+    var selectedSizeId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,12 +67,15 @@ class AddItemThirdFragment  : Fragment() {
             view.fragment_add_item_third_group_format.addView(formatButton, -1, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (40 * resources.displayMetrics.density).toInt()))
         }
 
-        view.fragment_add_item_third_group_format.addOnButtonCheckedListener { group, checkedId, isChecked ->
+        view.fragment_add_item_third_group_format.addOnButtonCheckedListener { group, _, isChecked ->
             if (group.checkedButtonId == -1) {
                 view.fragment_add_item_third_layout_selected_size.clearFocus()
                 view.fragment_add_item_third_layout_divider.setBackgroundColor(resources.getColor(R.color.colorHintTransparent))
 
                 view.fragment_add_item_third_group_size.removeAllViews()
+
+                selectedSizeFormatId = null
+                selectedSizeId = null
 
                 return@addOnButtonCheckedListener
             }
@@ -83,14 +89,36 @@ class AddItemThirdFragment  : Fragment() {
             view.fragment_add_item_third_group_size.removeAllViews()
             val format = sizeFormats[group.checkedButtonId]
 
-            for (size in format.list) {
+            for ((idx, size) in format.list.withIndex()) {
                 val sizeButton = MaterialButton(view.context)
+                sizeButton.id = idx
+                sizeButton.tag = format.listId[idx]
                 sizeButton.text = size
                 sizeButton.isCheckable = true // 이걸 해야 checked 된 상태로 add 되지 않음. (이유는 모름)
                 sizeButton.isChecked = false
 
                 view.fragment_add_item_third_group_size.addView(sizeButton, -1, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (40 * resources.displayMetrics.density).toInt()))
             }
+
+            selectedSizeFormatId = format.id
+
+            if (selectedSizeFormatId == sizeFormats[0].id)
+                selectedSizeId = selectedSizeFormatId
+            else
+                selectedSizeId = null
+        }
+
+        view.fragment_add_item_third_group_size.addOnButtonCheckedListener { group, _, isChecked ->
+            if (group.checkedButtonId == -1) {
+                selectedSizeId = null
+
+                return@addOnButtonCheckedListener
+            }
+
+            if (!isChecked)
+                return@addOnButtonCheckedListener
+
+            selectedSizeId = group[group.checkedButtonId].tag as String
         }
 
         view.fragment_add_item_third_layout_selected_size.setOnFocusChangeListener { v, hasFocus ->

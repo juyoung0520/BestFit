@@ -128,7 +128,8 @@ class AddItemActivity : AppCompatActivity() {
         itemDTO.subCategoryId = firstFragmentView.fragment_add_item_first_actv_sub_category.tag as String
 //        itemDTO.brandId
         itemDTO.name = secondFragmentView.fragment_add_item_second_text_item_name.text.toString()
-//        itemDTO.size = thirdFragmentView.fragment_add_item_third_text_size.text.toString()
+        itemDTO.sizeFormatId = thirdFragment.selectedSizeFormatId
+        itemDTO.sizeId = thirdFragment.selectedSizeId
         itemDTO.review = thirdFragmentView.fragment_add_item_third_text_review.text.toString()
 
         val imageUris = arrayListOf<Uri>()

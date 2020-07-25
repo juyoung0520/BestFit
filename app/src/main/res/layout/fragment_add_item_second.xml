@@ -26,16 +26,16 @@
             android:id="@+id/fragment_add_item_second_layout_actv_brand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/ExposedDropdownMenu"
+            style="@style/CorneredTextInputLayout"
             android:hint="브랜드/쇼핑몰"
-            app:hintAnimationEnabled="false"
-            app:endIconMode="none">
+            app:hintAnimationEnabled="false">
 
             <AutoCompleteTextView
                 android:id="@+id/fragment_add_item_second_actv_brand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:completionThreshold="1"/>
+                android:completionThreshold="1"
+                style="@style/ExposedDropdownMenu"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

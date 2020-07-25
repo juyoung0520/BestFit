@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_set_profile_first.view.*
-import kotlinx.android.synthetic.main.fragment_signin.*
 
 class SetProfileFirstFragment  : Fragment() {
     lateinit var fragmentView: View
@@ -36,7 +35,7 @@ class SetProfileFirstFragment  : Fragment() {
         for (year in 2020 downTo 1920)
             years.add(year)
 
-        val adapter = ArrayAdapter(context!!, R.layout.item_list, years)
+        val adapter = ArrayAdapter(context!!, R.layout.item_dropdown, years)
         view.fragment_set_profile_first_actv_birth.setAdapter(adapter)
     }
 

@@ -11,7 +11,8 @@ data class ItemDTO(
     var brandId: String? = null,
     var name: String? = null,
     var sizeImage: String? = null,
-    var size: String? = null,
+    var sizeFormatId: String? = null,
+    var sizeId: String? = null,
     var review: String? = null
 
     ) : Parcelable {
@@ -20,6 +21,7 @@ data class ItemDTO(
         parcel.readString(),
         parcel.readString(),
         parcel.readArrayList(String::class.java.classLoader) as ArrayList<String>,
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -36,7 +38,8 @@ data class ItemDTO(
         parcel.writeString(brandId)
         parcel.writeString(name)
         parcel.writeString(sizeImage)
-        parcel.writeString(size)
+        parcel.writeString(sizeFormatId)
+        parcel.writeString(sizeId)
         parcel.writeString(review)
     }
 
