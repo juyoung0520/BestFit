@@ -1,9 +1,11 @@
 package com.example.bestfit
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_set_profile_first.view.*
@@ -19,6 +21,17 @@ class SetProfileFirstFragment  : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_set_profile_first, container, false)
 
         fragmentView.fragment_set_profile_first_text_nickname.setTextInputLayout(fragmentView.fragment_set_profile_first_layout_text_nickname)
+
+        fragmentView.fragment_set_profile_first_text_nickname.setOnFocusChangeListener { _, b ->
+            if (!b) {
+                val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(fragmentView.windowToken, 0)
+            }
+        }
+
+        fragmentView.fragment_set_profile_first_group_sex.addOnButtonCheckedListener { _, _, _ ->
+            fragmentView.fragment_set_profile_first_text_nickname.clearFocus()
+        }
 
         fragmentView.fragment_set_profile_first_btn_submit.setOnClickListener {
             submitSetProfile()

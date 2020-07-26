@@ -33,7 +33,9 @@
             <com.example.bestfit.view.EditText
                 android:id="@+id/fragment_set_profile_first_text_nickname"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:imeOptions="actionDone"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,18 +51,21 @@
             android:layout_marginBottom="5dp"/>
 
         <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/fragment_set_profile_first_group_sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:singleSelection="true"
             app:selectionRequired="true">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/fragment_set_profile_first_btn_male"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:text="남자"
                 style="@style/ToggleButton"/>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/fragment_set_profile_first_btn_female"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:text="여자"

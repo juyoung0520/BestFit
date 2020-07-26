@@ -24,7 +24,7 @@ class SetProfileThirdFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        fragmentView.fragment_set_profile_third_text_review.setTextInputLayout(fragmentView.fragment_set_profile_third_layout_text_review)
+        fragmentView.fragment_set_profile_third_text_message.setTextInputLayout(fragmentView.fragment_set_profile_third_layout_text_message)
 
         return fragmentView
     }

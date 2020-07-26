@@ -116,7 +116,7 @@ class SetProfileSecondFragment : Fragment() {
         dialogPickerView.item_dialogpicker_tv_suffix.text = suffix
 
         dialog.setNegativeButton("취소", DialogInterface.OnClickListener { _, _ ->  })
-        dialog.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
+        dialog.setPositiveButton("확인", DialogInterface.OnClickListener { _, _ ->
             view.setText(picker.value.toString())
         })
         dialog.setView(dialogPickerView)
@@ -137,7 +137,8 @@ class SetProfileSecondFragment : Fragment() {
         picker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
 
         dialog.setNegativeButton("취소", DialogInterface.OnClickListener { _, _ ->  })
-        dialog.setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
+        dialog.setPositiveButton("확인", DialogInterface.OnClickListener { _, _ ->
+            view.tag = InitData.sizeFormatDTOs[InitData.getSizeFormatIndex(sizeFormatId)].listId[picker.value]
             view.setText(displayedArray[picker.value])
         })
         dialog.setView(dialogPickerView)

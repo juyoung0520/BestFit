@@ -7,8 +7,6 @@ import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.bestfit.model.AccountDTO
@@ -16,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_set_profile.*
 import kotlinx.android.synthetic.main.fragment_set_profile_first.view.*
+import kotlinx.android.synthetic.main.fragment_set_profile_second.view.*
+import kotlinx.android.synthetic.main.fragment_set_profile_third.view.*
 
 class SetProfileActivity : AppCompatActivity() {
     private val auth = FirebaseAuth.getInstance()
@@ -111,10 +111,14 @@ class SetProfileActivity : AppCompatActivity() {
 
         val accountDTO = AccountDTO()
         accountDTO.nickname = firstFragment.fragment_set_profile_first_text_nickname.text.toString()
-//        accountDTO.sex = firstFragment.fragment_set_profile_first_btn_male.isChecked
-       // accountDTO.birth = firstFragment.fragment_set_profile_first_np_birth.value
-//        accountDTO.height = secondFragment.fragment_set_profile_second_np_height.value
-//        accountDTO.weight = secondFragment.fragment_set_profile_second_np_weight.value
+        accountDTO.sex = firstFragment.fragment_set_profile_first_group_sex.checkedButtonId == firstFragment.fragment_set_profile_first_btn_male.id
+        accountDTO.birth = firstFragment.fragment_set_profile_first_actv_birth.text.toString().toInt()
+        accountDTO.height = secondFragment.fragment_set_profile_second_text_height.text.toString().toInt()
+        accountDTO.weight = secondFragment.fragment_set_profile_second_text_weight.text.toString().toInt()
+        accountDTO.topId = secondFragment.fragment_set_profile_second_text_top.tag as String
+        accountDTO.bottomId = secondFragment.fragment_set_profile_second_text_bottom.tag as String
+        accountDTO.shoesId = secondFragment.fragment_set_profile_second_text_shoes.tag as String
+        accountDTO.message = thirdFragment.fragment_set_profile_third_text_message.text.toString()
 
         db.collection("accounts").document(currentUid).set(accountDTO).addOnCompleteListener { task ->
             if (task.isSuccessful) {
