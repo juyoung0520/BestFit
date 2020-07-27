@@ -33,7 +33,7 @@ class AddItemSecondFragment  : Fragment() {
 
     private fun initBrand(view: View) {
         val brands = InitData.brands
-        val categoryAdapter = ArrayAdapter(context!!, R.layout.item_dropdown, brands)
+        val categoryAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, brands)
 
         view.fragment_add_item_second_actv_brand.setAdapter(categoryAdapter)
         view.fragment_add_item_second_actv_brand.setOnFocusChangeListener { _, b ->

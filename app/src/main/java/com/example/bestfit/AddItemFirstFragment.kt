@@ -65,7 +65,7 @@ class AddItemFirstFragment  : Fragment() {
     private fun initCategory(view: View) {
         val categoryDTOs = InitData.categoryDTOs.subList(1, InitData.categoryDTOs.lastIndex + 1)
         val categories = InitData.categories.subList(1, InitData.categories.lastIndex + 1)
-        val categoryAdapter = ArrayAdapter(context!!, R.layout.item_dropdown, categories)
+        val categoryAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, categories)
 
         view.fragment_add_item_first_actv_category.setAdapter(categoryAdapter)
         view.fragment_add_item_first_actv_category.setOnFocusChangeListener { _, b ->
@@ -87,7 +87,7 @@ class AddItemFirstFragment  : Fragment() {
     }
 
     private fun initSubCategory(view: View, subCategories: ArrayList<String>) {
-        val categoryAdapter = ArrayAdapter(context!!, R.layout.item_dropdown, subCategories)
+        val categoryAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, subCategories)
 
         view.fragment_add_item_first_actv_sub_category.setAdapter(categoryAdapter)
         view.fragment_add_item_first_actv_sub_category.setOnFocusChangeListener { _, b ->

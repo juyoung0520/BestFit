@@ -24,7 +24,7 @@ class SetProfileFirstFragment  : Fragment() {
 
         fragmentView.fragment_set_profile_first_text_nickname.setOnFocusChangeListener { _, b ->
             if (!b) {
-                val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(fragmentView.windowToken, 0)
             }
         }
@@ -48,7 +48,7 @@ class SetProfileFirstFragment  : Fragment() {
         for (year in 2020 downTo 1920)
             years.add(year)
 
-        val adapter = ArrayAdapter(context!!, R.layout.item_dropdown, years)
+        val adapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, years)
         view.fragment_set_profile_first_actv_birth.setAdapter(adapter)
     }
 

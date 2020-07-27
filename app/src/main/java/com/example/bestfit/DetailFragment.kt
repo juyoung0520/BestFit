@@ -1,12 +1,10 @@
 package com.example.bestfit
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -14,7 +12,6 @@ import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_detail.view.*
-import kotlinx.android.synthetic.main.fragment_dressroom.view.*
 
 class DetailFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
@@ -40,7 +37,7 @@ class DetailFragment : Fragment() {
 //                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 //                imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 
-                val mainActivity: MainActivity = activity!! as MainActivity
+                val mainActivity: MainActivity = requireActivity() as MainActivity
                 mainActivity.changeFragment(null, null, true)
 
                 return true
@@ -51,7 +48,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun initToolbar(view: View) {
-        val mainActivity: MainActivity = activity!! as MainActivity
+        val mainActivity: MainActivity = requireActivity() as MainActivity
         mainActivity.setToolbar(view.fragment_detail_toolbar, true)
     }
 

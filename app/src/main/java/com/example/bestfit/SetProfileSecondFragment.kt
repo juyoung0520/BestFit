@@ -124,7 +124,7 @@ class SetProfileSecondFragment : Fragment() {
     }
 
     private fun initDialogPicker(view: EditText, sizeFormatId: String, defaultSizeId: String) {
-        val dialog = MaterialAlertDialogBuilder(context!!)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
         val dialogPickerView = LayoutInflater.from(context).inflate(R.layout.item_dialogpicker, null)
         val picker = dialogPickerView.item_dialogpicker_np
         val displayedArray = InitData.sizeFormatDTOs[InitData.getSizeFormatIndex(sizeFormatId)].list.toTypedArray()

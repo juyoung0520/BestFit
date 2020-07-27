@@ -4,10 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.*
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.model.ItemDTO
@@ -37,7 +34,7 @@ class DressroomFragment : Fragment() {
 
         initToolbar(fragmentView)
 
-        initTab(fragmentView)
+        initTab()
 
         return fragmentView
     }
@@ -46,7 +43,7 @@ class DressroomFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            initItem(fragmentView)
+            initItem()
         }
     }
 
@@ -68,23 +65,27 @@ class DressroomFragment : Fragment() {
     }
 
     private fun initToolbar(view: View) {
-        val mainActivity: MainActivity = activity!! as MainActivity
+        val mainActivity: MainActivity = requireActivity() as MainActivity
         mainActivity.setToolbar(view.fragment_dressroom_toolbar)
     }
 
-    private fun initTab(view: View) {
-        timer(period = 100) {
+    private fun initTab() {
+        timer(period = 200) {
             if (InitData.initialization) {
-                initItem(view)
                 cancel()
+
+                requireActivity().runOnUiThread {
+                    initAdapter()
+                    initItem()
+                }
             }
         }
     }
 
-    private fun initItem(view: View) {
+    private fun initItem() {
         itemDTOs.clear()
 
-        for (i in InitData.categories)
+        for (i in 0 until InitData.categories.size)
             itemDTOs.add(arrayListOf())
 
         db.collection("accounts").document(currentUid).get().addOnCompleteListener {task ->
@@ -99,7 +100,7 @@ class DressroomFragment : Fragment() {
                 var cnt = 0
 
                 for (itemId in items) {
-                    db.collection("items").document(itemId).get().addOnCompleteListener {task ->
+                    db.collection("items").document(itemId).get().addOnCompleteListener { task ->
                         if(task.isSuccessful) {
                             val itemDTO = task.result!!.toObject(ItemDTO::class.java)!!
                             val categoryIndex = InitData.getCategoryIndex(itemDTO.categoryId!!)
@@ -112,7 +113,12 @@ class DressroomFragment : Fragment() {
                                 for (itemDTO in itemDTOs)
                                     itemDTO.sortByDescending { itemDTO -> itemDTO.timestamp }
 
-                                initAdapter()
+                                for (position in 0 until InitData.categories.size) {
+                                    val bundle = Bundle()
+                                    bundle.putParcelableArrayList("itemDTOs", itemDTOs[position])
+
+                                    setFragmentResult("itemDTOs.$position", bundle)
+                                }
                             }
                         }
                     }
@@ -122,7 +128,7 @@ class DressroomFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        fragmentView.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(activity!!)
+        fragmentView.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(requireActivity())
         TabLayoutMediator(fragmentView.fragment_dressroom_tab, fragmentView.fragment_dressroom_viewpager) { tab, position ->
             tab.text = InitData.categoryDTOs[position].name
         }.attach()
@@ -137,7 +143,7 @@ class DressroomFragment : Fragment() {
             val fragment = DressroomCategoryFragment()
             val bundle = Bundle()
 
-            bundle.putParcelableArrayList("itemDTOs", itemDTOs[position])
+            bundle.putInt("position", position)
             fragment.arguments = bundle
 
             return fragment

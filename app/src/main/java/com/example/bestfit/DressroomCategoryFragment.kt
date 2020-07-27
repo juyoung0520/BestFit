@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -50,11 +52,14 @@ class DressroomCategoryFragment : Fragment() {
         private val itemDTOs = arrayListOf<ItemDTO>()
 
         init {
-            val allItemDTOs = arguments?.getParcelableArrayList<ItemDTO>("itemDTOs")
+            setFragmentResultListener("itemDTOs.${requireArguments().getInt("position")}") { _, bundle ->
+                this.itemDTOs.clear()
+                val itemDTOs = bundle.getParcelableArrayList<ItemDTO>("itemDTOs")
 
-            if (allItemDTOs != null) {
-                itemDTOs.addAll(allItemDTOs)
-                notifyDataSetChanged()
+                if (itemDTOs != null) {
+                    this.itemDTOs.addAll(itemDTOs)
+                    notifyDataSetChanged()
+                }
             }
         }
 
