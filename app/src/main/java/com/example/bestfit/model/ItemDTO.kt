@@ -13,6 +13,7 @@ data class ItemDTO(
     var sizeImage: String? = null,
     var sizeFormatId: String? = null,
     var sizeId: String? = null,
+    var sizeReview: Int? = null,
     var review: String? = null
 
     ) : Parcelable {
@@ -26,6 +27,7 @@ data class ItemDTO(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString()
     ) {
     }
@@ -40,6 +42,7 @@ data class ItemDTO(
         parcel.writeString(sizeImage)
         parcel.writeString(sizeFormatId)
         parcel.writeString(sizeId)
+        parcel.writeValue(sizeReview)
         parcel.writeString(review)
     }
 

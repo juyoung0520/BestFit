@@ -8,6 +8,7 @@ import com.example.bestfit.model.SizeFormatDTO
 import com.example.bestfit.util.InitData
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_third.view.*
 
 class AddItemThirdFragment  : Fragment() {
@@ -22,38 +23,25 @@ class AddItemThirdFragment  : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_third, container, false)
 
-        setHasOptionsMenu(true)
-
-        fragmentView.fragment_add_item_third_text_review.setTextInputLayout(fragmentView.fragment_add_item_third_layout_text_review)
-
-        fragmentView.fragment_add_item_third_text_review.setOnTouchListener { view, motionEvent ->
-            fragmentView.fragment_add_item_third_scrollview.requestDisallowInterceptTouchEvent(true)
-            if (motionEvent.action == MotionEvent.ACTION_UP)
-                fragmentView.fragment_add_item_third_scrollview.requestDisallowInterceptTouchEvent(false)
-
-            return@setOnTouchListener false
-        }
-
         initSelectedSizeTable(fragmentView)
 
-        return fragmentView
-    }
+        fragmentView.fragment_add_item_third_group_size_review.addOnButtonCheckedListener { group, _, isChecked ->
+            if (!isChecked)
+                return@addOnButtonCheckedListener
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-
-        inflater.inflate(R.menu.menu_add_item, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_add_item_action_add -> {
-                submitAddItem()
-                return true
+            fragmentView.fragment_add_item_third_group_size_review.tag = when (group.checkedButtonId) {
+                fragmentView.fragment_add_item_third_btn_s.id -> 0
+                fragmentView.fragment_add_item_third_btn_m.id -> 1
+                fragmentView.fragment_add_item_third_btn_l.id -> 2
+                else -> -1
             }
         }
 
-        return super.onOptionsItemSelected(item)
+        fragmentView.fragment_add_item_third_btn_submit.setOnClickListener {
+            submitAddItem()
+        }
+
+        return fragmentView
     }
 
     private fun initSelectedSizeTable(view: View) {
@@ -129,6 +117,6 @@ class AddItemThirdFragment  : Fragment() {
 
     private fun submitAddItem() {
         val addItemActivity = activity as AddItemActivity
-        addItemActivity.submitAddItem()
+        addItemActivity.changeViewPage(false)
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -136,33 +136,63 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="상세 후기"
+                android:text="사이즈 후기"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"
                 android:layout_marginTop="15dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"/>
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/fragment_add_item_third_layout_text_review"
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/fragment_add_item_third_group_size_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/CorneredTextInputLayout"
-                android:hint="가슴은 뜨겁게, 리뷰는 솔직하게!"
-                app:hintAnimationEnabled="false">
+                app:singleSelection="true"
+                app:selectionRequired="true">
 
-                <com.example.bestfit.view.EditText
-                    android:id="@+id/fragment_add_item_third_text_review"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/fragment_add_item_third_btn_s"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:lines="7"
-                    android:scrollbars="vertical"/>
+                    android:text="작음"
+                    style="@style/ToggleButton"
+                    android:layout_weight="1"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <Button
+                    android:id="@+id/fragment_add_item_third_btn_m"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="보통"
+                    style="@style/ToggleButton"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:id="@+id/fragment_add_item_third_btn_l"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="큼"
+                    style="@style/ToggleButton"
+                    android:layout_weight="1"/>
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/fragment_add_item_third_btn_submit"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="다음"
+        android:textStyle="bold"
+        android:background="@drawable/btn_default"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        style="@style/Widget.MaterialComponents.Button"/>
+
+</RelativeLayout>

@@ -1,6 +1,7 @@
 package com.example.bestfit.model
 
 data class AccountDTO(
+    var photo: String? = null,
     var nickname: String? = null,
     var sex: Boolean? = null,
     var birth: Int? = null,

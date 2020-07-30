@@ -46,7 +46,6 @@
                     android:id="@+id/fragment_detail_iv_profile"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@mipmap/ic_launcher"
                     android:layout_margin="10dp"/>
 
                 <TextView
@@ -68,7 +67,6 @@
                     android:id="@+id/fragment_detail_tv_user_size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="165 cm / 45 kg"
                     android:textColor="@color/colorDarkGray"
                     android:textStyle="bold"
                     android:layout_marginStart="10dp"
@@ -78,8 +76,7 @@
                     android:id="@+id/fragment_detail_tv_user_detail_size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="55 size / 26 in / 245 mm "
-                    android:textSize="11sp"
+                    android:textSize="12sp"
                     android:textColor="@color/colorDarkGray"/>
 
             </LinearLayout>
@@ -122,7 +119,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="3dp">
 
                 <TextView
                     android:id="@+id/fragment_detail_tv_item_name"
@@ -131,7 +129,6 @@
                     android:text="너의 팬티를 보여줘 SET"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"
-                    android:layout_marginTop="3dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"/>
 
@@ -141,16 +138,54 @@
                     android:layout_height="wrap_content"
                     android:text="SIZE 95"
                     android:textStyle="bold"
-                    android:textColor="@color/colorPrimary"
-                    android:layout_marginTop="3dp"/>
+                    android:textColor="@color/colorPrimary"/>
 
             </LinearLayout>
 
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/fragment_detail_group_size_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                app:selectionRequired="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
+
+                <Button
+                    android:id="@+id/fragment_detail_btn_s"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="작음"
+                    style="@style/ToggleButton"
+                    android:layout_weight="1"
+                    android:clickable="false"/>
+
+                <Button
+                    android:id="@+id/fragment_detail_btn_m"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="보통"
+                    style="@style/ToggleButton"
+                    android:layout_weight="1"
+                    android:clickable="false"/>
+
+                <Button
+                    android:id="@+id/fragment_detail_btn_l"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="큼"
+                    style="@style/ToggleButton"
+                    android:layout_weight="1"
+                    android:clickable="false"/>
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
             <TextView
-                android:id="@+id/fragment_detail_tv_comment"
+                android:id="@+id/fragment_detail_tv_review"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" 너의 팬티를 보여줘라는 이름처럼 얼른 자랑하고 싶은 팬티네요!! 사이즈도 잘 맞고 다들 얼른 사세요~~~"
+                android:textColor="@color/colorBlack"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"/>
