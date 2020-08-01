@@ -35,9 +35,6 @@ class DetailFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-//                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//                imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-
                 val mainActivity: MainActivity = requireActivity() as MainActivity
                 mainActivity.changeFragment(null, null, true)
 

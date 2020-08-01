@@ -83,6 +83,7 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         override fun createFragment(position: Int): Fragment {
+            println("create $position")
             val fragment = when (position) {
                 0 -> AddItemFirstFragment()
                 1 -> AddItemSecondFragment()
