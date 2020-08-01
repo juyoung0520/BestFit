@@ -2,10 +2,18 @@ package com.example.bestfit
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.*
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.*
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
@@ -13,6 +21,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
+import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
+import kotlinx.android.synthetic.main.item_dressroom.view.*
 import kotlin.concurrent.timer
 
 

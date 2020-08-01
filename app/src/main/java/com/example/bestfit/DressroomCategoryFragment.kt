@@ -1,5 +1,6 @@
 package com.example.bestfit
 
+import android.content.Context
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
@@ -28,6 +29,8 @@ class DressroomCategoryFragment : Fragment() {
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
+    private var itemDTOs = arrayListOf<ItemDTO>()
+    private var itemRecyclerViewAdapter = ItemRecyclerViewAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +40,7 @@ class DressroomCategoryFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_dressroom_category, container, false)
 
         view.fragment_dressroom_category_recyclerview.setHasFixedSize(true)
-        view.fragment_dressroom_category_recyclerview.adapter = ItemRecyclerViewAdapter()
+        view.fragment_dressroom_category_recyclerview.adapter = itemRecyclerViewAdapter
         view.fragment_dressroom_category_recyclerview.layoutManager = GridLayoutManager(activity, 3)
 
         while (view.fragment_dressroom_category_recyclerview.itemDecorationCount > 0)
@@ -45,24 +48,34 @@ class DressroomCategoryFragment : Fragment() {
 
         view.fragment_dressroom_category_recyclerview.addItemDecoration(ItemDecoration())
 
-        return view
-    }
-
-    inner class ItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        private val itemDTOs = arrayListOf<ItemDTO>()
-
-        init {
+        if (savedInstanceState == null) {
             setFragmentResultListener("itemDTOs.${requireArguments().getInt("position")}") { _, bundle ->
-                this.itemDTOs.clear()
                 val itemDTOs = bundle.getParcelableArrayList<ItemDTO>("itemDTOs")
 
                 if (itemDTOs != null) {
                     this.itemDTOs.addAll(itemDTOs)
-                    notifyDataSetChanged()
+                    itemRecyclerViewAdapter.notifyDataSetChanged()
                 }
             }
         }
+        else {
+            val itemDTOs = savedInstanceState.getParcelableArrayList<ItemDTO>("itemDTOs")
 
+            if (itemDTOs != null) {
+                this.itemDTOs.addAll(itemDTOs)
+                itemRecyclerViewAdapter.notifyDataSetChanged()
+            }
+        }
+
+        return view
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList("itemDTOs", itemDTOs)
+    }
+
+    inner class ItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom, parent, false)
 
