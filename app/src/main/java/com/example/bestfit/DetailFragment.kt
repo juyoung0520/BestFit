@@ -63,7 +63,7 @@ class DetailFragment : Fragment() {
                 else
                     Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_detail_iv_profile)
 
-                view.fragment_detail_tv_user_name.text = accountDTO.nickname
+                view.fragment_detail_tv_nickname.text = accountDTO.nickname
                 view.fragment_detail_tv_user_size.text = accountDTO.height.toString() + " cm / " + accountDTO.weight.toString() + " kg"
 
                 val top = InitData.getSizeString("01", accountDTO.topId!!)

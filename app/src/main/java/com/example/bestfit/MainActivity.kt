@@ -67,15 +67,17 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         when (p0.itemId) {
-            R.id.menu_bottom_nav_action_dressroom -> {
-                changeNavigation(1)
-            }
-
-            R.id.menu_bottom_nav_action_menu -> {
+            R.id.menu_bottom_nav_action_home -> {
                 auth.signOut()
 
                 startActivity(Intent(this, SignInActivity::class.java))
                 finish()
+            }
+            R.id.menu_bottom_nav_action_dressroom -> {
+                changeNavigation(1)
+            }
+            R.id.menu_bottom_nav_action_menu -> {
+                changeNavigation(2)
             }
         }
 
@@ -141,7 +143,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 }
 
                 2 -> {
-//                    newFragment = AccountFragment()
+                    newFragment = MenuFragment()
                 }
             }
 

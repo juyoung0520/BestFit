@@ -40,8 +40,6 @@ class DressroomFragment : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_dressroom, container, false)
 
-        setHasOptionsMenu(true)
-
         initToolbar(fragmentView)
 
         initTab()
@@ -85,6 +83,8 @@ class DressroomFragment : Fragment() {
                 cancel()
 
                 requireActivity().runOnUiThread {
+                    setHasOptionsMenu(true)
+
                     initAdapter()
                     initItem()
                 }

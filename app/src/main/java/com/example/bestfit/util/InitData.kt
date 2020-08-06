@@ -18,6 +18,16 @@ object InitData {
     val sizeFormatDTOs = arrayListOf<SizeFormatDTO>()
 
     fun initData() {
+        initialization = false
+        initializationCategory = false
+        initializationBrand = false
+        initializationSizeFormat = false
+
+        categoryDTOs.clear()
+        categories.clear()
+        brands.clear()
+        sizeFormatDTOs.clear()
+
         initCategory()
         initBrand()
         initSizeFormat()
