@@ -54,8 +54,8 @@ class DetailFragment : Fragment() {
         val itemDTO: ItemDTO = arguments?.getParcelable("itemDTO")!!
         val uid = arguments?.getString("uid")!!
 
-        db.collection("accounts").document(uid).get().addOnCompleteListener {task ->
-            if(task.isSuccessful) {
+        db.collection("accounts").document(uid).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
                 val accountDTO = task.result!!.toObject(AccountDTO::class.java)!!
 
                 if (accountDTO.photo.isNullOrEmpty())
