@@ -8,7 +8,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/fragment_menu_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="45dp" />
+        android:layout_height="45dp"
+        app:title=" "/>
 
     <ScrollView
         android:layout_width="match_parent"

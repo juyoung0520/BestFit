@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     fun setToolbar(toolbar: Toolbar, setHomeButton: Boolean = false) {
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+//        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         if (setHomeButton) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -68,10 +68,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         when (p0.itemId) {
             R.id.menu_bottom_nav_action_home -> {
-                auth.signOut()
-
-                startActivity(Intent(this, SignInActivity::class.java))
-                finish()
+                changeNavigation(0)
             }
             R.id.menu_bottom_nav_action_dressroom -> {
                 changeNavigation(1)
@@ -135,7 +132,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             var newFragment: Fragment? = null
             when (newNavigationIndex) {
                 0 -> {
-//                    newFragment = MainHomeFragment()
+                    newFragment = HomeFragment()
                 }
 
                 1 -> {

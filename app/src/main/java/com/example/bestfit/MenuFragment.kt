@@ -80,4 +80,9 @@ class MenuFragment : Fragment() {
             }
         }
     }
+
+//    auth.signOut()
+//
+//    startActivity(Intent(this, SignInActivity::class.java))
+//    finish()
 }
