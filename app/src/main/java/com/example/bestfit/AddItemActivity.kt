@@ -129,6 +129,7 @@ class AddItemActivity : AppCompatActivity() {
 
         val itemDTO = ItemDTO()
         itemDTO.timestamp = System.currentTimeMillis()
+        itemDTO.uid = currentUid
         itemDTO.categoryId = (firstFragmentView.fragment_add_item_first_actv_category.tag as CategoryDTO).id
         itemDTO.subCategoryId = firstFragmentView.fragment_add_item_first_actv_sub_category.tag as String
 //        itemDTO.brandId
