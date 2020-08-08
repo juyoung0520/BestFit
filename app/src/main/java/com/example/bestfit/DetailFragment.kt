@@ -52,9 +52,8 @@ class DetailFragment : Fragment() {
 
     private fun initDetailFragment(view : View) {
         val itemDTO: ItemDTO = arguments?.getParcelable("itemDTO")!!
-        val uid = arguments?.getString("uid")!!
 
-        db.collection("accounts").document(uid).get().addOnCompleteListener { task ->
+        db.collection("accounts").document(itemDTO.uid!!).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val accountDTO = task.result!!.toObject(AccountDTO::class.java)!!
 

@@ -138,6 +138,7 @@ class AddItemActivity : AppCompatActivity() {
         itemDTO.sizeId = thirdFragment.selectedSizeId
         itemDTO.sizeReview = thirdFragmentView.fragment_add_item_third_group_size_review.tag as Int
         itemDTO.review = fourthFragmentView.fragment_add_item_fourth_text_review.text.toString()
+        itemDTO.searchKeywords = getSearchKeywords(itemDTO.name.toString())
 
         val imageUris = arrayListOf<Uri>()
         for (image in firstFragment.itemImages) {
@@ -186,5 +187,24 @@ class AddItemActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    fun getSearchKeywords(itemName: String): ArrayList<String> {
+        var nameString = itemName.toLowerCase()
+        val words = nameString.split(" ")
+        val keywords = ArrayList<String>()
+
+        for (word in words) {
+            var appendString = ""
+
+            for (position in nameString.indices) {
+                appendString += nameString[position]
+                keywords.add(appendString)
+            }
+
+            nameString = nameString.replace("$word ", "")
+        }
+
+        return keywords
     }
 }

@@ -78,9 +78,8 @@ class SearchFragment : Fragment() {
     private fun searchItem(query: String) {
         itemDTOs.clear()
 
-        db.collection("items").whereArrayContains("name", query).get().addOnCompleteListener { task ->
+        db.collection("items").whereArrayContains("searchKeywords", query).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                println(task.result!!)
                 if (task.result!!.isEmpty) {
                     println("empty")
                     // 검색결과가 없습니다!
@@ -116,7 +115,6 @@ class SearchFragment : Fragment() {
 
         inner class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view)
         override fun getItemCount(): Int {
-            println(itemDTOs.size)
             return itemDTOs.size
         }
 
@@ -132,13 +130,13 @@ class SearchFragment : Fragment() {
 
             view.item_dressroom_tv_item_name.text = itemDTOs[position].name
             view.setOnClickListener {
-                val mainActivity = activity as MainActivity
                 val fragment = DetailFragment()
                 val bundle = Bundle()
 
                 bundle.putParcelable("itemDTO", itemDTOs[position])
-                bundle.putString("uid", currentUid)
                 fragment.arguments = bundle
+
+                val mainActivity = activity as MainActivity
                 mainActivity.changeFragment(fragment, bundle)
             }
         }

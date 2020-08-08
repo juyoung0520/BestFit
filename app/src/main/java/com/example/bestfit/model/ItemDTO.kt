@@ -15,7 +15,8 @@ data class ItemDTO(
     var sizeFormatId: String? = null,
     var sizeId: String? = null,
     var sizeReview: Int? = null,
-    var review: String? = null
+    var review: String? = null,
+    var searchKeywords: ArrayList<String> = arrayListOf()
 
     ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -30,7 +31,8 @@ data class ItemDTO(
         parcel.readString(),
         parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readString()
+        parcel.readString(),
+        parcel.readArrayList(String::class.java.classLoader) as ArrayList<String>
     ) {
     }
 
@@ -47,6 +49,7 @@ data class ItemDTO(
         parcel.writeString(sizeId)
         parcel.writeValue(sizeReview)
         parcel.writeString(review)
+        parcel.writeStringList(searchKeywords)
     }
 
     override fun describeContents(): Int {

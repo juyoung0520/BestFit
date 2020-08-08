@@ -103,13 +103,13 @@ class DressroomCategoryFragment : Fragment() {
 
             view.item_dressroom_tv_item_name.text = itemDTOs[position].name
             view.setOnClickListener {
-                val mainActivity = activity as MainActivity
                 val fragment = DetailFragment()
                 val bundle = Bundle()
 
                 bundle.putParcelable("itemDTO", itemDTOs[position])
-                bundle.putString("uid", currentUid)
                 fragment.arguments = bundle
+
+                val mainActivity = activity as MainActivity
                 mainActivity.changeFragment(fragment, bundle)
             }
         }
