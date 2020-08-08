@@ -11,9 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.bestfit.model.CategoryDTO
@@ -83,7 +80,6 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         override fun createFragment(position: Int): Fragment {
-            println("create $position")
             val fragment = when (position) {
                 0 -> AddItemFirstFragment()
                 1 -> AddItemSecondFragment()

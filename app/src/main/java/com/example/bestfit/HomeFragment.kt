@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.AccountDTO
@@ -35,26 +37,28 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-
+        println("hi!")
         inflater.inflate(R.menu.menu_fragment_home, menu)
+
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_fragment_home_search -> {
-                val mainActivity: MainActivity = requireActivity() as MainActivity
-                mainActivity.changeFragment(SearchFragment())
+//        when (item.itemId) {
+//            R.id.menu_fragment_home_search -> {
+//                findNavController().navigate(R.id.searchFragment)
+////                val mainActivity: MainActivity = requireActivity() as MainActivity
+////                mainActivity.changeFragment(SearchFragment())
+//
+//                return true
+//            }
+//        }
 
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
+        return item.onNavDestinationSelected(findNavController()) || super.onOptionsItemSelected(item)
     }
 
     private fun initToolbar(view: View) {
-        val mainActivity: MainActivity = requireActivity() as MainActivity
-        mainActivity.setToolbar(view.fragment_home_toolbar)
+//        val mainActivity: MainActivity = requireActivity() as MainActivity
+//        mainActivity.setToolbar(view.fragment_home_toolbar)
     }
 }

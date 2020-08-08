@@ -54,8 +54,8 @@ class SettingsFragment : Fragment() {
     }
 
     private fun initToolbar(view: View) {
-        val mainActivity: MainActivity = requireActivity() as MainActivity
-        mainActivity.setToolbar(view.fragment_settings_toolbar)
+//        val mainActivity: MainActivity = requireActivity() as MainActivity
+//        mainActivity.setToolbar(view.fragment_settings_toolbar)
     }
 
     private fun initMenuFragment(view : View) {

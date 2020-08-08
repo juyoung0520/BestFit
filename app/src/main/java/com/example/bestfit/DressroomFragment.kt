@@ -75,8 +75,8 @@ class DressroomFragment : Fragment() {
     }
 
     private fun initToolbar(view: View) {
-        val mainActivity: MainActivity = requireActivity() as MainActivity
-        mainActivity.setToolbar(view.fragment_dressroom_toolbar)
+//        val mainActivity: MainActivity = requireActivity() as MainActivity
+//        mainActivity.setToolbar(view.fragment_dressroom_toolbar)
     }
 
     private fun initTab() {
@@ -129,7 +129,7 @@ class DressroomFragment : Fragment() {
                                     val bundle = Bundle()
                                     bundle.putParcelableArrayList("itemDTOs", itemDTOs[position])
 
-                                    setFragmentResult("itemDTOs.$position", bundle)
+//                                    setFragmentResult("itemDTOs.$position", bundle)
                                 }
                             }
                         }

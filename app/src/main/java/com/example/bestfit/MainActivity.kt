@@ -4,17 +4,24 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupWithNavController
 import com.example.bestfit.util.InitData
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+// BottomNavigationView.OnNavigationItemSelectedListener
+class MainActivity : AppCompatActivity() {
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
@@ -26,25 +33,29 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        activity_main_bottom_nav.setOnNavigationItemSelectedListener(this)
+//        activity_main_bottom_nav.setOnNavigationItemSelectedListener(this)
 
         InitData.initData()
 
+        activity_main_toolbar.setupWithNavController(findNavController(R.id.nav_host), AppBarConfiguration(setOf(R.id.homeFragment, R.id.dressroomFragment, R.id.settingsFragment)))
+
         // Navigation Init
-        initNavigation()
+        NavigationUI.setupWithNavController(activity_main_bottom_nav, findNavController(R.id.nav_host))
+//        initNavigation()
+
 
         // SetProfile Check
         checkSetProfile()
     }
 
-    private fun initNavigation() {
-        currentNavigation.clear()
-
-        for (idx in 0..2)
-            currentNavigation.add(arrayListOf())
-
-        activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_dressroom
-    }
+//    private fun initNavigation() {
+//        currentNavigation.clear()
+//
+//        for (idx in 0..2)
+//            currentNavigation.add(arrayListOf())
+//
+//        activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_dressroom
+//    }
 
     private fun checkSetProfile() {
         db.collection("accounts").document(currentUid).get().addOnCompleteListener { task ->
@@ -67,21 +78,21 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
     }
 
-    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-        when (p0.itemId) {
-            R.id.menu_bottom_nav_action_home -> {
-                changeNavigation(0)
-            }
-            R.id.menu_bottom_nav_action_dressroom -> {
-                changeNavigation(1)
-            }
-            R.id.menu_bottom_nav_action_menu -> {
-                changeNavigation(2)
-            }
-        }
-
-        return true
-    }
+//    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
+//        when (p0.itemId) {
+//            R.id.menu_bottom_nav_action_home -> {
+//                changeNavigation(0)
+//            }
+//            R.id.menu_bottom_nav_action_dressroom -> {
+//                changeNavigation(1)
+//            }
+//            R.id.menu_bottom_nav_action_menu -> {
+//                changeNavigation(2)
+//            }
+//        }
+//
+//        return true
+//    }
 
     fun changeNavigation(newNavigationIndex: Int, bundle: Bundle? = null) {
 //        if (currentNavigationIndex == newNavigationIndex) {
