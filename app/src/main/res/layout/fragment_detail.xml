@@ -46,7 +46,8 @@
                     android:id="@+id/fragment_detail_iv_profile"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:layout_margin="10dp"/>
+                    android:layout_margin="10dp"
+                    android:src="@drawable/ic_profile_photo"/>
 
                 <TextView
                     android:id="@+id/fragment_detail_tv_nickname"
@@ -54,7 +55,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/colorBlack"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:text="iam_kingdubu"/>
 
             </LinearLayout>
 
@@ -70,125 +72,97 @@
                     android:textColor="@color/colorDarkGray"
                     android:textStyle="bold"
                     android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"/>
+                    android:layout_marginEnd="10dp"
+                    android:text="165 cm / 40 kg"/>
 
                 <TextView
                     android:id="@+id/fragment_detail_tv_user_detail_size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
-                    android:textColor="@color/colorDarkGray"/>
+                    android:textColor="@color/colorDarkGray"
+                    android:text="Top 55 / Bottom 26 / Shoes 245"/>
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:id="@+id/fragment_detail_layout_item"
+            <ImageView
+                android:id="@+id/fragment_detail_iv_item"
                 android:layout_width="match_parent"
                 android:layout_height="380dp"
-                android:layout_marginTop="10dp">
-
-                <ImageView
-                    android:id="@+id/fragment_detail_iv_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/image_default"/>
-
-                <ImageView
-                    android:id="@+id/fragment_detail_iv_heart"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/image_heart"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="10dp"/>
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/fragment_detail_tv_brand"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="브랜드"
-                android:textColor="@color/colorDarkGray"
-                android:textSize="13sp"
                 android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"/>
+                android:background="@drawable/image_default"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="3dp">
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp">
+
+                    <TextView
+                        android:id="@+id/fragment_detail_tv_brand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="쭈블리"
+                        android:textColor="@color/colorDarkGray"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"/>
+
+                    <TextView
+                        android:id="@+id/fragment_detail_tv_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="원피스/세트 > 원피스"
+                        android:textSize="13sp"
+                        android:layout_gravity="end"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/fragment_detail_tv_item_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="너의 팬티를 보여줘 SET"
+                    android:text="써머 린넨 원피스"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"/>
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/fragment_detail_tv_item_size"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SIZE 95"
+                    android:text="FREE / 잘 맞아요"
+                    android:textColor="@color/colorPrimary"
                     android:textStyle="bold"
-                    android:textColor="@color/colorPrimary"/>
+                    android:textSize="15sp"
+                    android:layout_marginTop="5dp"/>
+
+               <TextView
+                    android:id="@+id/fragment_detail_tv_review"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
+                    android:text="@string/itme_review"
+                    android:layout_marginTop="15dp"/>
+
+                <TextView
+                    android:id="@+id/fragment_detail_tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2019.12.10"
+                    android:textSize="12sp"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="10dp"/>
 
             </LinearLayout>
-
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/fragment_detail_group_size_review"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:singleSelection="true"
-                app:selectionRequired="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp">
-
-                <Button
-                    android:id="@+id/fragment_detail_btn_s"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="작음"
-                    style="@style/ToggleButton"
-                    android:layout_weight="1"
-                    android:clickable="false"/>
-
-                <Button
-                    android:id="@+id/fragment_detail_btn_m"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="보통"
-                    style="@style/ToggleButton"
-                    android:layout_weight="1"
-                    android:clickable="false"/>
-
-                <Button
-                    android:id="@+id/fragment_detail_btn_l"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="큼"
-                    style="@style/ToggleButton"
-                    android:layout_weight="1"
-                    android:clickable="false"/>
-
-            </com.google.android.material.button.MaterialButtonToggleGroup>
-
-            <TextView
-                android:id="@+id/fragment_detail_tv_review"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorBlack"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"/>
 
         </LinearLayout>
 

@@ -79,14 +79,15 @@ class DetailFragment : Fragment() {
         }
 
         view.fragment_detail_tv_item_name.text = itemDTO.name
-        view.fragment_detail_tv_item_size.text = "${InitData.getSizeFormatString(itemDTO.sizeFormatId!!)} SIZE ${InitData.getSizeString(itemDTO.sizeFormatId!!, itemDTO.sizeId!!)}"
 
-        when (itemDTO.sizeReview) {
-            0 -> view.fragment_detail_group_size_review.check(view.fragment_detail_btn_s.id)
-            1 -> view.fragment_detail_group_size_review.check(view.fragment_detail_btn_m.id)
-            2 -> view.fragment_detail_group_size_review.check(view.fragment_detail_btn_l.id)
+        val review = when (itemDTO.sizeReview) {
+            0 -> "작아요"
+            1 -> "잘 맞아요"
+            2 -> "커요"
+            else -> null
         }
-
+        
+        view.fragment_detail_tv_item_size.text = "${InitData.getSizeString(itemDTO.sizeFormatId!!, itemDTO.sizeId!!)} / $review"
         view.fragment_detail_tv_review.text = itemDTO.review
     }
 }

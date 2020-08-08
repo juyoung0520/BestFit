@@ -68,13 +68,16 @@ class SettingsFragment : Fragment() {
                 else
                     Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_settings_iv_profile)
 
-                view.fragment_settings_tv_nickname.text = accountDTO.nickname
-                view.fragment_settings_tv_user_height.text = accountDTO.height.toString() + " cm"
-                view.fragment_settings_tv_user_weight.text = accountDTO.weight.toString() + " kg"
+                  view.fragment_settings_tv_nickname.text = accountDTO.nickname
+//                view.fragment_settings_tv_user_height.text = accountDTO.height.toString() + " cm"
+//                view.fragment_settings_tv_user_weight.text = accountDTO.weight.toString() + " kg"
+                  view.fragment_settings_tv_user_size.text = accountDTO.height.toString() + " cm / " + accountDTO.weight.toString() + " kg"
 
-                view.fragment_settings_tv_user_top.text = InitData.getSizeString("01", accountDTO.topId!!)
-                view.fragment_settings_tv_user_bottom.text = InitData.getSizeString("03", accountDTO.bottomId!!)
-                view.fragment_settings_tv_user_shoes.text = InitData.getSizeString("04", accountDTO.shoesId!!)
+                val top = InitData.getSizeString("01", accountDTO.topId!!)
+                val bottom = InitData.getSizeString("03", accountDTO.bottomId!!)
+                val shoes = InitData.getSizeString("04", accountDTO.shoesId!!)
+                view.fragment_settings_tv_user_detail_size.text = "TOP " + top + " / BOTTOM "+ bottom + " / SHOES " + shoes
+
                 view.fragment_settings_tv_message.text = accountDTO.message
             }
         }
