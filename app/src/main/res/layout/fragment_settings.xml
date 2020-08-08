@@ -59,62 +59,19 @@
                             android:textStyle="bold"
                             android:layout_marginBottom="15dp"/>
 
-                        <com.google.android.material.chip.ChipGroup
+                        <TextView
+                            android:id="@+id/fragment_settings_tv_user_size"
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp">
+                            android:layout_height="wrap_content"
+                            android:text="165 cm / 45 kg"
+                            android:textStyle="bold"/>
 
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/fragment_settings_tv_user_height"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="165 cm"/>
-
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/fragment_settings_tv_user_weight"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="45 kg"/>
-
-                        </com.google.android.material.chip.ChipGroup>
-
-                        <com.google.android.material.chip.ChipGroup
+                        <TextView
+                            android:id="@+id/fragment_settings_tv_user_detail_size"
                             android:layout_width="wrap_content"
-                            android:layout_height="50dp">
-
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/fragment_settings_tv_user_top"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="상의 44"/>
-
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/fragment_settings_tv_user_bottom"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="하의 28"/>
-
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/fragment_settings_tv_user_shoes"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="신발 280"/>
-
-                        </com.google.android.material.chip.ChipGroup>
-
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/fragment_settings_tv_user_size"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="165 cm / 45 kg"-->
-<!--                            android:textStyle="bold"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/fragment_settings_tv_user_detail_size"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="55 size / 26 in / 245 mm"-->
-<!--                            android:textStyle="bold"/>-->
+                            android:layout_height="wrap_content"
+                            android:text="55 size / 26 in / 245 mm"
+                            android:textStyle="bold"/>
 
                     </LinearLayout>
 

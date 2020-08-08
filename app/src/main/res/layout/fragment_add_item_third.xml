@@ -155,7 +155,7 @@
                     android:id="@+id/fragment_add_item_third_btn_s"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="작음"
+                    android:text="작아요"
                     style="@style/ToggleButton"
                     android:layout_weight="1"/>
 
@@ -163,7 +163,7 @@
                     android:id="@+id/fragment_add_item_third_btn_m"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="보통"
+                    android:text="잘 맞아요"
                     style="@style/ToggleButton"
                     android:layout_weight="1"/>
 
@@ -171,7 +171,7 @@
                     android:id="@+id/fragment_add_item_third_btn_l"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="큼"
+                    android:text="커요"
                     style="@style/ToggleButton"
                     android:layout_weight="1"/>
 

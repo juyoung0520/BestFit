@@ -91,6 +91,30 @@ object InitData {
         return categories[categoryIndex]
     }
 
+    fun getSubCategoryIndex (categoryId: String, subCategoryId: String) : Int {
+        val categoryIndex = getCategoryIndex(categoryId)
+
+        if (categoryIndex == -1)
+            return -1
+
+        for ((idx, id) in categoryDTOs[categoryIndex].subId!!.withIndex()) {
+            if (subCategoryId == id)
+                return idx
+        }
+
+        return -1
+    }
+
+    fun getSubCategoryString(categoryId: String, subCategoryId: String) : String? {
+        val categoryIndex = getCategoryIndex(categoryId)
+        val subCategoryIndex = getSubCategoryIndex(categoryId, subCategoryId)
+
+        if (subCategoryIndex == -1)
+            return null
+
+        return categoryDTOs[categoryIndex].sub!![subCategoryIndex]
+    }
+
     fun getSizeFormatIndex(sizeFormatId: String): Int {
         for (format in sizeFormatDTOs) {
             if (sizeFormatId == format.id)

@@ -13,6 +13,9 @@ import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_detail.view.*
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DetailFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
@@ -77,15 +80,18 @@ class DetailFragment : Fragment() {
                 .into(view.fragment_detail_iv_item)
         }
 
+        view.fragment_detail_tv_category.text = "${InitData.getCategoryString(itemDTO.categoryId!!)} > ${InitData.getSubCategoryString(itemDTO.categoryId!!, itemDTO.subCategoryId!!)}"
         view.fragment_detail_tv_item_name.text = itemDTO.name
-        view.fragment_detail_tv_item_size.text = "${InitData.getSizeFormatString(itemDTO.sizeFormatId!!)} SIZE ${InitData.getSizeString(itemDTO.sizeFormatId!!, itemDTO.sizeId!!)}"
 
-        when (itemDTO.sizeReview) {
-            0 -> view.fragment_detail_group_size_review.check(view.fragment_detail_btn_s.id)
-            1 -> view.fragment_detail_group_size_review.check(view.fragment_detail_btn_m.id)
-            2 -> view.fragment_detail_group_size_review.check(view.fragment_detail_btn_l.id)
+        val review = when (itemDTO.sizeReview) {
+            0 -> "작아요"
+            1 -> "잘 맞아요"
+            2 -> "커요"
+            else -> null
         }
 
+        view.fragment_detail_tv_item_size.text = "${InitData.getSizeString(itemDTO.sizeFormatId!!, itemDTO.sizeId!!)} / $review"
         view.fragment_detail_tv_review.text = itemDTO.review
+        view.fragment_detail_tv_date.text = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(itemDTO.timestamp)
     }
 }
