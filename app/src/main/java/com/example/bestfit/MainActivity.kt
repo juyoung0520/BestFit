@@ -1,9 +1,11 @@
 package com.example.bestfit
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.example.bestfit.util.InitData
@@ -123,6 +125,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 //            return
 //        }
 
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+
         if (currentNavigation[currentNavigationIndex].isNotEmpty()) {
             supportFragmentManager.beginTransaction().hide(currentNavigation[currentNavigationIndex].last())
                 .commit()
@@ -163,6 +168,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     fun changeFragment(newFragment: Fragment?, bundle: Bundle? = null, doRemove: Boolean = false) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+
         // Remove 할 때 newFragment = null
         if (doRemove) {
             supportFragmentManager.beginTransaction().remove(currentNavigation[currentNavigationIndex].last())

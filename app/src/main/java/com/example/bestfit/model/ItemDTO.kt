@@ -5,6 +5,7 @@ import android.os.Parcelable
 
 data class ItemDTO(
     var timestamp: Long? = null,
+    var uid: String? = null,
     var categoryId: String? = null,
     var subCategoryId: String? = null,
     var images: ArrayList<String> = arrayListOf(),
@@ -21,6 +22,7 @@ data class ItemDTO(
         parcel.readValue(Long::class.java.classLoader) as? Long,
         parcel.readString(),
         parcel.readString(),
+        parcel.readString(),
         parcel.readArrayList(String::class.java.classLoader) as ArrayList<String>,
         parcel.readString(),
         parcel.readString(),
@@ -34,6 +36,7 @@ data class ItemDTO(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(timestamp)
+        parcel.writeString(uid)
         parcel.writeString(categoryId)
         parcel.writeString(subCategoryId)
         parcel.writeStringList(images)

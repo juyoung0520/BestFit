@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/fragment_search_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/fragment_search_searchview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:iconifiedByDefault="false"
+            app:queryHint="아이템, 브랜드, 사람 검색"
+            app:queryBackground="@null"
+            app:searchIcon="@null"
+            android:paddingStart="-16dp"
+            android:paddingLeft="-16dp"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorBlack" />
+
+</LinearLayout>
