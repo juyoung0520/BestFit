@@ -82,6 +82,15 @@ object InitData {
         return -1
     }
 
+    fun getCategoryString(categoryId: String): String? {
+        val categoryIndex = getCategoryIndex(categoryId)
+
+        if (categoryIndex == -1)
+            return null
+
+        return categories[categoryIndex]
+    }
+
     fun getSizeFormatIndex(sizeFormatId: String): Int {
         for (format in sizeFormatDTOs) {
             if (sizeFormatId == format.id)

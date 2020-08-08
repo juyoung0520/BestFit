@@ -41,18 +41,19 @@ class DressroomCategoryFragment : Fragment() {
 
         view.fragment_dressroom_category_recyclerview.setHasFixedSize(true)
         view.fragment_dressroom_category_recyclerview.adapter = itemRecyclerViewAdapter
-        view.fragment_dressroom_category_recyclerview.layoutManager = GridLayoutManager(activity, 3)
+        view.fragment_dressroom_category_recyclerview.layoutManager = GridLayoutManager(activity, 2)
 
-        while (view.fragment_dressroom_category_recyclerview.itemDecorationCount > 0)
-            view.fragment_dressroom_category_recyclerview.removeItemDecorationAt(0)
-
-        view.fragment_dressroom_category_recyclerview.addItemDecoration(ItemDecoration())
+//        while (view.fragment_dressroom_category_recyclerview.itemDecorationCount > 0)
+//            view.fragment_dressroom_category_recyclerview.removeItemDecorationAt(0)
+//
+//        view.fragment_dressroom_category_recyclerview.addItemDecoration(ItemDecoration())
 
         if (savedInstanceState == null) {
             setFragmentResultListener("itemDTOs.${requireArguments().getInt("position")}") { _, bundle ->
                 val itemDTOs = bundle.getParcelableArrayList<ItemDTO>("itemDTOs")
 
                 if (itemDTOs != null) {
+                    this.itemDTOs.clear()
                     this.itemDTOs.addAll(itemDTOs)
                     itemRecyclerViewAdapter.notifyDataSetChanged()
                 }
@@ -62,6 +63,7 @@ class DressroomCategoryFragment : Fragment() {
             val itemDTOs = savedInstanceState.getParcelableArrayList<ItemDTO>("itemDTOs")
 
             if (itemDTOs != null) {
+                this.itemDTOs.clear()
                 this.itemDTOs.addAll(itemDTOs)
                 itemRecyclerViewAdapter.notifyDataSetChanged()
             }
@@ -77,7 +79,7 @@ class DressroomCategoryFragment : Fragment() {
 
     inner class ItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom2, parent, false)
 
             return CustomViewHolder(view)
         }
@@ -92,7 +94,7 @@ class DressroomCategoryFragment : Fragment() {
             val view = (holder as CustomViewHolder).itemView
 
             if (itemDTOs[position].images.size > 0) {
-                view.item_dressroom_iv_item.clipToOutline = true
+//                view.item_dressroom_iv_item.clipToOutline = true
                 Glide.with(view).load(itemDTOs[position].images[0]).apply(
                     RequestOptions().placeholder(R.color.img_loding_placeholder)
                         .error(R.color.image_loading_error_color).centerCrop()

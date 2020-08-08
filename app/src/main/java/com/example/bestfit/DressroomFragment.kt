@@ -40,6 +40,8 @@ class DressroomFragment : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_dressroom, container, false)
 
+        setHasOptionsMenu(true)
+
         initToolbar(fragmentView)
 
         initTab()
@@ -98,9 +100,9 @@ class DressroomFragment : Fragment() {
         for (i in 0 until InitData.categories.size)
             itemDTOs.add(arrayListOf())
 
-        db.collection("accounts").document(currentUid).get().addOnCompleteListener {task ->
-            if(task.isSuccessful) {
-                if(task.result!!["items"] == null) {
+        db.collection("accounts").document(currentUid).get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                if (task.result!!["items"] == null) {
                     initAdapter()
 
                     return@addOnCompleteListener
@@ -111,7 +113,7 @@ class DressroomFragment : Fragment() {
 
                 for (itemId in items) {
                     db.collection("items").document(itemId).get().addOnCompleteListener { task ->
-                        if(task.isSuccessful) {
+                        if (task.isSuccessful) {
                             val itemDTO = task.result!!.toObject(ItemDTO::class.java)!!
                             val categoryIndex = InitData.getCategoryIndex(itemDTO.categoryId!!)
 
