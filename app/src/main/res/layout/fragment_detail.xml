@@ -55,8 +55,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/colorBlack"
-                    android:textStyle="bold"
-                    android:text="iam_kingdubu"/>
+                    android:text="iam_kingdubu"
+                    android:textSize="15sp"/>
 
             </LinearLayout>
 
@@ -100,31 +100,21 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/fragment_detail_tv_category"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp">
+                    android:text="원피스/세트 > 원피스"
+                    android:textSize="13sp"
+                    android:layout_gravity="end" />
 
-                    <TextView
-                        android:id="@+id/fragment_detail_tv_brand"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="쭈블리"
-                        android:textColor="@color/colorDarkGray"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"/>
-
-                    <TextView
-                        android:id="@+id/fragment_detail_tv_category"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="원피스/세트 > 원피스"
-                        android:textSize="13sp"
-                        android:layout_gravity="end"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"/>
-
-                </RelativeLayout>
+                <TextView
+                    android:id="@+id/fragment_detail_tv_brand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="쭈블리"
+                    android:textColor="@color/colorDarkGray"
+                    android:layout_marginBottom="5dp" />
 
                 <TextView
                     android:id="@+id/fragment_detail_tv_item_name"

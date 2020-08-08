@@ -13,6 +13,9 @@ import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_detail.view.*
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.util.*
 
 class DetailFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
@@ -78,6 +81,7 @@ class DetailFragment : Fragment() {
                 .into(view.fragment_detail_iv_item)
         }
 
+        view.fragment_detail_tv_category.text = "${InitData.getCategoryString(itemDTO.categoryId!!)} > ${InitData.getSubCategoryString(itemDTO.categoryId!!, itemDTO.subCategoryId!!)}"
         view.fragment_detail_tv_item_name.text = itemDTO.name
 
         val review = when (itemDTO.sizeReview) {
@@ -86,8 +90,9 @@ class DetailFragment : Fragment() {
             2 -> "커요"
             else -> null
         }
-        
+
         view.fragment_detail_tv_item_size.text = "${InitData.getSizeString(itemDTO.sizeFormatId!!, itemDTO.sizeId!!)} / $review"
         view.fragment_detail_tv_review.text = itemDTO.review
+        view.fragment_detail_tv_date.text = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(itemDTO.timestamp)
     }
 }
