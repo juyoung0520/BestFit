@@ -13,9 +13,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
-import kotlinx.android.synthetic.main.fragment_menu1.view.*
+import kotlinx.android.synthetic.main.fragment_settings.view.*
 
-class MenuFragment : Fragment() {
+class SettingsFragment : Fragment() {
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
@@ -25,7 +25,7 @@ class MenuFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_menu1, container, false)
+        val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
         setHasOptionsMenu(true)
 
@@ -55,7 +55,7 @@ class MenuFragment : Fragment() {
 
     private fun initToolbar(view: View) {
         val mainActivity: MainActivity = requireActivity() as MainActivity
-        mainActivity.setToolbar(view.fragment_menu_toolbar)
+        mainActivity.setToolbar(view.fragment_settings_toolbar)
     }
 
     private fun initMenuFragment(view : View) {
@@ -64,18 +64,18 @@ class MenuFragment : Fragment() {
                 val accountDTO = task.result!!.toObject(AccountDTO::class.java)!!
 
                 if (accountDTO.photo.isNullOrEmpty())
-                    view.fragment_menu_iv_profile.setImageResource(R.drawable.ic_profile_photo)
+                    view.fragment_settings_iv_profile.setImageResource(R.drawable.ic_profile_photo)
                 else
-                    Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_menu_iv_profile)
+                    Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_settings_iv_profile)
 
-                view.fragment_menu_tv_nickname.text = accountDTO.nickname
-                view.fragment_menu_tv_user_height.text = accountDTO.height.toString() + " cm"
-                view.fragment_menu_tv_user_weight.text = accountDTO.weight.toString() + " kg"
+                view.fragment_settings_tv_nickname.text = accountDTO.nickname
+                view.fragment_settings_tv_user_height.text = accountDTO.height.toString() + " cm"
+                view.fragment_settings_tv_user_weight.text = accountDTO.weight.toString() + " kg"
 
-                view.fragment_menu_tv_user_top.text = InitData.getSizeString("01", accountDTO.topId!!)
-                view.fragment_menu_tv_user_bottom.text = InitData.getSizeString("03", accountDTO.bottomId!!)
-                view.fragment_menu_tv_user_shoes.text = InitData.getSizeString("04", accountDTO.shoesId!!)
-                view.fragment_menu_tv_message.text = accountDTO.message
+                view.fragment_settings_tv_user_top.text = InitData.getSizeString("01", accountDTO.topId!!)
+                view.fragment_settings_tv_user_bottom.text = InitData.getSizeString("03", accountDTO.bottomId!!)
+                view.fragment_settings_tv_user_shoes.text = InitData.getSizeString("04", accountDTO.shoesId!!)
+                view.fragment_settings_tv_message.text = accountDTO.message
             }
         }
     }
