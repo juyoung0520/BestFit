@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 }
 
                 2 -> {
-                    newFragment = MenuFragment()
+                    newFragment = SettingsFragment()
                 }
             }
 
