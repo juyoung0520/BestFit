@@ -9,12 +9,14 @@ import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.*
 import com.example.bestfit.util.InitData
+import com.example.bestfit.util.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -28,24 +30,52 @@ class MainActivity : AppCompatActivity() {
 
     var currentNavigationIndex: Int = 0
     var currentNavigation: ArrayList<ArrayList<Fragment>> = arrayListOf()
+    private var currentNavController: LiveData<NavController>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if (savedInstanceState == null) {
+            setupBottomNavigationBar()
+        }
+
 //        activity_main_bottom_nav.setOnNavigationItemSelectedListener(this)
 
         InitData.initData()
 
-        activity_main_toolbar.setupWithNavController(findNavController(R.id.nav_host), AppBarConfiguration(setOf(R.id.homeFragment, R.id.dressroomFragment, R.id.settingsFragment)))
-
+//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
+//        activity_main_toolbar.setupWithNavController(navHostFragment.navController, AppBarConfiguration(setOf(R.id.homeFragment, R.id.dressroomFragment, R.id.settingsFragment)))
         // Navigation Init
-        NavigationUI.setupWithNavController(activity_main_bottom_nav, findNavController(R.id.nav_host))
+//        NavigationUI.setupWithNavController(activity_main_bottom_nav, navHostFragment.navController)
 //        initNavigation()
-
 
         // SetProfile Check
         checkSetProfile()
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        setupBottomNavigationBar()
+    }
+
+    private fun setupBottomNavigationBar() {
+        val navGraphIds = listOf(R.navigation.nav_home, R.navigation.nav_dressroom, R.navigation.nav_settings)
+
+        // Setup the bottom navigation view with a list of navigation graphs
+        val controller = activity_main_bottom_nav.setupWithNavController(navGraphIds, supportFragmentManager, R.id.nav_host_fragment_container, intent)
+
+        // Whenever the selected controller changes, setup the action bar.
+        controller.observe(this, Observer { navController ->
+            activity_main_toolbar.setupWithNavController(navController)
+//            setupActionBarWithNavController(navController)
+        })
+
+        currentNavController = controller
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return currentNavController?.value?.navigateUp() ?: false
     }
 
 //    private fun initNavigation() {

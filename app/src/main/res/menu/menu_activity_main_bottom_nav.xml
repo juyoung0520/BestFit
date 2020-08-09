@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/homeFragment"
+        android:id="@+id/nav_fragment_home"
         android:title="home"/>
 
     <item
-        android:id="@+id/dressroomFragment"
+        android:id="@+id/nav_fragment_dressroom"
         android:title="dressroom"/>
 
     <item
-        android:id="@+id/settingsFragment"
+        android:id="@+id/nav_fragment_settings"
         android:title="settings"/>
 </menu>

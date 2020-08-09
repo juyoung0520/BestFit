@@ -27,13 +27,35 @@ class SettingsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
-        setHasOptionsMenu(true)
+        println("settings")
 
-        initToolbar(view)
+        if (savedInstanceState == null) {
+            println("zz")
+            setHasOptionsMenu(true)
 
-        initMenuFragment(view)
+            initToolbar(view)
+
+            initMenuFragment(view)
+        }
 
         return view
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        println("save")
+        super.onSaveInstanceState(outState)
+        outState.putInt("asd", 1)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        println("restored")
+
+        setHasOptionsMenu(true)
+
+//        initToolbar(view)
+//
+//        initMenuFragment(view)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
