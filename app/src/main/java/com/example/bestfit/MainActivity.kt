@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     fun setToolbar(toolbar: Toolbar, setHomeButton: Boolean = false) {
+        println("settoolbar")
         setSupportActionBar(toolbar)
 //        supportActionBar?.setDisplayShowTitleEnabled(false)
 

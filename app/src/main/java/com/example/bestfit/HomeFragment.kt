@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {
@@ -27,34 +28,53 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        setHasOptionsMenu(true)
+        println("createview")
 
-        initToolbar(view)
+        setHasOptionsMenu(true)
+        view.fragment_home_toolbar.inflateMenu(R.menu.menu_fragment_home)
+        view.fragment_home_toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_fragment_home_search -> {
+                    val mainActivity: MainActivity = requireActivity() as MainActivity
+                    mainActivity.changeFragment(SearchFragment())
+
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+
+//        initToolbar(view)
 
         return view
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-
-        inflater.inflate(R.menu.menu_fragment_home, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_fragment_home_search -> {
-                val mainActivity: MainActivity = requireActivity() as MainActivity
-                mainActivity.changeFragment(SearchFragment())
-
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        println("createoptionsmenu")
+//        super.onCreateOptionsMenu(menu, inflater)
+//
+//        inflater.inflate(R.menu.menu_fragment_home, menu)
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.menu_fragment_home_search -> {
+//                val mainActivity: MainActivity = requireActivity() as MainActivity
+//                mainActivity.changeFragment(SearchFragment())
+//
+//                return true
+//            }
+//        }
+//
+//        return super.onOptionsItemSelected(item)
+//    }
 
     private fun initToolbar(view: View) {
         val mainActivity: MainActivity = requireActivity() as MainActivity
         mainActivity.setToolbar(view.fragment_home_toolbar)
+
+        setHasOptionsMenu(true)
     }
 }
