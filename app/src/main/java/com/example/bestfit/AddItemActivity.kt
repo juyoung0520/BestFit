@@ -66,7 +66,7 @@ class AddItemActivity : AppCompatActivity() {
                     1, 2 -> activity_add_item_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
                     3 -> {
                         activity_add_item_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
-                        activity_add_item_toolbar.inflateMenu(R.menu.menu_fragment_home)
+                        activity_add_item_toolbar.inflateMenu(R.menu.menu_activity_add_item)
                         activity_add_item_toolbar.setOnMenuItemClickListener { item ->
                             when (item.itemId) {
                                 R.id.menu_activity_add_item_submit -> {
