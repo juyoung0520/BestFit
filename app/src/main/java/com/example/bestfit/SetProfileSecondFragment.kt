@@ -104,7 +104,7 @@ class SetProfileSecondFragment : Fragment() {
     }
 
     private fun initDialogNumberPicker(view: EditText, minValue: Int, maxValue: Int, defaultValue: Int, suffix: String) {
-        val dialog = MaterialAlertDialogBuilder(context!!)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
         val dialogPickerView = LayoutInflater.from(context).inflate(R.layout.item_dialogpicker, null)
         val picker = dialogPickerView.item_dialogpicker_np
 

@@ -7,11 +7,9 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.AccountDTO
-import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 
@@ -27,35 +25,33 @@ class SettingsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
-        setHasOptionsMenu(true)
-
         initToolbar(view)
 
         initMenuFragment(view)
 
+        view.fragment_settings_tv_signOut.setOnClickListener {
+            auth.signOut()
+
+            requireActivity().startActivity(Intent(requireActivity(), SignInActivity::class.java))
+            requireActivity().finish()
+        }
+
         return view
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
+    private fun initToolbar(view: View) {
+        view.fragment_settings_toolbar.inflateMenu(R.menu.menu_fragment_settings)
+        view.fragment_settings_toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_fragment_settings_modify -> {
 
-        inflater.inflate(R.menu.menu_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_menu_action_modify -> {
-
-                return true
+                    true
+                }
+                else -> {
+                    false
+                }
             }
         }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun initToolbar(view: View) {
-        val mainActivity: MainActivity = requireActivity() as MainActivity
-        mainActivity.setToolbar(view.fragment_settings_toolbar)
     }
 
     private fun initMenuFragment(view : View) {
@@ -82,9 +78,4 @@ class SettingsFragment : Fragment() {
             }
         }
     }
-
-//    auth.signOut()
-//
-//    startActivity(Intent(this, SignInActivity::class.java))
-//    finish()
 }

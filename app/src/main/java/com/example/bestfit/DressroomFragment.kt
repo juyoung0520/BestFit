@@ -2,27 +2,16 @@ package com.example.bestfit
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.*
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.*
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
-import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
-import kotlinx.android.synthetic.main.item_dressroom.view.*
 import kotlin.concurrent.timer
 
 
@@ -40,8 +29,6 @@ class DressroomFragment : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_dressroom, container, false)
 
-        setHasOptionsMenu(true)
-
         initToolbar(fragmentView)
 
         initTab()
@@ -57,26 +44,20 @@ class DressroomFragment : Fragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
+    private fun initToolbar(view: View) {
+        view.fragment_dressroom_toolbar.inflateMenu(R.menu.menu_fragment_dressroom)
+        view.fragment_dressroom_toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_fragment_dressroom_add -> {
+                    startActivityForResult(Intent(activity, AddItemActivity::class.java), 1)
 
-        inflater.inflate(R.menu.menu_dressroom, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_dressroom_action_add -> {
-                startActivityForResult(Intent(activity, AddItemActivity::class.java), 1)
-                return true
+                    true
+                }
+                else -> {
+                    false
+                }
             }
         }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun initToolbar(view: View) {
-        val mainActivity: MainActivity = requireActivity() as MainActivity
-        mainActivity.setToolbar(view.fragment_dressroom_toolbar)
     }
 
     private fun initTab() {

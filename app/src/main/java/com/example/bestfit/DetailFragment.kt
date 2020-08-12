@@ -14,6 +14,7 @@ import com.example.bestfit.util.InitData
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
+import kotlinx.android.synthetic.main.fragment_search.view.*
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,7 +28,6 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
-        setHasOptionsMenu(true)
 
         initToolbar(view)
 
@@ -36,22 +36,12 @@ class DetailFragment : Fragment() {
         return view
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                val mainActivity: MainActivity = requireActivity() as MainActivity
-                mainActivity.changeFragment(null, null, true)
-
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun initToolbar(view: View) {
-        val mainActivity: MainActivity = requireActivity() as MainActivity
-        mainActivity.setToolbar(view.fragment_detail_toolbar, true)
+        view.fragment_detail_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        view.fragment_detail_toolbar.setNavigationOnClickListener {
+            val mainActivity: MainActivity = requireActivity() as MainActivity
+            mainActivity.changeFragment(null, null, true)
+        }
     }
 
     private fun initDetailFragment(view : View) {

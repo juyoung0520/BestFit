@@ -6,6 +6,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -23,10 +24,13 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_add_item.*
+import kotlinx.android.synthetic.main.activity_add_item.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_fourth.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_third.view.*
+import kotlinx.android.synthetic.main.fragment_detail.view.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import java.io.File
 
 class AddItemActivity : AppCompatActivity() {
@@ -45,21 +49,10 @@ class AddItemActivity : AppCompatActivity() {
         initViewPager()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                changeViewPage(true)
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun initToolbar() {
-        setSupportActionBar(activity_add_item_toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        activity_add_item_toolbar.setNavigationOnClickListener {
+            changeViewPage(true)
+        }
     }
 
     private fun initViewPager() {
@@ -69,8 +62,30 @@ class AddItemActivity : AppCompatActivity() {
                 super.onPageSelected(position)
 
                 when (position) {
-                    0 -> supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_close)
-                    1, 2, 3 -> supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+                    0 -> {
+                        activity_add_item_toolbar.setNavigationIcon(R.drawable.ic_close)
+                        activity_add_item_toolbar.menu.clear()
+                    }
+                    1, 2 -> {
+                        activity_add_item_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+                        activity_add_item_toolbar.menu.clear()
+                    }
+                    3 -> {
+                        activity_add_item_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+                        activity_add_item_toolbar.inflateMenu(R.menu.menu_activity_add_item)
+                        activity_add_item_toolbar.setOnMenuItemClickListener { item ->
+                            when (item.itemId) {
+                                R.id.menu_activity_add_item_submit -> {
+                                    submitAddItem()
+
+                                    true
+                                }
+                                else -> {
+                                    false
+                                }
+                            }
+                        }
+                    }
                 }
             }
         })
@@ -83,7 +98,6 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         override fun createFragment(position: Int): Fragment {
-            println("create $position")
             val fragment = when (position) {
                 0 -> AddItemFirstFragment()
                 1 -> AddItemSecondFragment()

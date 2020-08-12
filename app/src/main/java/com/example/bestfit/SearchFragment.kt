@@ -28,8 +28,6 @@ class SearchFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
-        setHasOptionsMenu(true)
-
         initToolbar(view)
 
         view.fragment_search_searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -57,22 +55,12 @@ class SearchFragment : Fragment() {
         return view
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                val mainActivity: MainActivity = requireActivity() as MainActivity
-                mainActivity.changeFragment(null, null, true)
-
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun initToolbar(view: View) {
-        val mainActivity: MainActivity = requireActivity() as MainActivity
-        mainActivity.setToolbar(view.fragment_search_toolbar, true)
+        view.fragment_search_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        view.fragment_search_toolbar.setNavigationOnClickListener {
+            val mainActivity: MainActivity = requireActivity() as MainActivity
+            mainActivity.changeFragment(null, null, true)
+        }
     }
 
     private fun searchItem(query: String) {
@@ -108,7 +96,7 @@ class SearchFragment : Fragment() {
 
     inner class ResultRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom2, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom, parent, false)
 
             return CustomViewHolder(view)
         }

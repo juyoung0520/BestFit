@@ -25,28 +25,7 @@ class SignInActivity : AppCompatActivity() {
             return
         }
 
-        initToolbar()
-
         replaceFragment(SignInFragment())
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-
-                replaceFragment(SignInFragment())
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun initToolbar() {
-        setSupportActionBar(activity_signin_toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     fun startMainActivity() {

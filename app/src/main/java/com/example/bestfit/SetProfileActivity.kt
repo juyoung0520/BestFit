@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.bestfit.model.AccountDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.activity_set_profile.*
 import kotlinx.android.synthetic.main.fragment_set_profile_first.view.*
 import kotlinx.android.synthetic.main.fragment_set_profile_second.view.*
@@ -32,20 +33,10 @@ class SetProfileActivity : AppCompatActivity() {
         initViewPager()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                changeViewPage(true)
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun initToolbar() {
-        setSupportActionBar(activity_set_profile_toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        activity_set_profile_toolbar.setNavigationOnClickListener {
+            changeViewPage(true)
+        }
     }
 
     private fun initViewPager() {
@@ -55,10 +46,29 @@ class SetProfileActivity : AppCompatActivity() {
                 super.onPageSelected(position)
 
                 when (position) {
-                    0 -> supportActionBar?.setDisplayHomeAsUpEnabled(false)
-                    1, 2 -> {
-                        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+                    0 -> {
+                        activity_set_profile_toolbar.navigationIcon = null
+                        activity_set_profile_toolbar.menu.clear()
+                    }
+                    1 -> {
+                        activity_set_profile_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+                        activity_set_profile_toolbar.menu.clear()
+                    }
+                    2 -> {
+                        activity_set_profile_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+                        activity_set_profile_toolbar.inflateMenu(R.menu.menu_activity_set_profile)
+                        activity_set_profile_toolbar.setOnMenuItemClickListener { item ->
+                            when (item.itemId) {
+                                R.id.menu_activity_set_profile_submit -> {
+                                    submitSetProfile()
+
+                                    true
+                                }
+                                else -> {
+                                    false
+                                }
+                            }
+                        }
                     }
                 }
             }

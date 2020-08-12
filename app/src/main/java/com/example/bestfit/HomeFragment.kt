@@ -28,9 +28,12 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        println("createview")
+        initToolbar(view)
 
-        setHasOptionsMenu(true)
+        return view
+    }
+
+    private fun initToolbar(view: View) {
         view.fragment_home_toolbar.inflateMenu(R.menu.menu_fragment_home)
         view.fragment_home_toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -45,36 +48,5 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
-//        initToolbar(view)
-
-        return view
-    }
-
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        println("createoptionsmenu")
-//        super.onCreateOptionsMenu(menu, inflater)
-//
-//        inflater.inflate(R.menu.menu_fragment_home, menu)
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.menu_fragment_home_search -> {
-//                val mainActivity: MainActivity = requireActivity() as MainActivity
-//                mainActivity.changeFragment(SearchFragment())
-//
-//                return true
-//            }
-//        }
-//
-//        return super.onOptionsItemSelected(item)
-//    }
-
-    private fun initToolbar(view: View) {
-        val mainActivity: MainActivity = requireActivity() as MainActivity
-        mainActivity.setToolbar(view.fragment_home_toolbar)
-
-        setHasOptionsMenu(true)
     }
 }

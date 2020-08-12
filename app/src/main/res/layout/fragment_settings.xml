@@ -192,6 +192,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/fragment_settings_tv_signOut"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:text="로그아웃"

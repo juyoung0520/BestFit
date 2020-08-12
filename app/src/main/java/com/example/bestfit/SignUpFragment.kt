@@ -1,27 +1,17 @@
 package com.example.bestfit
 
-import android.graphics.drawable.DrawableWrapper
+import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import com.example.bestfit.R.drawable
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_signin.*
-import kotlinx.android.synthetic.main.fragment_dressroom.view.*
-import kotlinx.android.synthetic.main.fragment_signin.view.*
 import kotlinx.android.synthetic.main.fragment_signup.view.*
 
 class SignUpFragment : Fragment() {
@@ -74,7 +64,7 @@ class SignUpFragment : Fragment() {
             checkPassword(view)
         }
 
-        initToolbar()
+        initToolbar(view)
 
         view.fragment_signup_btn_signup.setOnClickListener{
             signUp(view)
@@ -83,10 +73,16 @@ class SignUpFragment : Fragment() {
         return view
     }
 
-    private fun initToolbar() {
-        val signInActivity = activity!! as SignInActivity
-        signInActivity.activity_signin_tv_toolbar_title.text = "회원가입"
-        signInActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    private fun initToolbar(view: View) {
+        view.fragment_signup_toolbar.setNavigationIcon(R.drawable.ic_close)
+        view.fragment_signup_toolbar.setNavigationOnClickListener {
+            val signInActivity = requireActivity() as SignInActivity
+
+            val imm = signInActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+
+            signInActivity.replaceFragment(SignInFragment())
+        }
     }
 
     private fun signUp(view: View) {

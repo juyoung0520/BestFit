@@ -34,8 +34,6 @@ class SignInFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_signin, container, false)
 
-        initToolbar()
-
         view.fragment_signin_text_email.setTextInputLayout(view.fragment_signin_layout_text_email)
         view.fragment_signin_text_password.setTextInputLayout(view.fragment_signin_layout_text_password)
 
@@ -85,12 +83,6 @@ class SignInFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private fun initToolbar() {
-        val signInActivity = activity!! as SignInActivity
-        signInActivity.activity_signin_tv_toolbar_title.text = "로그인"
-        signInActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     private fun signIn(view: View) {
