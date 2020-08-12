@@ -1,5 +1,6 @@
 package com.example.bestfit
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
@@ -11,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_dressroom.view.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
 
@@ -27,8 +29,6 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
-
-        setHasOptionsMenu(true)
 
         initToolbar(view)
 
@@ -57,22 +57,12 @@ class SearchFragment : Fragment() {
         return view
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                val mainActivity: MainActivity = requireActivity() as MainActivity
-                mainActivity.changeFragment(null, null, true)
-
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun initToolbar(view: View) {
-        val mainActivity: MainActivity = requireActivity() as MainActivity
-        mainActivity.setToolbar(view.fragment_search_toolbar, true)
+        view.fragment_search_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        view.fragment_search_toolbar.setNavigationOnClickListener {
+            val mainActivity: MainActivity = requireActivity() as MainActivity
+            mainActivity.changeFragment(null, null, true)
+        }
     }
 
     private fun searchItem(query: String) {

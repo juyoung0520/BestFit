@@ -57,17 +57,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
     }
 
-    fun setToolbar(toolbar: Toolbar, setHomeButton: Boolean = false) {
-        println("settoolbar")
-        setSupportActionBar(toolbar)
-//        supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        if (setHomeButton) {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
-        }
-    }
-
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         when (p0.itemId) {
             R.id.menu_bottom_nav_action_home -> {

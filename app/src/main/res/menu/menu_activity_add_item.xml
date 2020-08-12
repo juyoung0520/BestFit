@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_menu_action_modify"
-        android:title="수정"
+        android:id="@+id/menu_activity_add_item_submit"
+        android:title="등록"
         app:showAsAction="always"/>
 </menu>
