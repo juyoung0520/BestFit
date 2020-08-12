@@ -14,71 +14,71 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_account.view.*
+import kotlinx.android.synthetic.main.fragment_detail.view.*
 
 class AccountFragment : Fragment() {
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
-    private var uid : String ?= null
     private val db = FirebaseFirestore.getInstance()
-    private val tabArray : ArrayList<String> = arrayListOf()
+    private val tabArray: ArrayList<String> = arrayListOf()
+    private lateinit var uid: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val fragment = inflater.inflate(R.layout.fragment_account, container, false)
-        uid = arguments?.getString("uid")
+        val view = inflater.inflate(R.layout.fragment_account, container, false)
+        uid = requireArguments().getString("uid")!!
 
-        initTab(fragment)
+        initToolbar(view)
+        initTab(view)
 
-        return fragment
+        return view
+    }
+
+    private fun initToolbar(view: View) {
+        view.fragment_account_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+        view.fragment_account_toolbar.setNavigationOnClickListener {
+            val mainActivity: MainActivity = requireActivity() as MainActivity
+            mainActivity.changeFragment(null, null, true)
+        }
     }
 
     private fun initTab(view : View) {
-        view.fragment_account_tab.newTab()
         tabArray.add("드레스룸")
-        view.fragment_account_tab.newTab()
         tabArray.add("게시글")
 
-        initAdapter(view)
-        initItem(view)
+        initTabAdapter(view)
+        initItem()
     }
 
-    private fun initAdapter(view: View) {
-        view.fragment_account_viewpager.adapter = TapOfPostPagerAdapter(requireActivity())
-        TabLayoutMediator(view.fragment_account_tab, view.fragment_account_viewpager) { tab, position ->
-            tab.text = tabArray[position]
-        }.attach()
-    }
-
-    private fun initItem(view: View) {
+    private fun initItem() {
         val itemDTOs : ArrayList<ItemDTO> = arrayListOf()
 
-        db.collection("accounts").document(uid!!).get().addOnCompleteListener { task ->
+        db.collection("accounts").document(uid).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                if (task.result!!["items"] == null) {
-                    initAdapter(view)
-
+                if (task.result!!["items"] == null)
                     return@addOnCompleteListener
-                }
+
                 val items = task.result!!["items"] as ArrayList<String>
                 var cnt = 0
 
                 for (itemId in items) {
-                    db.collection("items").document(itemId).get().addOnCompleteListener {
+                    db.collection("items").document(itemId).get().addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            val itemDTO = task.result!!.toObject(ItemDTO::class.java)
-                            itemDTOs.add(itemDTO!!)
+                            val itemDTO = task.result!!.toObject(ItemDTO::class.java)!!
+                            itemDTOs.add(itemDTO)
+
                             cnt += 1
 
                             if (cnt >= items.size) {
-                                itemDTOs.sortByDescending { itemDTOs -> itemDTO.timestamp }
+                                itemDTOs.sortByDescending { itemDTO -> itemDTO.timestamp }
 
                                 val bundle = Bundle()
                                 bundle.putParcelableArrayList("itemDTOs", itemDTOs)
 
-                                setFragmentResult("itemDTOs.0", bundle)
+                                setFragmentResult("itemDTOs.${uid}.-1", bundle)
                             }
                         }
                     }
@@ -87,20 +87,35 @@ class AccountFragment : Fragment() {
         }
     }
 
-    inner class TapOfPostPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
-
-        override fun getItemCount(): Int {
-            return tabArray.size
+    private fun initTabAdapter(view: View) {
+        view.fragment_account_viewpager.adapter = TabPagerAdapter(requireActivity())
+        TabLayoutMediator(view.fragment_account_tab, view.fragment_account_viewpager) { tab, position ->
+            tab.text = tabArray[position]
+        }.attach()
     }
 
+    inner class TabPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
+        override fun getItemCount(): Int {
+            return tabArray.size
+        }
+
         override fun createFragment(position: Int): Fragment {
-            val fragment = DressroomCategoryFragment()
-            val bundle = Bundle()
+            return when (position) {
+                0 -> {
+                    val fragment = DressroomCategoryFragment()
+                    val bundle = Bundle()
 
-            bundle.putInt("position", position)
-            fragment.arguments = bundle
+                    bundle.putString("uid", uid)
+                    bundle.putInt("position", -1)
 
-            return fragment
+                    fragment.arguments = bundle
+                    fragment
+                }
+                1 -> {
+                    Fragment()
+                }
+                else -> Fragment()
+            }
         }
 
     }

@@ -6,10 +6,9 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/fragment_settings_toolbar"
+        android:id="@+id/fragment_account_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        app:title=" "/>
+        android:layout_height="45dp"/>
 
     <ScrollView
         android:layout_width="match_parent"

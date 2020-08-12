@@ -29,8 +29,6 @@ class DressroomFragment : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_dressroom, container, false)
 
-        initToolbar(fragmentView)
-
         initTab()
 
         return fragmentView
@@ -66,9 +64,9 @@ class DressroomFragment : Fragment() {
                 cancel()
 
                 requireActivity().runOnUiThread {
-                    setHasOptionsMenu(true)
+                    initToolbar(fragmentView)
 
-                    initAdapter()
+                    initTabAdapter()
                     initItem()
                 }
             }
@@ -83,11 +81,8 @@ class DressroomFragment : Fragment() {
 
         db.collection("accounts").document(currentUid).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                if (task.result!!["items"] == null) {
-                    initAdapter()
-
+                if (task.result!!["items"] == null)
                     return@addOnCompleteListener
-                }
 
                 val items = task.result!!["items"] as ArrayList<String>
                 var cnt = 0
@@ -110,7 +105,7 @@ class DressroomFragment : Fragment() {
                                     val bundle = Bundle()
                                     bundle.putParcelableArrayList("itemDTOs", itemDTOs[position])
 
-                                    setFragmentResult("itemDTOs.$position", bundle)
+                                    setFragmentResult("itemDTOs.$currentUid.$position", bundle)
                                 }
                             }
                         }
@@ -120,7 +115,7 @@ class DressroomFragment : Fragment() {
         }
     }
 
-    private fun initAdapter() {
+    private fun initTabAdapter() {
         fragmentView.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(requireActivity())
         TabLayoutMediator(fragmentView.fragment_dressroom_tab, fragmentView.fragment_dressroom_viewpager) { tab, position ->
             tab.text = InitData.categoryDTOs[position].name
@@ -136,9 +131,10 @@ class DressroomFragment : Fragment() {
             val fragment = DressroomCategoryFragment()
             val bundle = Bundle()
 
+            bundle.putString("uid", currentUid)
             bundle.putInt("position", position)
-            fragment.arguments = bundle
 
+            fragment.arguments = bundle
             return fragment
         }
     }

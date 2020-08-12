@@ -44,7 +44,10 @@ class DressroomCategoryFragment : Fragment() {
 //        view.fragment_dressroom_category_recyclerview.addItemDecoration(ItemDecoration())
 
         if (savedInstanceState == null) {
-            setFragmentResultListener("itemDTOs.${requireArguments().getInt("position")}") { _, bundle ->
+            val uid = requireArguments().getString("uid")
+            val position = requireArguments().getInt("position")
+
+            setFragmentResultListener("itemDTOs.${uid}.${position}") { _, bundle ->
                 val itemDTOs = bundle.getParcelableArrayList<ItemDTO>("itemDTOs")
 
                 if (itemDTOs != null) {
