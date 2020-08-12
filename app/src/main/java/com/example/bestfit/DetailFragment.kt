@@ -12,6 +12,7 @@ import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -71,7 +72,7 @@ class DetailFragment : Fragment() {
                 val top = InitData.getSizeString("01", accountDTO.topId!!)
                 val bottom = InitData.getSizeString("03", accountDTO.bottomId!!)
                 val shoes = InitData.getSizeString("04", accountDTO.shoesId!!)
-                view.fragment_detail_tv_user_detail_size.text = "Top $top / Bottom $bottom / Shoes $shoes"
+                //view.fragment_detail_tv_user_detail_size.text = "Top $top / Bottom $bottom / Shoes $shoes"
             }
         }
 
@@ -93,5 +94,16 @@ class DetailFragment : Fragment() {
         view.fragment_detail_tv_item_size.text = "${InitData.getSizeString(itemDTO.sizeFormatId!!, itemDTO.sizeId!!)} / $review"
         view.fragment_detail_tv_review.text = itemDTO.review
         view.fragment_detail_tv_date.text = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(itemDTO.timestamp)
+
+        view.fragment_detail_iv_profile.setOnClickListener {
+            var fragment = AccountFragment()
+            var mainActivity = activity as MainActivity
+            var bundle = Bundle()
+
+            bundle.putString("uid", itemDTO.uid)
+            fragment.arguments = bundle
+
+            mainActivity.changeFragment(fragment, bundle)
+        }
     }
 }

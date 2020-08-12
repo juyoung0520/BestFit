@@ -37,7 +37,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:singleSelection="true"
-        app:selectionRequired="true">
+        app:selectionRequired="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/fragment_search_chip_item"
@@ -45,19 +47,28 @@
             android:layout_height="wrap_content"
             android:text="아이템"
             android:checked="true"
-            style="@style/Widget.MaterialComponents.Chip.Choice"/>
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            app:chipBackgroundColor="@null"
+            app:chipStrokeColor="@color/colorDivision"
+            app:chipStrokeWidth="1dp"/>
 
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="브랜드"
-            style="@style/Widget.MaterialComponents.Chip.Choice"/>
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            app:chipBackgroundColor="@null"
+            app:chipStrokeColor="@color/colorDivision"
+            app:chipStrokeWidth="1dp"/>
 
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="사람"
-            style="@style/Widget.MaterialComponents.Chip.Choice"/>
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            app:chipBackgroundColor="@null"
+            app:chipStrokeColor="@color/colorDivision"
+            app:chipStrokeWidth="1dp"/>
 
     </com.google.android.material.chip.ChipGroup>
 
