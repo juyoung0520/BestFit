@@ -1,6 +1,5 @@
 package com.example.bestfit
 
-import android.content.Context
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
@@ -9,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,9 +18,7 @@ import com.example.bestfit.model.ItemDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
-import kotlinx.android.synthetic.main.item_add_item_image.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
-import java.io.File
 
 class DressroomCategoryFragment : Fragment() {
     private val auth = FirebaseAuth.getInstance()
@@ -79,7 +74,7 @@ class DressroomCategoryFragment : Fragment() {
 
     inner class ItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom2, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom, parent, false)
 
             return CustomViewHolder(view)
         }

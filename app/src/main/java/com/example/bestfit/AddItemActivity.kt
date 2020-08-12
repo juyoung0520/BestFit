@@ -62,8 +62,14 @@ class AddItemActivity : AppCompatActivity() {
                 super.onPageSelected(position)
 
                 when (position) {
-                    0 -> activity_add_item_toolbar.setNavigationIcon(R.drawable.ic_close)
-                    1, 2 -> activity_add_item_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+                    0 -> {
+                        activity_add_item_toolbar.setNavigationIcon(R.drawable.ic_close)
+                        activity_add_item_toolbar.menu.clear()
+                    }
+                    1, 2 -> {
+                        activity_add_item_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+                        activity_add_item_toolbar.menu.clear()
+                    }
                     3 -> {
                         activity_add_item_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
                         activity_add_item_toolbar.inflateMenu(R.menu.menu_activity_add_item)

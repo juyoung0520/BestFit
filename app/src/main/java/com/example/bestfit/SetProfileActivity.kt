@@ -46,8 +46,14 @@ class SetProfileActivity : AppCompatActivity() {
                 super.onPageSelected(position)
 
                 when (position) {
-                    0 -> activity_set_profile_toolbar.navigationIcon = null
-                    1 -> activity_set_profile_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+                    0 -> {
+                        activity_set_profile_toolbar.navigationIcon = null
+                        activity_set_profile_toolbar.menu.clear()
+                    }
+                    1 -> {
+                        activity_set_profile_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
+                        activity_set_profile_toolbar.menu.clear()
+                    }
                     2 -> {
                         activity_set_profile_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
                         activity_set_profile_toolbar.inflateMenu(R.menu.menu_activity_set_profile)

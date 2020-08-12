@@ -29,6 +29,13 @@ class SettingsFragment : Fragment() {
 
         initMenuFragment(view)
 
+        view.fragment_settings_tv_signOut.setOnClickListener {
+            auth.signOut()
+
+            requireActivity().startActivity(Intent(requireActivity(), SignInActivity::class.java))
+            requireActivity().finish()
+        }
+
         return view
     }
 
@@ -71,9 +78,4 @@ class SettingsFragment : Fragment() {
             }
         }
     }
-
-//    auth.signOut()
-//
-//    startActivity(Intent(this, SignInActivity::class.java))
-//    finish()
 }

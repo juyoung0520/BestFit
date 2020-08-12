@@ -1,6 +1,5 @@
 package com.example.bestfit
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
@@ -12,7 +11,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_dressroom.view.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
 
@@ -98,7 +96,7 @@ class SearchFragment : Fragment() {
 
     inner class ResultRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom2, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom, parent, false)
 
             return CustomViewHolder(view)
         }
