@@ -24,7 +24,7 @@ class DetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_detail2, container, false)
+        val view = inflater.inflate(R.layout.fragment_detail3, container, false)
 
         initToolbar(view)
 
