@@ -2,9 +2,9 @@ package com.example.bestfit
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -12,10 +12,7 @@ import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
-import kotlinx.android.synthetic.main.fragment_search.view.*
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,6 +29,11 @@ class DetailFragment : Fragment() {
         initToolbar(view)
 
         initDetailFragment(view)
+
+//        requireActivity().onBackPressedDispatcher.addCallback(this) {
+//            val mainActivity: MainActivity = requireActivity() as MainActivity
+//            mainActivity.changeFragment(null, null, true)
+//        }
 
         return view
     }

@@ -19,7 +19,7 @@
     <style name="ToolbarExpandedTitle" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
         <item name="android:textSize">30sp</item>
         <item name="android:textColor">@color/colorBlack</item>
-        <item name="android:textStyle">bold</item>
+<!--        <item name="android:textStyle">bold</item>-->
     </style>
 
     <style name="ToolbarCollapsedTitle" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
