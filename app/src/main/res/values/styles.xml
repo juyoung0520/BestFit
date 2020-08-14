@@ -16,6 +16,17 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
+    <style name="ToolbarExpandedTitle" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ToolbarCollapsedTitle" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
     <style name="ToolbarMenu">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/colorBlack</item>

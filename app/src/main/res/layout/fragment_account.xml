@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/fragment_account_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"/>
-
-    <ScrollView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/fragment_account_appbarlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none">
+        android:background="@null"
+        app:elevation="0dp">
 
-        <LinearLayout
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="30dp">
+            app:contentScrim="@color/colorWhite"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginTop="48dp"
                 android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp">
+                android:layout_marginEnd="30dp"
+                app:layout_collapseMode="parallax">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -87,27 +85,45 @@
 
             </LinearLayout>
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/fragment_account_tab"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/fragment_account_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabMode="fixed"
-                app:tabIndicatorColor="@color/colorPrimary" />
+                android:layout_height="48dp"
+                android:background="@color/colorWhite"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
+                app:layout_collapseMode="pin">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorDivision"
-                android:focusable="true"
-                android:focusableInTouchMode="true"/>
+                <TextView
+                    android:id="@+id/fragment_account_toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="두부낑님의 프로필"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="18sp" />
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/fragment_account_viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            </androidx.appcompat.widget.Toolbar>
 
-        </LinearLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-    </ScrollView>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/fragment_account_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed"
+            app:tabIndicatorColor="@color/colorPrimary"/>
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorDivision"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/fragment_account_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

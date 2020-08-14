@@ -9,12 +9,14 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.bestfit.model.ItemDTO
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_account.view.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
+import kotlin.math.abs
 
 class AccountFragment : Fragment() {
     private val auth = FirebaseAuth.getInstance()
@@ -38,6 +40,16 @@ class AccountFragment : Fragment() {
     }
 
     private fun initToolbar(view: View) {
+        view.fragment_account_appbarlayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
+            if (abs(p1) - p0.totalScrollRange == 0) {
+                view.fragment_account_toolbar_title.visibility = View.VISIBLE
+
+            }
+            else if (p1 == 0) {
+                view.fragment_account_toolbar_title.visibility = View.GONE
+            }
+        })
+
         view.fragment_account_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         view.fragment_account_toolbar.setNavigationOnClickListener {
             val mainActivity: MainActivity = requireActivity() as MainActivity
