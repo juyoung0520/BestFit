@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.bestfit.util.InitData
@@ -17,37 +18,52 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
 
-    var currentNavigationIndex: Int = 0
-    var currentNavigation: ArrayList<ArrayList<Fragment>> = arrayListOf()
     private lateinit var navigationFragmentViewModel: NavigationFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        navigationFragmentViewModel = ViewModelProvider(this).get(NavigationFragmentViewModel::class.java)
+
         val navigationIndexObserver = Observer<Int> { newNavigationIndex ->
-            currentNavigationIndex = newNavigationIndex
+            println("observe index -> $newNavigationIndex")
+//            currentNavigationIndex = newNavigationIndex
         }
 
         val navigationObserver = Observer<ArrayList<ArrayList<Fragment>>> { newNavigationFragments ->
-            currentNavigation = newNavigationFragments
+            println("observe fragment -> $newNavigationFragments")
+//            currentNavigation = newNavigationFragments
+
+            var isEmpty = true
+            for (navigation in newNavigationFragments) {
+                if (!navigation.isNullOrEmpty()) {
+                    isEmpty = false
+                    break
+                }
+            }
+
+            if (isEmpty)
+                activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_home
         }
 
-        navigationFragmentViewModel = ViewModelProvider(this).get(NavigationFragmentViewModel::class.java)
-//        navigationFragmentViewModel.getNavigationFragments().observe()
+        navigationFragmentViewModel.activatedNavigationIndex.observe(this, navigationIndexObserver)
+        navigationFragmentViewModel.navigationFragments.observe(this, navigationObserver)
+
         activity_main_bottom_nav.setOnNavigationItemSelectedListener(this)
 
         if (savedInstanceState == null) {
             InitData.initData()
 
             // Navigation Init
-            initNavigation()
+//            initNavigation()
 
             // SetProfile Check
             checkSetProfile()
@@ -58,15 +74,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onSaveInstanceState(outState)
 
         outState.putBoolean("isInitialized", true)
-    }
-
-    private fun initNavigation() {
-        currentNavigation.clear()
-
-        for (idx in 0..2)
-            currentNavigation.add(arrayListOf())
-
-        activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_dressroom
     }
 
     private fun checkSetProfile() {
@@ -88,24 +95,12 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             R.id.menu_bottom_nav_action_dressroom -> {
                 changeNavigation(1)
             }
-            R.id.menu_bottom_nav_action_menu -> {
+            R.id.menu_bottom_nav_action_settings -> {
                 changeNavigation(2)
             }
         }
 
         return true
-    }
-
-    fun changeActivatedFragment(showFragment: Fragment, hideFragment: Fragment? = null) {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-
-        if (hideFragment != null)
-            supportFragmentManager.beginTransaction().hide(hideFragment)
-                .commit()
-
-        supportFragmentManager.beginTransaction().show(showFragment)
-            .commit()
     }
 
     fun changeNavigation(newNavigationIndex: Int, bundle: Bundle? = null) {
@@ -153,12 +148,15 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 
-        if (currentNavigation[currentNavigationIndex].isNotEmpty()) {
-            supportFragmentManager.beginTransaction().hide(currentNavigation[currentNavigationIndex].last())
+        val pausedNavigation = navigationFragmentViewModel.navigationFragments.value!![navigationFragmentViewModel.activatedNavigationIndex.value!!]
+        val activatedNavigation = navigationFragmentViewModel.navigationFragments.value!![newNavigationIndex]
+
+        if (pausedNavigation.isNotEmpty()) {
+            supportFragmentManager.beginTransaction().hide(pausedNavigation.last())
                 .commit()
         }
 
-        if (currentNavigation[newNavigationIndex].isEmpty()) {
+        if (activatedNavigation.isEmpty()) {
             var newFragment: Fragment? = null
             when (newNavigationIndex) {
                 0 -> {
@@ -174,46 +172,55 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 }
             }
 
-            currentNavigation[newNavigationIndex].add(newFragment!!)
-            val currentFragment = currentNavigation[newNavigationIndex].last()
+            navigationFragmentViewModel.addNavigationFragment(newNavigationIndex, newFragment!!)
+//            currentNavigation[newNavigationIndex].add(newFragment!!)
+            val currentFragment = activatedNavigation.last()
             currentFragment.arguments = bundle
 
             supportFragmentManager.beginTransaction().add(R.id.activity_main_layout_frame, currentFragment)
                 .commit()
 
-            currentNavigationIndex = newNavigationIndex
+            navigationFragmentViewModel.changeActivatedNavigation(newNavigationIndex)
+//            currentNavigationIndex = newNavigationIndex
             return
         }
 
-        val currentFragment = currentNavigation[newNavigationIndex].last()
+        val currentFragment = activatedNavigation.last()
         supportFragmentManager.beginTransaction().show(currentFragment)
             .commit()
 
-        currentNavigationIndex = newNavigationIndex
+        println(supportFragmentManager.fragments)
+        navigationFragmentViewModel.changeActivatedNavigation(newNavigationIndex)
+//        currentNavigationIndex = newNavigationIndex
     }
 
     fun changeFragment(newFragment: Fragment?, bundle: Bundle? = null, doRemove: Boolean = false) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 
+        val activatedNavigationIndex = navigationFragmentViewModel.activatedNavigationIndex.value!!
+        val activatedNavigation = navigationFragmentViewModel.navigationFragments.value!![activatedNavigationIndex]
+
         // Remove 할 때 newFragment = null
         if (doRemove) {
-            supportFragmentManager.beginTransaction().remove(currentNavigation[currentNavigationIndex].last())
+            supportFragmentManager.beginTransaction().remove(activatedNavigation.last())
                 .commit()
 
-            currentNavigation[currentNavigationIndex].removeAt(currentNavigation[currentNavigationIndex].lastIndex)
+            navigationFragmentViewModel.removeNavigationFragment(activatedNavigationIndex, activatedNavigation.lastIndex)
+//            currentNavigation[currentNavigationIndex].removeAt(currentNavigation[currentNavigationIndex].lastIndex)
 
-            supportFragmentManager.beginTransaction().show(currentNavigation[currentNavigationIndex].last())
+            supportFragmentManager.beginTransaction().show(activatedNavigation.last())
                 .commit()
 
             return
         }
 
-        supportFragmentManager.beginTransaction().hide(currentNavigation[currentNavigationIndex].last())
+        supportFragmentManager.beginTransaction().hide(activatedNavigation.last())
             .commit()
 
-        currentNavigation[currentNavigationIndex].add(newFragment!!)
-        val currentFragment = currentNavigation[currentNavigationIndex].last()
+        navigationFragmentViewModel.addNavigationFragment(activatedNavigationIndex, newFragment!!)
+//        currentNavigation[currentNavigationIndex].add(newFragment!!)
+        val currentFragment = activatedNavigation.last()
         currentFragment.arguments = bundle
 
         supportFragmentManager.beginTransaction().add(R.id.activity_main_layout_frame, currentFragment)

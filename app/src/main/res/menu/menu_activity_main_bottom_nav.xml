@@ -9,6 +9,6 @@
         android:title="dressroom"/>
 
     <item
-        android:id="@+id/menu_bottom_nav_action_menu"
-        android:title="menu"/>
+        android:id="@+id/menu_bottom_nav_action_settings"
+        android:title="settings"/>
 </menu>

@@ -1,33 +1,67 @@
 package com.example.bestfit.viewmodel
 
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.bestfit.R
+import kotlinx.android.synthetic.main.activity_main.*
 
-class NavigationFragmentViewModel : ViewModel() {
-    private val navigationFragments = MutableLiveData<ArrayList<ArrayList<Fragment>>>()
-    private var currentNavigationIndex = MutableLiveData(0)
+class NavigationFragmentViewModel() : ViewModel() {
+    private val _navigationFragments = MutableLiveData<ArrayList<ArrayList<Fragment>>>(arrayListOf())
+    val navigationFragments: LiveData<ArrayList<ArrayList<Fragment>>> = _navigationFragments
+
+    private val _activatedNavigationIndex = MutableLiveData<Int>()
+    val activatedNavigationIndex: LiveData<Int> = _activatedNavigationIndex
+
+    private val _initailized = MutableLiveData<Boolean>()
+    val initailized: LiveData<Boolean> = _initailized
+
+    init {
+        initNavigationFragments()
+    }
+
+    private fun notifyNavigationFragmentsChanged() {
+        _navigationFragments.value = _navigationFragments.value
+    }
+
+    fun initNavigationFragments() {
+        _activatedNavigationIndex.value = 0
+        _navigationFragments.value!!.clear()
+
+        for (idx in 0 until 3)
+            _navigationFragments.value!!.add(arrayListOf())
+
+        _initailized.value = true
+        notifyNavigationFragmentsChanged()
+    }
+
+    fun getActivatedNavigationIndex() : Int {
+        return _activatedNavigationIndex.value!!
+    }
 
     fun getNavigationFragments() : ArrayList<ArrayList<Fragment>> {
-        return navigationFragments.value!!
+        return _navigationFragments.value!!
     }
 
     fun getNavigationFragments(navigationIndex: Int) : ArrayList<Fragment>? {
-        if (navigationIndex < 0 || navigationIndex > navigationFragments.value?.size ?: 0)
+        if (navigationIndex < 0 || navigationIndex > _navigationFragments.value?.size ?: 0)
             return null
 
-        return navigationFragments.value!![navigationIndex]
+        return _navigationFragments.value!![navigationIndex]
     }
 
     fun addNavigationFragment(navigationIndex: Int, fragment: Fragment) {
-        navigationFragments.value!![navigationIndex].add(fragment)
+        _navigationFragments.value!![navigationIndex].add(fragment)
+        notifyNavigationFragmentsChanged()
     }
 
     fun removeNavigationFragment(navigationIndex: Int, index: Int) {
-        navigationFragments.value!![navigationIndex].removeAt(index)
+        _navigationFragments.value!![navigationIndex].removeAt(index)
+        notifyNavigationFragmentsChanged()
     }
 
-    fun changeCurrentNavigation(navigationIndex: Int) {
-        currentNavigationIndex.value = navigationIndex
+    fun changeActivatedNavigation(navigationIndex: Int) {
+        _activatedNavigationIndex.value = navigationIndex
     }
 }

@@ -17,6 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/menu_activity_main_bottom_nav"/>
+        app:menu="@menu/menu_activity_main_bottom_nav" />
 
 </RelativeLayout>
