@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
@@ -28,13 +29,21 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         activity_main_bottom_nav.setOnNavigationItemSelectedListener(this)
 
-        InitData.initData()
+        if (savedInstanceState == null) {
+            InitData.initData()
 
-        // Navigation Init
-        initNavigation()
+            // Navigation Init
+            initNavigation()
 
-        // SetProfile Check
-        checkSetProfile()
+            // SetProfile Check
+            checkSetProfile()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putBoolean("isInitialized", true)
     }
 
     private fun initNavigation() {
