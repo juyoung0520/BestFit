@@ -4,34 +4,31 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.bestfit.util.InitData
-import com.example.bestfit.viewmodel.NavigationFragmentViewModel
+import com.example.bestfit.viewmodel.NavigationViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.properties.Delegates
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
 
-    private lateinit var navigationFragmentViewModel: NavigationFragmentViewModel
+    private lateinit var navigationViewModel: NavigationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        navigationFragmentViewModel = ViewModelProvider(this).get(NavigationFragmentViewModel::class.java)
+        navigationViewModel = ViewModelProvider(this).get(NavigationViewModel::class.java)
+        println(navigationViewModel)
 
         val navigationIndexObserver = Observer<Int> { newNavigationIndex ->
             println("observe index -> $newNavigationIndex")
@@ -54,8 +51,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_home
         }
 
-        navigationFragmentViewModel.activatedNavigationIndex.observe(this, navigationIndexObserver)
-        navigationFragmentViewModel.navigationFragments.observe(this, navigationObserver)
+        navigationViewModel.activatedNavigationIndex.observe(this, navigationIndexObserver)
+        navigationViewModel.navigations.observe(this, navigationObserver)
 
         activity_main_bottom_nav.setOnNavigationItemSelectedListener(this)
 
@@ -148,10 +145,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 
-        val pausedNavigation = navigationFragmentViewModel.navigationFragments.value!![navigationFragmentViewModel.activatedNavigationIndex.value!!]
-        val activatedNavigation = navigationFragmentViewModel.navigationFragments.value!![newNavigationIndex]
+        val pausedNavigation = navigationViewModel.navigations.value!![navigationViewModel.activatedNavigationIndex.value!!]
+        val activatedNavigation = navigationViewModel.navigations.value!![newNavigationIndex]
 
         if (pausedNavigation.isNotEmpty()) {
+            println("last = ${pausedNavigation.last()}")
             supportFragmentManager.beginTransaction().hide(pausedNavigation.last())
                 .commit()
         }
@@ -172,7 +170,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 }
             }
 
-            navigationFragmentViewModel.addNavigationFragment(newNavigationIndex, newFragment!!)
+            navigationViewModel.addNavigationFragment(newNavigationIndex, newFragment!!)
 //            currentNavigation[newNavigationIndex].add(newFragment!!)
             val currentFragment = activatedNavigation.last()
             currentFragment.arguments = bundle
@@ -180,17 +178,18 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             supportFragmentManager.beginTransaction().add(R.id.activity_main_layout_frame, currentFragment)
                 .commit()
 
-            navigationFragmentViewModel.changeActivatedNavigation(newNavigationIndex)
+            navigationViewModel.changeActivatedNavigation(newNavigationIndex)
 //            currentNavigationIndex = newNavigationIndex
             return
         }
 
         val currentFragment = activatedNavigation.last()
+        println("last = ${activatedNavigation.last()}")
         supportFragmentManager.beginTransaction().show(currentFragment)
             .commit()
 
         println(supportFragmentManager.fragments)
-        navigationFragmentViewModel.changeActivatedNavigation(newNavigationIndex)
+        navigationViewModel.changeActivatedNavigation(newNavigationIndex)
 //        currentNavigationIndex = newNavigationIndex
     }
 
@@ -198,15 +197,15 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 
-        val activatedNavigationIndex = navigationFragmentViewModel.activatedNavigationIndex.value!!
-        val activatedNavigation = navigationFragmentViewModel.navigationFragments.value!![activatedNavigationIndex]
+        val activatedNavigationIndex = navigationViewModel.activatedNavigationIndex.value!!
+        val activatedNavigation = navigationViewModel.navigations.value!![activatedNavigationIndex]
 
         // Remove 할 때 newFragment = null
         if (doRemove) {
             supportFragmentManager.beginTransaction().remove(activatedNavigation.last())
                 .commit()
 
-            navigationFragmentViewModel.removeNavigationFragment(activatedNavigationIndex, activatedNavigation.lastIndex)
+            navigationViewModel.removeNavigationFragment(activatedNavigationIndex, activatedNavigation.lastIndex)
 //            currentNavigation[currentNavigationIndex].removeAt(currentNavigation[currentNavigationIndex].lastIndex)
 
             supportFragmentManager.beginTransaction().show(activatedNavigation.last())
@@ -218,7 +217,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         supportFragmentManager.beginTransaction().hide(activatedNavigation.last())
             .commit()
 
-        navigationFragmentViewModel.addNavigationFragment(activatedNavigationIndex, newFragment!!)
+        navigationViewModel.addNavigationFragment(activatedNavigationIndex, newFragment!!)
 //        currentNavigation[currentNavigationIndex].add(newFragment!!)
         val currentFragment = activatedNavigation.last()
         currentFragment.arguments = bundle

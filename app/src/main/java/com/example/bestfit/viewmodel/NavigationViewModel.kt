@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import com.example.bestfit.R
 import kotlinx.android.synthetic.main.activity_main.*
 
-class NavigationFragmentViewModel() : ViewModel() {
-    private val _navigationFragments = MutableLiveData<ArrayList<ArrayList<Fragment>>>(arrayListOf())
-    val navigationFragments: LiveData<ArrayList<ArrayList<Fragment>>> = _navigationFragments
+class NavigationViewModel() : ViewModel() {
+    private val _navigations = MutableLiveData<ArrayList<ArrayList<Fragment>>>(arrayListOf())
+    val navigations: LiveData<ArrayList<ArrayList<Fragment>>> = _navigations
 
     private val _activatedNavigationIndex = MutableLiveData<Int>()
     val activatedNavigationIndex: LiveData<Int> = _activatedNavigationIndex
@@ -22,15 +22,15 @@ class NavigationFragmentViewModel() : ViewModel() {
     }
 
     private fun notifyNavigationFragmentsChanged() {
-        _navigationFragments.value = _navigationFragments.value
+        _navigations.value = _navigations.value
     }
 
     fun initNavigationFragments() {
         _activatedNavigationIndex.value = 0
-        _navigationFragments.value!!.clear()
+        _navigations.value!!.clear()
 
         for (idx in 0 until 3)
-            _navigationFragments.value!!.add(arrayListOf())
+            _navigations.value!!.add(arrayListOf())
 
         _initailized.value = true
         notifyNavigationFragmentsChanged()
@@ -41,23 +41,23 @@ class NavigationFragmentViewModel() : ViewModel() {
     }
 
     fun getNavigationFragments() : ArrayList<ArrayList<Fragment>> {
-        return _navigationFragments.value!!
+        return _navigations.value!!
     }
 
     fun getNavigationFragments(navigationIndex: Int) : ArrayList<Fragment>? {
-        if (navigationIndex < 0 || navigationIndex > _navigationFragments.value?.size ?: 0)
+        if (navigationIndex < 0 || navigationIndex > _navigations.value?.size ?: 0)
             return null
 
-        return _navigationFragments.value!![navigationIndex]
+        return _navigations.value!![navigationIndex]
     }
 
     fun addNavigationFragment(navigationIndex: Int, fragment: Fragment) {
-        _navigationFragments.value!![navigationIndex].add(fragment)
+        _navigations.value!![navigationIndex].add(fragment)
         notifyNavigationFragmentsChanged()
     }
 
     fun removeNavigationFragment(navigationIndex: Int, index: Int) {
-        _navigationFragments.value!![navigationIndex].removeAt(index)
+        _navigations.value!![navigationIndex].removeAt(index)
         notifyNavigationFragmentsChanged()
     }
 
