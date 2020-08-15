@@ -9,7 +9,10 @@ import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.bestfit.util.InitData
+import com.example.bestfit.viewmodel.NavigationFragmentViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,11 +25,22 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     var currentNavigationIndex: Int = 0
     var currentNavigation: ArrayList<ArrayList<Fragment>> = arrayListOf()
+    private lateinit var navigationFragmentViewModel: NavigationFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val navigationIndexObserver = Observer<Int> { newNavigationIndex ->
+            currentNavigationIndex = newNavigationIndex
+        }
+
+        val navigationObserver = Observer<ArrayList<ArrayList<Fragment>>> { newNavigationFragments ->
+            currentNavigation = newNavigationFragments
+        }
+
+        navigationFragmentViewModel = ViewModelProvider(this).get(NavigationFragmentViewModel::class.java)
+        navigationFragmentViewModel.getNavigationFragments().observe()
         activity_main_bottom_nav.setOnNavigationItemSelectedListener(this)
 
         if (savedInstanceState == null) {
@@ -80,6 +94,18 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
 
         return true
+    }
+
+    fun changeActivatedFragment(showFragment: Fragment, hideFragment: Fragment? = null) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+
+        if (hideFragment != null)
+            supportFragmentManager.beginTransaction().hide(hideFragment)
+                .commit()
+
+        supportFragmentManager.beginTransaction().show(showFragment)
+            .commit()
     }
 
     fun changeNavigation(newNavigationIndex: Int, bundle: Bundle? = null) {

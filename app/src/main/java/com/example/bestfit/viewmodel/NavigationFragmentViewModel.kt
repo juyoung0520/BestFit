@@ -6,7 +6,11 @@ import androidx.lifecycle.ViewModel
 
 class NavigationFragmentViewModel : ViewModel() {
     private val navigationFragments = MutableLiveData<ArrayList<ArrayList<Fragment>>>()
-    private var currentNavigationIndex = MutableLiveData<Int>(0)
+    private var currentNavigationIndex = MutableLiveData(0)
+
+    fun getNavigationFragments() : ArrayList<ArrayList<Fragment>> {
+        return navigationFragments.value!!
+    }
 
     fun getNavigationFragments(navigationIndex: Int) : ArrayList<Fragment>? {
         if (navigationIndex < 0 || navigationIndex > navigationFragments.value?.size ?: 0)
