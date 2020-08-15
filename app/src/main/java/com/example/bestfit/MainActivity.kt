@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
 
         navigationFragmentViewModel = ViewModelProvider(this).get(NavigationFragmentViewModel::class.java)
-        navigationFragmentViewModel.getNavigationFragments().observe()
+//        navigationFragmentViewModel.getNavigationFragments().observe()
         activity_main_bottom_nav.setOnNavigationItemSelectedListener(this)
 
         if (savedInstanceState == null) {

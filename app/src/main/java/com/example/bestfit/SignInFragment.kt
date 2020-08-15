@@ -128,7 +128,7 @@ class SignInFragment : Fragment() {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-        val googleSignInClient = GoogleSignIn.getClient(activity!!, gso)
+        val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
         val intent = googleSignInClient?.signInIntent
 
         startActivityForResult(intent, GOOGLE_SIGNIN_CODE)

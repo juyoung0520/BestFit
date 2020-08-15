@@ -48,10 +48,10 @@
             android:layout_marginTop="15dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="5dp" />
 
         <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/fragment_set_profile_first_group_sex"
+            android:id="@+id/fragment_set_profile_first_group_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:singleSelection="true"
@@ -74,6 +74,17 @@
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <TextView
+            android:id="@+id/fragment_set_profile_first_group_gender_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="성별이 선택되지 않았습니다."
+            android:textColor="@color/design_default_color_error"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:visibility="gone"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="출생연도"
@@ -89,6 +100,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_set_profile_first_layout_actv_birth"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 style="@style/ExposedDropdownMenu">

@@ -29,12 +29,17 @@ class SetProfileFirstFragment  : Fragment() {
             }
         }
 
-        fragmentView.fragment_set_profile_first_group_sex.addOnButtonCheckedListener { _, _, _ ->
+        fragmentView.fragment_set_profile_first_group_gender.addOnButtonCheckedListener { _, _, _ ->
+            fragmentView.fragment_set_profile_first_group_gender_error.visibility = View.GONE
             fragmentView.fragment_set_profile_first_text_nickname.clearFocus()
         }
 
+        fragmentView.fragment_set_profile_first_actv_birth.setOnFocusChangeListener{ _, b ->
+            fragmentView.fragment_set_profile_first_layout_actv_birth.error = ""
+        }
+
         fragmentView.fragment_set_profile_first_btn_submit.setOnClickListener {
-            submitSetProfile()
+                submitSetProfile()
         }
 
         initBirth(fragmentView)
