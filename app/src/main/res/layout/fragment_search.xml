@@ -26,11 +26,13 @@
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
+        android:id="@+id/fragment_search_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorBlack"
+        android:orientation="horizontal"
         android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:focusableInTouchMode="true" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/fragment_search_chipgroup"

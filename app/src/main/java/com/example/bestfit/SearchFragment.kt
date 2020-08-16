@@ -1,9 +1,13 @@
 package com.example.bestfit
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -14,7 +18,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_search.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
 
+
 class SearchFragment : Fragment() {
+    private var fragmentView: View? = null
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
@@ -26,13 +32,18 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (fragmentView != null)
+            return fragmentView
+
         val view = inflater.inflate(R.layout.fragment_search, container, false)
+        fragmentView = view
 
         initToolbar(view)
 
         view.fragment_search_searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 view.fragment_search_searchview.clearFocus()
+                view.fragment_search_line.requestFocus()
 
                 when (view.fragment_search_chipgroup.checkedChipId) {
                     view.fragment_search_chip_item.id -> {
@@ -56,10 +67,13 @@ class SearchFragment : Fragment() {
     }
 
     private fun initToolbar(view: View) {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            findNavController().navigateUp()
+        }
+
         view.fragment_search_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         view.fragment_search_toolbar.setNavigationOnClickListener {
-            val mainActivity: MainActivity = requireActivity() as MainActivity
-            mainActivity.changeFragment(null, null, true)
+            requireActivity().onBackPressed()
         }
     }
 
@@ -118,14 +132,8 @@ class SearchFragment : Fragment() {
 
             view.item_dressroom_tv_item_name.text = itemDTOs[position].name
             view.setOnClickListener {
-                val fragment = DetailFragment()
-                val bundle = Bundle()
-
-                bundle.putParcelable("itemDTO", itemDTOs[position])
-                fragment.arguments = bundle
-
-                val mainActivity = activity as MainActivity
-                mainActivity.changeFragment(fragment, bundle)
+                val action = SearchFragmentDirections.actionToDetailFragment(itemDTOs[position])
+                findNavController().navigate(action)
             }
         }
     }

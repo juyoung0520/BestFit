@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.AccountDTO
@@ -30,6 +31,12 @@ class HomeFragment : Fragment() {
 
         initToolbar(view)
 
+//        childFragmentManager.addOnBackStackChangedListener {
+//            println(childFragmentManager.backStackEntryCount)
+//            if (childFragmentManager.backStackEntryCount == 0)
+//                view.fragment_home_toolbar.visibility = View.VISIBLE
+//        }
+
         return view
     }
 
@@ -38,8 +45,8 @@ class HomeFragment : Fragment() {
         view.fragment_home_toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_fragment_home_search -> {
-                    val mainActivity: MainActivity = requireActivity() as MainActivity
-                    mainActivity.changeFragment(SearchFragment())
+                    val action = HomeFragmentDirections.actionToSearchFragment()
+                    findNavController().navigate(action)
 
                     true
                 }

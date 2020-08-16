@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.AccountDTO
@@ -17,6 +19,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class DetailFragment : Fragment() {
+    private var fragmentView: View? = null
+    private val args: DetailFragmentArgs by navArgs()
     private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
@@ -24,30 +28,42 @@ class DetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (fragmentView != null) {
+            println("hihihihi")
+            println(fragmentView!!.parent)
+            return fragmentView
+        }
+
+//        (fragmentView!!.parent as ViewGroup).removeView(fragmentView)
+
         val view = inflater.inflate(R.layout.fragment_detail3, container, false)
+        fragmentView = view
 
         initToolbar(view)
 
         initDetailFragment(view)
 
-//        requireActivity().onBackPressedDispatcher.addCallback(this) {
-//            val mainActivity: MainActivity = requireActivity() as MainActivity
-//            mainActivity.changeFragment(null, null, true)
-//        }
-
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        println("onviewcreated $view")
+    }
+
     private fun initToolbar(view: View) {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            findNavController().navigateUp()
+        }
+
         view.fragment_detail_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         view.fragment_detail_toolbar.setNavigationOnClickListener {
-            val mainActivity: MainActivity = requireActivity() as MainActivity
-            mainActivity.changeFragment(null, null, true)
+            requireActivity().onBackPressed()
         }
     }
 
     private fun initDetailFragment(view : View) {
-        val itemDTO: ItemDTO = arguments?.getParcelable("itemDTO")!!
+        val itemDTO = args.itemDTO
 
         db.collection("accounts").document(itemDTO.uid!!).get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -88,14 +104,8 @@ class DetailFragment : Fragment() {
         view.fragment_detail_tv_date.text = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(itemDTO.timestamp)
 
         view.fragment_detail_iv_profile.setOnClickListener {
-            var fragment = AccountFragment()
-            var mainActivity = activity as MainActivity
-            var bundle = Bundle()
-
-            bundle.putString("uid", itemDTO.uid)
-            fragment.arguments = bundle
-
-            mainActivity.changeFragment(fragment, bundle)
+            val action = DetailFragmentDirections.actionToAccountFragment(itemDTO.uid!!)
+            findNavController().navigate(action)
         }
     }
 }

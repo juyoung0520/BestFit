@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.*
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
@@ -22,12 +23,19 @@ class DressroomFragment : Fragment() {
     private lateinit var fragmentView: View
     private val itemDTOs: ArrayList<ArrayList<ItemDTO>> = arrayListOf()
 
+    // https://code.luasoftware.com/tutorials/android/android-jetpack-navigation-lost-state-after-navigation/
+    // fragment state restore
+    // scrollview position?
+    // searchFragment result???
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_dressroom, container, false)
+
+        println("createview")
 
         initTab()
 
@@ -48,6 +56,7 @@ class DressroomFragment : Fragment() {
             when (item.itemId) {
                 R.id.menu_fragment_dressroom_add -> {
                     startActivityForResult(Intent(activity, AddItemActivity::class.java), 1)
+//                    findNavController().navigate(DressroomFragmentDirections.actionGlobalAddItemActivity())
 
                     true
                 }
@@ -61,6 +70,7 @@ class DressroomFragment : Fragment() {
     private fun initTab() {
         timer(period = 200) {
             if (InitData.initialization) {
+                println("while")
                 cancel()
 
                 requireActivity().runOnUiThread {
@@ -105,7 +115,7 @@ class DressroomFragment : Fragment() {
                                     val bundle = Bundle()
                                     bundle.putParcelableArrayList("itemDTOs", itemDTOs[position])
 
-                                    setFragmentResult("itemDTOs.$currentUid.$position", bundle)
+                                    childFragmentManager.setFragmentResult("itemDTOs.$currentUid.$position", bundle)
                                 }
                             }
                         }
@@ -116,18 +126,20 @@ class DressroomFragment : Fragment() {
     }
 
     private fun initTabAdapter() {
-        fragmentView.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter(requireActivity())
+        println("initTabAdapater")
+        fragmentView.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter()
         TabLayoutMediator(fragmentView.fragment_dressroom_tab, fragmentView.fragment_dressroom_viewpager) { tab, position ->
             tab.text = InitData.categoryDTOs[position].name
         }.attach()
     }
 
-    inner class TabOfCategoryPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
+    inner class TabOfCategoryPagerAdapter : FragmentStateAdapter(this) {
         override fun getItemCount(): Int {
             return InitData.categoryDTOs.size
         }
 
         override fun createFragment(position: Int): Fragment {
+            println("createFragment $position")
             val fragment = DressroomCategoryFragment()
             val bundle = Bundle()
 
