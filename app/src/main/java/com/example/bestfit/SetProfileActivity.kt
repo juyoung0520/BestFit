@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.bestfit.model.AccountDTO
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_add_item.*
@@ -171,7 +172,6 @@ class SetProfileActivity : AppCompatActivity() {
             firstFragment.fragment_set_profile_first_layout_text_nickname.startAnimation(shake)
             return false
         }
-
         if (firstFragment.fragment_set_profile_first_group_gender.checkedButtonId == View.NO_ID) {
             changeViewPage(0)
             firstFragment.fragment_set_profile_first_group_gender_error.visibility = View.VISIBLE
@@ -179,35 +179,46 @@ class SetProfileActivity : AppCompatActivity() {
         }
         if (firstFragment.fragment_set_profile_first_actv_birth.text.isNullOrEmpty()) {
             changeViewPage(0)
-            firstFragment.fragment_set_profile_first_layout_actv_birth.error=" "
+            firstFragment.fragment_set_profile_first_layout_actv_birth.error = " "
+            firstFragment.fragment_set_profile_first_layout_actv_birth.boxStrokeWidth = 5
             return false
         }
 
         //secondFragment
         if (!secondFragment.fragment_set_profile_second_text_height.text!!.isDigitsOnly()) {
             changeViewPage(1)
+            secondFragment.fragment_set_profile_second_layout_text_height.error = " "
+            secondFragment.fragment_set_profile_second_layout_text_height.errorIconDrawable = null
+            secondFragment.fragment_set_profile_second_layout_text_height.boxStrokeWidth = 6
             return false
         }
         if (!secondFragment.fragment_set_profile_second_text_weight.text!!.isDigitsOnly()) {
             changeViewPage(1)
+            secondFragment.fragment_set_profile_second_layout_text_weight.error = " "
+            secondFragment.fragment_set_profile_second_layout_text_weight.errorIconDrawable = null
+            secondFragment.fragment_set_profile_second_layout_text_weight.boxStrokeWidth = 5
             return false
         }
         if (secondFragment.fragment_set_profile_second_text_top.tag == null) {
             changeViewPage(1)
+            secondFragment.fragment_set_profile_second_layout_text_top.error = " "
+            secondFragment.fragment_set_profile_second_layout_text_top.errorIconDrawable = null
+            secondFragment.fragment_set_profile_second_layout_text_top.boxStrokeWidth = 5
             return false
         }
         if (secondFragment.fragment_set_profile_second_text_bottom.tag == null) {
             changeViewPage(1)
+            secondFragment.fragment_set_profile_second_layout_text_bottom.error = " "
+            secondFragment.fragment_set_profile_second_layout_text_bottom.errorIconDrawable = null
+            secondFragment.fragment_set_profile_second_layout_text_bottom.boxStrokeWidth = 5
+
             return false
         }
         if (secondFragment.fragment_set_profile_second_text_shoes.tag == null) {
             changeViewPage(1)
-            return false
-        }
-
-        //thirdFragment
-        if (thirdFragment.fragment_set_profile_third_text_message.text.isNullOrEmpty()) {
-            changeViewPage(2)
+            secondFragment.fragment_set_profile_second_layout_text_shoes.error = " "
+            secondFragment.fragment_set_profile_second_layout_text_shoes.errorIconDrawable = null
+            secondFragment.fragment_set_profile_second_layout_text_shoes.boxStrokeWidth = 5
             return false
         }
 

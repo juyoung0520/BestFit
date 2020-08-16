@@ -29,6 +29,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_set_profile_second_layout_text_height"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/CorneredTextInputLayout"
@@ -49,6 +50,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_set_profile_second_layout_text_weight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/CorneredTextInputLayout"
@@ -86,6 +88,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_set_profile_second_layout_text_top"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/CorneredTextInputLayout"
@@ -105,6 +108,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_set_profile_second_layout_text_bottom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/CorneredTextInputLayout"
@@ -124,6 +128,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_set_profile_second_layout_text_shoes"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/CorneredTextInputLayout"

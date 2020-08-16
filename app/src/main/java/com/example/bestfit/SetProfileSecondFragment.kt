@@ -19,6 +19,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
 import kotlinx.android.synthetic.main.fragment_set_profile_second.*
 import kotlinx.android.synthetic.main.fragment_set_profile_second.view.*
+import kotlinx.android.synthetic.main.fragment_set_profile_third.view.*
+import kotlinx.android.synthetic.main.fragment_signin.*
 import kotlinx.android.synthetic.main.item_dialogpicker.*
 import kotlinx.android.synthetic.main.item_dialogpicker.view.*
 import kotlin.math.max
@@ -34,6 +36,9 @@ class SetProfileSecondFragment : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_set_profile_second, container, false)
 
         fragmentView.fragment_set_profile_second_text_height.setOnFocusChangeListener { v, hasFocus ->
+            fragmentView.fragment_set_profile_second_layout_text_height.error = ""
+            fragmentView.fragment_set_profile_second_layout_text_height.boxStrokeWidth = 3
+
             if (hasFocus) {
                 var defaultValue = 165
 
@@ -46,6 +51,9 @@ class SetProfileSecondFragment : Fragment() {
         }
 
         fragmentView.fragment_set_profile_second_text_weight.setOnFocusChangeListener { v, hasFocus ->
+            fragmentView.fragment_set_profile_second_layout_text_weight.error = ""
+            fragmentView.fragment_set_profile_second_layout_text_weight.boxStrokeWidth = 3
+
             if (hasFocus) {
                 var defaultValue = 50
 
@@ -58,6 +66,9 @@ class SetProfileSecondFragment : Fragment() {
         }
 
         fragmentView.fragment_set_profile_second_text_top.setOnFocusChangeListener { v, hasFocus ->
+            fragmentView.fragment_set_profile_second_layout_text_top.error = ""
+            fragmentView.fragment_set_profile_second_layout_text_top.boxStrokeWidth = 3
+
             if (hasFocus) {
                 val sizeFormatId = "01"
                 var defaultSizeId = "0104" // M
@@ -71,6 +82,9 @@ class SetProfileSecondFragment : Fragment() {
         }
 
         fragmentView.fragment_set_profile_second_text_bottom.setOnFocusChangeListener { v, hasFocus ->
+            fragmentView.fragment_set_profile_second_layout_text_bottom.error = ""
+            fragmentView.fragment_set_profile_second_layout_text_bottom.boxStrokeWidth = 3
+
             if (hasFocus) {
                 val sizeFormatId = "03"
                 var defaultSizeId = "0305" // 28
@@ -84,6 +98,9 @@ class SetProfileSecondFragment : Fragment() {
         }
 
         fragmentView.fragment_set_profile_second_text_shoes.setOnFocusChangeListener { v, hasFocus ->
+            fragmentView.fragment_set_profile_second_layout_text_shoes.error = ""
+            fragmentView.fragment_set_profile_second_layout_text_shoes.boxStrokeWidth = 3
+
             if (hasFocus) {
                 val sizeFormatId = "04"
                 var defaultSizeId = "0410" // 250
