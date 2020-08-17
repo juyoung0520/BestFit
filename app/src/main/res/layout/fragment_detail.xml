@@ -1,89 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/fragment_detail_toolbar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="wrap_content"
+        android:background="@null"
+        app:elevation="0dp">
 
-        <TextView
-            android:id="@+id/fragment_detail_tv_toolbar_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="아이템 정보"
-            android:textColor="@color/colorBlack"
-            android:textSize="18sp"
-            android:layout_gravity="center_horizontal" />
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:title="두부콩님의\n써머 린넨 원피스"
+            app:maxLines="2"
+            app:collapsedTitleTextAppearance="@style/ToolbarCollapsedTitle"
+            app:expandedTitleTextAppearance="@style/ToolbarExpandedTitle"
+            app:expandedTitleMarginBottom="23dp"
+            app:expandedTitleMarginStart="40dp"
+            app:contentScrim="@color/colorWhite">
 
-    </androidx.appcompat.widget.Toolbar>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/fragment_detail_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
+                app:layout_collapseMode="pin"/>
 
-    <LinearLayout
-        android:id="@+id/fragment_detail_line"
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorBlack"
-        android:orientation="horizontal" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/fragment_detail_iv_profile"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/ic_profile_photo"/>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_vertical">
-
-                    <TextView
-                        android:id="@+id/fragment_detail_tv_nickname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorBlack"
-                        android:text="iam_kingdubu"
-                        android:textSize="15sp"
-                        android:textStyle="bold"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/fragment_detail_tv_user_size"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="13sp"
-                            android:text="165 cm  40 kg"/>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
 
             <ImageView
                 android:id="@+id/fragment_detail_iv_item"
@@ -100,69 +59,123 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp">
-
-                <TextView
-                    android:id="@+id/fragment_detail_tv_category"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="원피스/세트 > 원피스"
-                    android:textSize="13sp"
-                    android:layout_gravity="end" />
-
-                <TextView
-                    android:id="@+id/fragment_detail_tv_brand"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="쭈블리"
-                    android:textColor="@color/colorDarkGray"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="5dp" />
-
-                <TextView
-                    android:id="@+id/fragment_detail_tv_item_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="써머 린넨 원피스"
-                    android:textColor="@color/colorBlack"
-                    android:textStyle="bold"
-                    android:textSize="23sp"/>
+                android:layout_margin="15dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/fragment_detail_iv_profile"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_profile_photo"
+                        android:layout_margin="5dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/fragment_detail_tv_nickname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorBlack"
+                            android:text="iam_kingdubu"
+                            android:textSize="15sp"
+                            android:textStyle="bold"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/fragment_detail_tv_user_size"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="13sp"
+                                android:text="165 cm  40 kg"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
-                <RatingBar
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:rating="3"
-                    style="@style/Widget.AppCompat.RatingBar.Indicator"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="40dp" />
+                    android:orientation="vertical"
+                    android:background="@drawable/layout_edge">
 
-                <TextView
-                    android:id="@+id/fragment_detail_tv_item_size"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="FREE / 잘 맞아요"
-                    android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:layout_marginTop="5dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-               <TextView
-                    android:id="@+id/fragment_detail_tv_review"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlack"
-                    android:text="@string/itme_review"
-                   android:textSize="15sp"
-                    android:layout_marginTop="5dp"/>
+                        <TextView
+                            android:id="@+id/fragment_detail_tv_brand"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="쭈블리"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="18sp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginRight="5dp"/>
+
+
+                        <TextView
+                            android:id="@+id/fragment_detail_tv_item_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="써머 린넨 원피스"
+                            android:textColor="@color/colorBlack"
+                            android:textStyle="bold"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/fragment_detail_tv_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="원피스/세트 > 원피스"
+                        android:textSize="13sp"
+                        android:layout_marginBottom="5dp"/>
+
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:rating="3"
+                        style="@style/Widget.AppCompat.RatingBar.Indicator"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"/>
+
+                    <TextView
+                        android:id="@+id/fragment_detail_tv_item_size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FREE / 잘 맞아요"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:layout_marginTop="5dp"/>
+
+                    <TextView
+                        android:id="@+id/fragment_detail_tv_review"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:text="@string/itme_review"
+                        android:textSize="15sp"
+                        android:layout_marginTop="5dp"/>
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/fragment_detail_tv_date"
@@ -170,12 +183,14 @@
                     android:layout_height="wrap_content"
                     android:text="2019.12.10"
                     android:textSize="13sp"
-                    android:layout_marginTop="20dp"/>
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="10dp"/>
 
             </LinearLayout>
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

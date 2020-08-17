@@ -6,21 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.AccountDTO
-import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
+import com.example.bestfit.viewmodel.DetailFragmentViewModel
+import androidx.lifecycle.Observer
+import com.example.bestfit.model.ItemDTO
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class DetailFragment : Fragment() {
-    private var fragmentView: View? = null
     private val args: DetailFragmentArgs by navArgs()
+    private lateinit var itemDTO: ItemDTO
+    private lateinit var viewModel: DetailFragmentViewModel
     private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
@@ -28,27 +32,29 @@ class DetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (fragmentView != null) {
-            println("hihihihi")
-            println(fragmentView!!.parent)
-            return fragmentView
-        }
+        val view = inflater.inflate(R.layout.fragment_detail, container, false)
 
-//        (fragmentView!!.parent as ViewGroup).removeView(fragmentView)
-
-        val view = inflater.inflate(R.layout.fragment_detail3, container, false)
-        fragmentView = view
-
+        initViewModel(view)
         initToolbar(view)
-
-        initDetailFragment(view)
 
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        println("onviewcreated $view")
+    private fun initViewModel(view: View) {
+        viewModel = ViewModelProvider(this).get(DetailFragmentViewModel::class.java)
+
+        if (!viewModel.isInitialized()) {
+            viewModel.setInitializedState(true)
+
+            itemDTO = args.itemDTO
+            viewModel.getAccountDTO(itemDTO.uid!!)
+        }
+
+        val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
+            initDetailFragment(view, accountDTO)
+        }
+
+        viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
     }
 
     private fun initToolbar(view: View) {
@@ -62,27 +68,19 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun initDetailFragment(view : View) {
-        val itemDTO = args.itemDTO
+    private fun initDetailFragment(view : View, accountDTO: AccountDTO) {
+        if (accountDTO.photo.isNullOrEmpty())
+            view.fragment_detail_iv_profile.setImageResource(R.drawable.ic_profile_photo)
+        else
+            Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_detail_iv_profile)
 
-        db.collection("accounts").document(itemDTO.uid!!).get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val accountDTO = task.result!!.toObject(AccountDTO::class.java)!!
+        view.fragment_detail_tv_nickname.text = accountDTO.nickname
+        view.fragment_detail_tv_user_size.text = accountDTO.height.toString() + " cm / " + accountDTO.weight.toString() + " kg"
 
-                if (accountDTO.photo.isNullOrEmpty())
-                    view.fragment_detail_iv_profile.setImageResource(R.drawable.ic_profile_photo)
-                else
-                    Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_detail_iv_profile)
-
-                view.fragment_detail_tv_nickname.text = accountDTO.nickname
-                view.fragment_detail_tv_user_size.text = accountDTO.height.toString() + " cm / " + accountDTO.weight.toString() + " kg"
-
-                val top = InitData.getSizeString("01", accountDTO.topId!!)
-                val bottom = InitData.getSizeString("03", accountDTO.bottomId!!)
-                val shoes = InitData.getSizeString("04", accountDTO.shoesId!!)
-                //view.fragment_detail_tv_user_detail_size.text = "Top $top / Bottom $bottom / Shoes $shoes"
-            }
-        }
+        val top = InitData.getSizeString("01", accountDTO.topId!!)
+        val bottom = InitData.getSizeString("03", accountDTO.bottomId!!)
+        val shoes = InitData.getSizeString("04", accountDTO.shoesId!!)
+        //view.fragment_detail_tv_user_detail_size.text = "Top $top / Bottom $bottom / Shoes $shoes"
 
         if (itemDTO.images.isNotEmpty()) {
             Glide.with(view).load(itemDTO.images[0]).apply(RequestOptions().centerCrop())

@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/activity_set_profile_toolbar"
-        android:background="@color/colorBlack"
+        android:background="@color/colorDivision"
         android:orientation="horizontal" />
 
     <androidx.viewpager2.widget.ViewPager2

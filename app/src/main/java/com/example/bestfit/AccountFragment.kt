@@ -17,14 +17,11 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_account.view.*
-import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlin.math.abs
 
 class AccountFragment : Fragment() {
     private val args: AccountFragmentArgs by navArgs()
-    private var fragmentView: View? = null
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
@@ -50,11 +47,12 @@ class AccountFragment : Fragment() {
 
         view.fragment_account_appbarlayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
             if (abs(p1) - p0.totalScrollRange == 0) {
-                view.fragment_account_toolbar_title.visibility = View.VISIBLE
-
+                if (view.fragment_account_toolbar_title.visibility == View.GONE)
+                    view.fragment_account_toolbar_title.visibility = View.VISIBLE
             }
-            else if (p1 == 0) {
-                view.fragment_account_toolbar_title.visibility = View.GONE
+            else {
+                if (view.fragment_account_toolbar_title.visibility == View.VISIBLE)
+                    view.fragment_account_toolbar_title.visibility = View.GONE
             }
         })
 
@@ -65,6 +63,7 @@ class AccountFragment : Fragment() {
     }
 
     private fun initTab(view : View) {
+        tabArray.clear()
         tabArray.add("드레스룸")
         tabArray.add("게시글")
 
@@ -114,7 +113,7 @@ class AccountFragment : Fragment() {
         }.attach()
     }
 
-    inner class TabPagerAdapter : FragmentStateAdapter(requireParentFragment()) {
+    inner class TabPagerAdapter : FragmentStateAdapter(this) {
         override fun getItemCount(): Int {
             return tabArray.size
         }

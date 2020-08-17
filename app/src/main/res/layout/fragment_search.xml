@@ -29,7 +29,7 @@
         android:id="@+id/fragment_search_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/colorBlack"
+        android:background="@color/colorDivision"
         android:orientation="horizontal"
         android:focusable="true"
         android:focusableInTouchMode="true" />

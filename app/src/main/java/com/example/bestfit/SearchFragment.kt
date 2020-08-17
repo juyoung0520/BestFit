@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.item_dressroom.view.*
 
 
 class SearchFragment : Fragment() {
-    private var fragmentView: View? = null
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
@@ -32,11 +31,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (fragmentView != null)
-            return fragmentView
-
         val view = inflater.inflate(R.layout.fragment_search, container, false)
-        fragmentView = view
 
         initToolbar(view)
 

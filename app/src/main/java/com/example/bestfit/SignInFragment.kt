@@ -101,7 +101,7 @@ class SignInFragment : Fragment() {
 
                     if (task.exception?.message?.indexOf("badly formatted") != -1) {
                         // 올바른 이메일 형식
-                         view.fragment_signin_layout_text_email.error = "잘못된 형식의 이메일입니다."
+                        view.fragment_signin_layout_text_email.error = "잘못된 형식의 이메일입니다."
                     }
                     else if (task.exception?.message?.indexOf("no user record") != -1) {
                         // 존재하지 않는 이메일

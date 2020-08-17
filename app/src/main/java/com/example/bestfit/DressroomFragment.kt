@@ -35,8 +35,6 @@ class DressroomFragment : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_dressroom, container, false)
 
-        println("createview")
-
         initTab()
 
         return fragmentView
@@ -70,7 +68,6 @@ class DressroomFragment : Fragment() {
     private fun initTab() {
         timer(period = 200) {
             if (InitData.initialization) {
-                println("while")
                 cancel()
 
                 requireActivity().runOnUiThread {
@@ -126,7 +123,6 @@ class DressroomFragment : Fragment() {
     }
 
     private fun initTabAdapter() {
-        println("initTabAdapater")
         fragmentView.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter()
         TabLayoutMediator(fragmentView.fragment_dressroom_tab, fragmentView.fragment_dressroom_viewpager) { tab, position ->
             tab.text = InitData.categoryDTOs[position].name
@@ -139,7 +135,6 @@ class DressroomFragment : Fragment() {
         }
 
         override fun createFragment(position: Int): Fragment {
-            println("createFragment $position")
             val fragment = DressroomCategoryFragment()
             val bundle = Bundle()
 
