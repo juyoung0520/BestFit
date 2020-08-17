@@ -38,10 +38,10 @@
             android:id="@+id/fragment_set_profile_third_layout_text_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
             style="@style/CorneredTextInputLayout">
 
-            <com.example.bestfit.view.EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragment_set_profile_third_text_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

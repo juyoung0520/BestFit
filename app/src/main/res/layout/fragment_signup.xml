@@ -50,16 +50,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/CorneredTextInputLayout"
-            android:hint="이메일"
-            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
             app:endIconMode="none"
             app:endIconDrawable="@drawable/ic_check"
             app:endIconTint="@null">
 
-            <com.example.bestfit.view.EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragment_signup_text_email"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="이메일"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,15 +78,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/CorneredTextInputLayout"
-            android:hint="비밀번호"
-            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
             app:endIconMode="password_toggle">
 
-            <com.example.bestfit.view.EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragment_signup_text_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:hint="비밀번호"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,15 +112,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/CorneredTextInputLayout"
-                android:hint="비밀번호 확인"
-                app:hintAnimationEnabled="false"
+                app:hintEnabled="false"
                 app:endIconMode="password_toggle">
 
-                <com.example.bestfit.view.EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_signup_text_password_check"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:hint="비밀번호 확인"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

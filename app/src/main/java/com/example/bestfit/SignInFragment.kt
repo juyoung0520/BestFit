@@ -34,15 +34,15 @@ class SignInFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_signin, container, false)
 
-        view.fragment_signin_text_email.setTextInputLayout(view.fragment_signin_layout_text_email)
-        view.fragment_signin_text_password.setTextInputLayout(view.fragment_signin_layout_text_password)
-
         view.fragment_signin_text_email.doOnTextChanged { text, start, before, count ->
+            view.fragment_signin_layout_text_email.isErrorEnabled = false
+
             view.fragment_signin_btn_signin.isEnabled =
                 !(view.fragment_signin_text_email.text.isNullOrEmpty() || view.fragment_signin_text_password.text.isNullOrEmpty())
         }
 
         view.fragment_signin_text_password.doOnTextChanged { text, start, before, count ->
+            view.fragment_signin_layout_text_password.isErrorEnabled = false
             view.fragment_signin_btn_signin.isEnabled =
                 !(view.fragment_signin_text_email.text.isNullOrEmpty() || view.fragment_signin_text_password.text.isNullOrEmpty())
         }
@@ -109,7 +109,7 @@ class SignInFragment : Fragment() {
                     } else if (task.exception?.message?.indexOf("password is invalid") != -1) {
                         // 비밀번호 틀림
                         view.fragment_signin_layout_text_email.error = "비밀번호 틀림"
-                    }
+                }
 
                     println(task.exception?.message)
                     Toast.makeText(context, "login fail", Toast.LENGTH_SHORT).show()

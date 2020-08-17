@@ -19,23 +19,24 @@
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_set_profile_first_layout_text_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/CorneredTextInputLayout"
-            android:hint="닉네임"
-            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
             app:endIconMode="clear_text">
 
-            <com.example.bestfit.view.EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragment_set_profile_first_text_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:imeOptions="actionDone"/>
+                android:imeOptions="actionDone"
+                android:hint="닉네임"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,16 +74,30 @@
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
-        <TextView
-            android:id="@+id/fragment_set_profile_first_group_gender_error"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="성별이 선택되지 않았습니다."
-            android:textColor="@color/design_default_color_error"
+            android:orientation="horizontal"
             android:layout_marginTop="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:visibility="gone"/>
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_error_icon"/>
+
+            <TextView
+                android:id="@+id/fragment_set_profile_first_group_gender_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="성별이 선택되지 않았습니다."
+                android:textStyle="bold"
+                android:textColor="@color/design_default_color_error"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"

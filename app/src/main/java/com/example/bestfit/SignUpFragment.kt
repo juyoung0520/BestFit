@@ -24,10 +24,6 @@ class SignUpFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_signup, container, false)
 
-        view.fragment_signup_text_email.setTextInputLayout(view.fragment_signup_layout_text_email)
-        view.fragment_signup_text_password.setTextInputLayout(view.fragment_signup_layout_text_password)
-        view.fragment_signup_text_password_check.setTextInputLayout(view.fragment_signup_layout_text_password_check)
-
         view.fragment_signup_text_email.setOnFocusChangeListener { _, b ->
             if (!b)
                 checkEmail(view)

@@ -169,7 +169,10 @@ class SetProfileActivity : AppCompatActivity() {
         //firstFragment
         if (firstFragment.fragment_set_profile_first_text_nickname.text.isNullOrEmpty()) {
             changeViewPage(0)
-            firstFragment.fragment_set_profile_first_layout_text_nickname.startAnimation(shake)
+            firstFragment.fragment_set_profile_first_layout_text_nickname.error = " "
+            firstFragment.fragment_set_profile_first_layout_text_nickname.errorIconDrawable = null
+            firstFragment.fragment_set_profile_first_layout_text_nickname.boxStrokeWidth = 5
+            firstFragment.fragment_set_profile_first_layout_text_nickname.animation = shake
             return false
         }
         if (firstFragment.fragment_set_profile_first_group_gender.checkedButtonId == View.NO_ID) {
@@ -189,7 +192,7 @@ class SetProfileActivity : AppCompatActivity() {
             changeViewPage(1)
             secondFragment.fragment_set_profile_second_layout_text_height.error = " "
             secondFragment.fragment_set_profile_second_layout_text_height.errorIconDrawable = null
-            secondFragment.fragment_set_profile_second_layout_text_height.boxStrokeWidth = 6
+            secondFragment.fragment_set_profile_second_layout_text_height.boxStrokeWidth = 5
             return false
         }
         if (!secondFragment.fragment_set_profile_second_text_weight.text!!.isDigitsOnly()) {
