@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -46,6 +47,8 @@ class DetailFragment : Fragment() {
         if (!viewModel.isInitialized()) {
             viewModel.setInitializedState(true)
 
+            initScrollView(view)
+
             itemDTO = args.itemDTO
             viewModel.getAccountDTO(itemDTO.uid!!)
         }
@@ -66,6 +69,25 @@ class DetailFragment : Fragment() {
         view.fragment_detail_toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
+    }
+
+    private fun initScrollView(view: View) {
+        view.fragment_detail_scrollview.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            viewModel.setScrollPosition(scrollY)
+        }
+    }
+
+    private fun restoreScrollPosition(view: View) {
+        view.fragment_detail_scrollview.postDelayed({
+            val y = viewModel.getScrollPosition()
+            if (y == 0)
+                view.fragment_detail_appbarlayout.setExpanded(true, false)
+            else
+                view.fragment_detail_appbarlayout.setExpanded(false, false)
+
+            view.fragment_detail_scrollview.scrollTo(0, y)
+            initScrollView(view)
+        }, 10)
     }
 
     private fun initDetailFragment(view : View, accountDTO: AccountDTO) {
@@ -105,5 +127,7 @@ class DetailFragment : Fragment() {
             val action = DetailFragmentDirections.actionToAccountFragment(itemDTO.uid!!)
             findNavController().navigate(action)
         }
+
+        restoreScrollPosition(view)
     }
 }

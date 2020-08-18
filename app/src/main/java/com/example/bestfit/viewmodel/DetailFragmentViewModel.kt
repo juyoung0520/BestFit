@@ -12,24 +12,32 @@ import kotlinx.coroutines.tasks.await
 class DetailFragmentViewModel : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
 
+    private val _isInitialized = MutableLiveData<Boolean>(false)
+    private val _scrollPosition = MutableLiveData<Int>(0)
+
     private val _accountDTO = MutableLiveData<AccountDTO>()
     val accountDTO: LiveData<AccountDTO> = _accountDTO
 
-    private val _isInitialized = MutableLiveData<Boolean>(false)
-    val isInitialized: LiveData<Boolean> = _isInitialized
-
-    fun getAccountDTO(uid: String) {
-        viewModelScope.launch {
-            val document = db.collection("accounts").document(uid).get().await()
-            _accountDTO.value = document.toObject(AccountDTO::class.java)!!
-        }
+    fun isInitialized() : Boolean {
+        return _isInitialized.value!!
     }
 
     fun setInitializedState(state: Boolean) {
         _isInitialized.value = state
     }
 
-    fun isInitialized() : Boolean {
-        return _isInitialized.value!!
+    fun setScrollPosition(position: Int) {
+        _scrollPosition.value = position
+    }
+
+    fun getScrollPosition() : Int {
+        return _scrollPosition.value!!
+    }
+
+    fun getAccountDTO(uid: String) {
+        viewModelScope.launch {
+            val document = db.collection("accounts").document(uid).get().await()
+            _accountDTO.value = document.toObject(AccountDTO::class.java)!!
+        }
     }
 }
