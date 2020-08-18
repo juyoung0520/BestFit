@@ -73,6 +73,20 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/fragment_set_profile_second_user_size_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="신체 사이즈가 선택되지 않았습니다."
+            android:textStyle="bold"
+            android:textColor="@color/design_default_color_error"
+            android:gravity="center"
+            android:drawableStart="@drawable/ic_error_icon"
+            android:drawableLeft="@drawable/ic_error_icon"
+            android:drawablePadding="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="평소 의류 사이즈"
@@ -148,6 +162,20 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/fragment_set_profile_second_cloth_size_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="평소 의류 사이즈가 선택되지 않았습니다."
+            android:textStyle="bold"
+            android:textColor="@color/design_default_color_error"
+            android:gravity="center"
+            android:drawableStart="@drawable/ic_error_icon"
+            android:drawableLeft="@drawable/ic_error_icon"
+            android:drawablePadding="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

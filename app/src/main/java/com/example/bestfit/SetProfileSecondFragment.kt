@@ -36,8 +36,9 @@ class SetProfileSecondFragment : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_set_profile_second, container, false)
 
         fragmentView.fragment_set_profile_second_text_height.setOnFocusChangeListener { v, hasFocus ->
-            fragmentView.fragment_set_profile_second_layout_text_height.error = ""
-            fragmentView.fragment_set_profile_second_layout_text_height.boxStrokeWidth = 3
+            if (!fragmentView.fragment_set_profile_second_text_height.text!!.isDigitsOnly()) {
+                fragmentView.fragment_set_profile_second_user_size_error.visibility = View.GONE
+            }
 
             if (hasFocus) {
                 var defaultValue = 165
@@ -51,8 +52,9 @@ class SetProfileSecondFragment : Fragment() {
         }
 
         fragmentView.fragment_set_profile_second_text_weight.setOnFocusChangeListener { v, hasFocus ->
-            fragmentView.fragment_set_profile_second_layout_text_weight.error = ""
-            fragmentView.fragment_set_profile_second_layout_text_weight.boxStrokeWidth = 3
+            if (!fragmentView.fragment_set_profile_second_text_weight.text!!.isDigitsOnly()) {
+                fragmentView.fragment_set_profile_second_user_size_error.visibility = View.GONE
+            }
 
             if (hasFocus) {
                 var defaultValue = 50
@@ -66,8 +68,9 @@ class SetProfileSecondFragment : Fragment() {
         }
 
         fragmentView.fragment_set_profile_second_text_top.setOnFocusChangeListener { v, hasFocus ->
-            fragmentView.fragment_set_profile_second_layout_text_top.error = ""
-            fragmentView.fragment_set_profile_second_layout_text_top.boxStrokeWidth = 3
+            if (fragmentView.fragment_set_profile_second_text_top.tag == null) {
+                fragmentView.fragment_set_profile_second_cloth_size_error.visibility = View.GONE
+            }
 
             if (hasFocus) {
                 val sizeFormatId = "01"
@@ -82,8 +85,9 @@ class SetProfileSecondFragment : Fragment() {
         }
 
         fragmentView.fragment_set_profile_second_text_bottom.setOnFocusChangeListener { v, hasFocus ->
-            fragmentView.fragment_set_profile_second_layout_text_bottom.error = ""
-            fragmentView.fragment_set_profile_second_layout_text_bottom.boxStrokeWidth = 3
+            if (fragmentView.fragment_set_profile_second_text_bottom.tag == null) {
+                fragmentView.fragment_set_profile_second_cloth_size_error.visibility = View.GONE
+            }
 
             if (hasFocus) {
                 val sizeFormatId = "03"
@@ -98,8 +102,9 @@ class SetProfileSecondFragment : Fragment() {
         }
 
         fragmentView.fragment_set_profile_second_text_shoes.setOnFocusChangeListener { v, hasFocus ->
-            fragmentView.fragment_set_profile_second_layout_text_shoes.error = ""
-            fragmentView.fragment_set_profile_second_layout_text_shoes.boxStrokeWidth = 3
+            if (fragmentView.fragment_set_profile_second_text_shoes.tag == null) {
+                fragmentView.fragment_set_profile_second_cloth_size_error.visibility = View.GONE
+            }
 
             if (hasFocus) {
                 val sizeFormatId = "04"

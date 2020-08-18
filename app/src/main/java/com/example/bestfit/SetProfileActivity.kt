@@ -169,9 +169,7 @@ class SetProfileActivity : AppCompatActivity() {
         //firstFragment
         if (firstFragment.fragment_set_profile_first_text_nickname.text.isNullOrEmpty()) {
             changeViewPage(0)
-            firstFragment.fragment_set_profile_first_layout_text_nickname.error = " "
-            firstFragment.fragment_set_profile_first_layout_text_nickname.errorIconDrawable = null
-            firstFragment.fragment_set_profile_first_layout_text_nickname.boxStrokeWidth = 5
+            firstFragment.fragment_set_profile_first_nickname_error.visibility = View.VISIBLE
             firstFragment.fragment_set_profile_first_layout_text_nickname.animation = shake
             return false
         }
@@ -182,46 +180,34 @@ class SetProfileActivity : AppCompatActivity() {
         }
         if (firstFragment.fragment_set_profile_first_actv_birth.text.isNullOrEmpty()) {
             changeViewPage(0)
-            firstFragment.fragment_set_profile_first_layout_actv_birth.error = " "
-            firstFragment.fragment_set_profile_first_layout_actv_birth.boxStrokeWidth = 5
+            firstFragment.fragment_set_profile_first_birth_error.visibility = View.VISIBLE
             return false
         }
 
         //secondFragment
         if (!secondFragment.fragment_set_profile_second_text_height.text!!.isDigitsOnly()) {
             changeViewPage(1)
-            secondFragment.fragment_set_profile_second_layout_text_height.error = " "
-            secondFragment.fragment_set_profile_second_layout_text_height.errorIconDrawable = null
-            secondFragment.fragment_set_profile_second_layout_text_height.boxStrokeWidth = 5
+            secondFragment.fragment_set_profile_second_user_size_error.visibility = View.VISIBLE
             return false
         }
         if (!secondFragment.fragment_set_profile_second_text_weight.text!!.isDigitsOnly()) {
             changeViewPage(1)
-            secondFragment.fragment_set_profile_second_layout_text_weight.error = " "
-            secondFragment.fragment_set_profile_second_layout_text_weight.errorIconDrawable = null
-            secondFragment.fragment_set_profile_second_layout_text_weight.boxStrokeWidth = 5
+            secondFragment.fragment_set_profile_second_user_size_error.visibility = View.VISIBLE
             return false
         }
         if (secondFragment.fragment_set_profile_second_text_top.tag == null) {
             changeViewPage(1)
-            secondFragment.fragment_set_profile_second_layout_text_top.error = " "
-            secondFragment.fragment_set_profile_second_layout_text_top.errorIconDrawable = null
-            secondFragment.fragment_set_profile_second_layout_text_top.boxStrokeWidth = 5
+            secondFragment.fragment_set_profile_second_cloth_size_error.visibility = View.VISIBLE
             return false
         }
         if (secondFragment.fragment_set_profile_second_text_bottom.tag == null) {
             changeViewPage(1)
-            secondFragment.fragment_set_profile_second_layout_text_bottom.error = " "
-            secondFragment.fragment_set_profile_second_layout_text_bottom.errorIconDrawable = null
-            secondFragment.fragment_set_profile_second_layout_text_bottom.boxStrokeWidth = 5
-
+            secondFragment.fragment_set_profile_second_cloth_size_error.visibility = View.VISIBLE
             return false
         }
         if (secondFragment.fragment_set_profile_second_text_shoes.tag == null) {
             changeViewPage(1)
-            secondFragment.fragment_set_profile_second_layout_text_shoes.error = " "
-            secondFragment.fragment_set_profile_second_layout_text_shoes.errorIconDrawable = null
-            secondFragment.fragment_set_profile_second_layout_text_shoes.boxStrokeWidth = 5
+            secondFragment.fragment_set_profile_second_cloth_size_error.visibility = View.VISIBLE
             return false
         }
 
