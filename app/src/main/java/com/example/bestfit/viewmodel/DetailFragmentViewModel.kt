@@ -13,7 +13,10 @@ class DetailFragmentViewModel : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
 
     private val _isInitialized = MutableLiveData<Boolean>(false)
+    val isInitialized: LiveData<Boolean> = _isInitialized
+
     private val _scrollPosition = MutableLiveData<Int>(0)
+    val scrollPosition: LiveData<Int> = _scrollPosition
 
     private val _accountDTO = MutableLiveData<AccountDTO>()
     val accountDTO: LiveData<AccountDTO> = _accountDTO

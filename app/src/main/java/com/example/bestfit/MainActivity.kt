@@ -4,17 +4,26 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.util.InitData
+import com.example.bestfit.viewmodel.DataViewModel
+import com.example.bestfit.viewmodel.DetailFragmentViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+    private lateinit var viewModel: DataViewModel// by viewModels() // by activityViewModels()
+
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
@@ -23,6 +32,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initViewModel()
         initViewPager()
 
         activity_main_bottom_nav.setOnNavigationItemSelectedListener(this)
@@ -33,6 +43,19 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             // SetProfile Check
             checkSetProfile()
         }
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+
+//        if (!viewModel.isInitialized()) {
+//            viewModel.setInitializedState(true)
+//
+//            viewModel.getCategoryDTO()
+//            viewModel.getSizeFormatDTO()
+//        }
+
+        // loading check?? 다 로딩되기 전에 settingsfragment 가면 죽음
     }
 
     private fun initViewPager() {
@@ -68,12 +91,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 else -> Fragment()
             }
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState.putBoolean("isInitialized", true)
     }
 
     private fun checkSetProfile() {

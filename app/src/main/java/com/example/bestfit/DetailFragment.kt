@@ -23,9 +23,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class DetailFragment : Fragment() {
+    private lateinit var viewModel: DetailFragmentViewModel
+
     private val args: DetailFragmentArgs by navArgs()
     private lateinit var itemDTO: ItemDTO
-    private lateinit var viewModel: DetailFragmentViewModel
+
     private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
