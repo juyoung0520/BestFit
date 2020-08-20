@@ -169,45 +169,45 @@ class SetProfileActivity : AppCompatActivity() {
         //firstFragment
         if (firstFragment.fragment_set_profile_first_text_nickname.text.isNullOrEmpty()) {
             changeViewPage(0)
-            firstFragment.fragment_set_profile_first_nickname_error.visibility = View.VISIBLE
+            firstFragment.fragment_set_profile_first_error_nickname.visibility = View.VISIBLE
             firstFragment.fragment_set_profile_first_layout_text_nickname.animation = shake
             return false
         }
         if (firstFragment.fragment_set_profile_first_group_gender.checkedButtonId == View.NO_ID) {
             changeViewPage(0)
-            firstFragment.fragment_set_profile_first_group_gender_error.visibility = View.VISIBLE
+            firstFragment.fragment_set_profile_first_error_group_gender.visibility = View.VISIBLE
             return false
         }
         if (firstFragment.fragment_set_profile_first_actv_birth.text.isNullOrEmpty()) {
             changeViewPage(0)
-            firstFragment.fragment_set_profile_first_birth_error.visibility = View.VISIBLE
+            firstFragment.fragment_set_profile_first_error_birth.visibility = View.VISIBLE
             return false
         }
 
         //secondFragment
         if (!secondFragment.fragment_set_profile_second_text_height.text!!.isDigitsOnly()) {
             changeViewPage(1)
-            secondFragment.fragment_set_profile_second_user_size_error.visibility = View.VISIBLE
+            secondFragment.fragment_set_profile_second_error_user_size.visibility = View.VISIBLE
             return false
         }
         if (!secondFragment.fragment_set_profile_second_text_weight.text!!.isDigitsOnly()) {
             changeViewPage(1)
-            secondFragment.fragment_set_profile_second_user_size_error.visibility = View.VISIBLE
+            secondFragment.fragment_set_profile_second_error_user_size.visibility = View.VISIBLE
             return false
         }
         if (secondFragment.fragment_set_profile_second_text_top.tag == null) {
             changeViewPage(1)
-            secondFragment.fragment_set_profile_second_cloth_size_error.visibility = View.VISIBLE
+            secondFragment.fragment_set_profile_second_error_clothes_size.visibility = View.VISIBLE
             return false
         }
         if (secondFragment.fragment_set_profile_second_text_bottom.tag == null) {
             changeViewPage(1)
-            secondFragment.fragment_set_profile_second_cloth_size_error.visibility = View.VISIBLE
+            secondFragment.fragment_set_profile_second_error_clothes_size.visibility = View.VISIBLE
             return false
         }
         if (secondFragment.fragment_set_profile_second_text_shoes.tag == null) {
             changeViewPage(1)
-            secondFragment.fragment_set_profile_second_cloth_size_error.visibility = View.VISIBLE
+            secondFragment.fragment_set_profile_second_error_clothes_size.visibility = View.VISIBLE
             return false
         }
 

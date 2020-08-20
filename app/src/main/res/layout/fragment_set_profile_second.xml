@@ -21,7 +21,8 @@
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,7 +74,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/fragment_set_profile_second_user_size_error"
+            android:id="@+id/fragment_set_profile_second_error_user_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="신체 사이즈가 선택되지 않았습니다."
@@ -94,7 +95,8 @@
             android:textStyle="bold"
             android:layout_marginTop="15dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -164,7 +166,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/fragment_set_profile_second_cloth_size_error"
+            android:id="@+id/fragment_set_profile_second_error_clothes_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="평소 의류 사이즈가 선택되지 않았습니다."

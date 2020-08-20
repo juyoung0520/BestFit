@@ -37,7 +37,7 @@ class SetProfileSecondFragment : Fragment() {
 
         fragmentView.fragment_set_profile_second_text_height.setOnFocusChangeListener { v, hasFocus ->
             if (!fragmentView.fragment_set_profile_second_text_height.text!!.isDigitsOnly()) {
-                fragmentView.fragment_set_profile_second_user_size_error.visibility = View.GONE
+                fragmentView.fragment_set_profile_second_error_user_size.visibility = View.GONE
             }
 
             if (hasFocus) {
@@ -53,7 +53,7 @@ class SetProfileSecondFragment : Fragment() {
 
         fragmentView.fragment_set_profile_second_text_weight.setOnFocusChangeListener { v, hasFocus ->
             if (!fragmentView.fragment_set_profile_second_text_weight.text!!.isDigitsOnly()) {
-                fragmentView.fragment_set_profile_second_user_size_error.visibility = View.GONE
+                fragmentView.fragment_set_profile_second_error_user_size.visibility = View.GONE
             }
 
             if (hasFocus) {
@@ -69,7 +69,7 @@ class SetProfileSecondFragment : Fragment() {
 
         fragmentView.fragment_set_profile_second_text_top.setOnFocusChangeListener { v, hasFocus ->
             if (fragmentView.fragment_set_profile_second_text_top.tag == null) {
-                fragmentView.fragment_set_profile_second_cloth_size_error.visibility = View.GONE
+                fragmentView.fragment_set_profile_second_error_clothes_size.visibility = View.GONE
             }
 
             if (hasFocus) {
@@ -86,7 +86,7 @@ class SetProfileSecondFragment : Fragment() {
 
         fragmentView.fragment_set_profile_second_text_bottom.setOnFocusChangeListener { v, hasFocus ->
             if (fragmentView.fragment_set_profile_second_text_bottom.tag == null) {
-                fragmentView.fragment_set_profile_second_cloth_size_error.visibility = View.GONE
+                fragmentView.fragment_set_profile_second_error_clothes_size.visibility = View.GONE
             }
 
             if (hasFocus) {
@@ -103,7 +103,7 @@ class SetProfileSecondFragment : Fragment() {
 
         fragmentView.fragment_set_profile_second_text_shoes.setOnFocusChangeListener { v, hasFocus ->
             if (fragmentView.fragment_set_profile_second_text_shoes.tag == null) {
-                fragmentView.fragment_set_profile_second_cloth_size_error.visibility = View.GONE
+                fragmentView.fragment_set_profile_second_error_clothes_size.visibility = View.GONE
             }
 
             if (hasFocus) {

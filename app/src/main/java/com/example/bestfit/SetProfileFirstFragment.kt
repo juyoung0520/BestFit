@@ -22,7 +22,7 @@ class SetProfileFirstFragment  : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_set_profile_first, container, false)
 
         fragmentView.fragment_set_profile_first_text_nickname.setOnFocusChangeListener { _, b ->
-            fragmentView.fragment_set_profile_first_nickname_error.visibility = View.GONE
+            fragmentView.fragment_set_profile_first_error_nickname.visibility = View.GONE
 
             if (!b) {
                 val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -31,12 +31,12 @@ class SetProfileFirstFragment  : Fragment() {
         }
 
         fragmentView.fragment_set_profile_first_group_gender.addOnButtonCheckedListener { _, _, _ ->
-            fragmentView.fragment_set_profile_first_group_gender_error.visibility = View.GONE
+            fragmentView.fragment_set_profile_first_error_group_gender.visibility = View.GONE
             fragmentView.fragment_set_profile_first_text_nickname.clearFocus()
         }
 
         fragmentView.fragment_set_profile_first_actv_birth.setOnFocusChangeListener{ _, b ->
-            fragmentView.fragment_set_profile_first_birth_error.visibility = View.GONE
+            fragmentView.fragment_set_profile_first_error_birth.visibility = View.GONE
         }
 
         fragmentView.fragment_set_profile_first_btn_submit.setOnClickListener {

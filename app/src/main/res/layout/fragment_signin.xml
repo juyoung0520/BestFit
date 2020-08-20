@@ -92,6 +92,20 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+
+        <TextView
+            android:id="@+id/fragment_signin_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/design_default_color_error"
+            android:gravity="center"
+            android:drawableStart="@drawable/ic_error_icon"
+            android:drawableLeft="@drawable/ic_error_icon"
+            android:drawablePadding="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
