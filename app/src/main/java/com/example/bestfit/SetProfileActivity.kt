@@ -162,7 +162,6 @@ class SetProfileActivity : AppCompatActivity() {
     fun emptyCheckSetProfile() : Boolean {
         val firstFragment = (fragments[0] as SetProfileFirstFragment).fragmentView
         val secondFragment = (fragments[1] as SetProfileSecondFragment).fragmentView
-        val thirdFragment = (fragments[2] as SetProfileThirdFragment).fragmentView
 
         val shake = AnimationUtils.loadAnimation(this, R.anim.shake)
 

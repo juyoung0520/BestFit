@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="상품 카테고리"
+            android:text="아이템 카테고리"
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:layout_marginStart="10dp"
@@ -80,6 +80,20 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/fragment_add_item_first_error_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아이템 카테고리가 선택되지 않았습니다."
+            android:textStyle="bold"
+            android:textColor="@color/design_default_color_error"
+            android:gravity="center"
+            android:drawableStart="@drawable/ic_error_icon"
+            android:drawableLeft="@drawable/ic_error_icon"
+            android:drawablePadding="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="상품 사진"
@@ -117,6 +131,20 @@
                 android:layout_marginLeft="10dp"/>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/fragment_add_item_first_error_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="사진이 없습니다."
+            android:textStyle="bold"
+            android:textColor="@color/design_default_color_error"
+            android:gravity="center"
+            android:drawableStart="@drawable/ic_error_icon"
+            android:drawableLeft="@drawable/ic_error_icon"
+            android:drawablePadding="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
