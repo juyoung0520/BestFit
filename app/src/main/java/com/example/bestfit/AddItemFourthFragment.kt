@@ -21,6 +21,10 @@ class AddItemFourthFragment : Fragment() {
             fragmentView.fragment_add_item_fourth_error_review.visibility = View.GONE
         }
 
+        fragmentView.fragment_add_item_fourth_rating.setOnRatingBarChangeListener { ratingBar, fl, b ->
+            fragmentView.fragment_add_item_fourth_error_rating.visibility = View.GONE
+        }
+
         return fragmentView
     }
 }

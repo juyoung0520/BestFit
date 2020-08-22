@@ -38,7 +38,6 @@ class AddItemFirstFragment  : Fragment() {
         fragmentView.fragment_add_item_first_layout_add.setOnClickListener {
             fragmentView.fragment_add_item_first_error_image.visibility = View.GONE
             addImage()
-            println("모임모임모임")
         }
 
         fragmentView.fragment_add_item_first_btn_submit.setOnClickListener {

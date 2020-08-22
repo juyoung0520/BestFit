@@ -162,6 +162,7 @@ class AddItemActivity : AppCompatActivity() {
         itemDTO.sizeFormatId = thirdFragment.selectedSizeFormatId
         itemDTO.sizeId = thirdFragment.selectedSizeId
         itemDTO.sizeReview = thirdFragmentView.fragment_add_item_third_group_size_review.tag as Int
+        itemDTO.ratingReview = fourthFragmentView.fragment_add_item_fourth_rating.rating
         itemDTO.review = fourthFragmentView.fragment_add_item_fourth_text_review.text.toString()
         itemDTO.searchKeywords = getSearchKeywords(itemDTO.name.toString())
 
@@ -248,7 +249,6 @@ class AddItemActivity : AppCompatActivity() {
         if ((fragments[0] as AddItemFirstFragment).itemImages.size == 0) {
             changeViewPage(0)
             firstFragment.fragment_add_item_first_error_image.visibility = View.VISIBLE
-            println("이프이프이프")
             return false
         }
 
@@ -282,7 +282,10 @@ class AddItemActivity : AppCompatActivity() {
             return false
         }
 
-
+        if (fourthFragment.fragment_add_item_fourth_rating.rating.equals(0.0)) {
+            fourthFragment.fragment_add_item_fourth_error_rating.visibility = View.VISIBLE
+            return false
+        }
 
         return true
     }
