@@ -36,7 +36,9 @@ class AddItemFirstFragment  : Fragment() {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_first, container, false)
 
         fragmentView.fragment_add_item_first_layout_add.setOnClickListener {
+            fragmentView.fragment_add_item_first_error_image.visibility = View.GONE
             addImage()
+            println("모임모임모임")
         }
 
         fragmentView.fragment_add_item_first_btn_submit.setOnClickListener {
@@ -69,10 +71,13 @@ class AddItemFirstFragment  : Fragment() {
 
         view.fragment_add_item_first_actv_category.setAdapter(categoryAdapter)
         view.fragment_add_item_first_actv_category.setOnFocusChangeListener { _, b ->
+            if (view.fragment_add_item_first_actv_category.text.isNullOrEmpty())
+                fragmentView.fragment_add_item_first_error_category.visibility = View.GONE
+
             if (b)
-                view.fragment_add_item_first_layout_category.hint = ""
+                view.fragment_add_item_first_actv_category.hint = ""
             else if (view.fragment_add_item_first_actv_category.text.isNullOrEmpty())
-                view.fragment_add_item_first_layout_category.hint = "대분류"
+                view.fragment_add_item_first_actv_category.hint = "대분류"
         }
         view.fragment_add_item_first_actv_category.setOnItemClickListener { _, _, position, _ ->
             if (view.fragment_add_item_first_layout_divider_category.visibility == View.GONE) {
@@ -91,6 +96,8 @@ class AddItemFirstFragment  : Fragment() {
 
         view.fragment_add_item_first_actv_sub_category.setAdapter(categoryAdapter)
         view.fragment_add_item_first_actv_sub_category.setOnFocusChangeListener { _, b ->
+            fragmentView.fragment_add_item_first_error_category.visibility = View.GONE
+
             if (b)
                 view.fragment_add_item_first_layout_sub_category.hint = ""
             else if (view.fragment_add_item_first_actv_sub_category.text.isNullOrEmpty())

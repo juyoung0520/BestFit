@@ -40,7 +40,7 @@ class SetProfileFirstFragment  : Fragment() {
         }
 
         fragmentView.fragment_set_profile_first_btn_submit.setOnClickListener {
-                submitSetProfile()
+            submitSetProfile()
         }
 
         initBirth(fragmentView)

@@ -26,6 +26,8 @@ class AddItemThirdFragment  : Fragment() {
         initSelectedSizeTable(fragmentView)
 
         fragmentView.fragment_add_item_third_group_size_review.addOnButtonCheckedListener { group, _, isChecked ->
+            fragmentView.fragment_add_item_third_error_size_review.visibility = View.GONE
+
             if (!isChecked)
                 return@addOnButtonCheckedListener
 
@@ -56,6 +58,9 @@ class AddItemThirdFragment  : Fragment() {
         }
 
         view.fragment_add_item_third_group_format.addOnButtonCheckedListener { group, _, isChecked ->
+            if (selectedSizeFormatId == null )
+                view.fragment_add_item_third_error_size.visibility = View.GONE
+
             if (group.checkedButtonId == -1) {
                 view.fragment_add_item_third_layout_selected_size.clearFocus()
                 view.fragment_add_item_third_layout_divider.setBackgroundColor(resources.getColor(R.color.colorHintTransparent))
@@ -97,6 +102,8 @@ class AddItemThirdFragment  : Fragment() {
         }
 
         view.fragment_add_item_third_group_size.addOnButtonCheckedListener { group, _, isChecked ->
+            view.fragment_add_item_third_error_size.visibility = View.GONE
+
             if (group.checkedButtonId == -1) {
                 selectedSizeId = null
 

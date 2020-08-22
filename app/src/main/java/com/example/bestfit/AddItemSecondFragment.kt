@@ -24,6 +24,10 @@ class AddItemSecondFragment  : Fragment() {
 
         initBrand(fragmentView)
 
+        fragmentView.fragment_add_item_second_text_item_name.setOnFocusChangeListener { view, b ->
+            fragmentView.fragment_add_item_second_error_item_name.visibility = View.GONE
+        }
+
         fragmentView.fragment_add_item_second_btn_submit.setOnClickListener {
             submitAddItem()
         }
@@ -37,6 +41,8 @@ class AddItemSecondFragment  : Fragment() {
 
         view.fragment_add_item_second_actv_brand.setAdapter(categoryAdapter)
         view.fragment_add_item_second_actv_brand.setOnFocusChangeListener { _, b ->
+            view.fragment_add_item_second_error_brand.visibility = View.GONE
+
             println("focus")
             if (b) {
                 view.fragment_add_item_second_layout_actv_brand.hint = ""
