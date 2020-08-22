@@ -22,12 +22,6 @@ class HomeFragment : Fragment() {
 
         initToolbar(view)
 
-//        childFragmentManager.addOnBackStackChangedListener {
-//            println(childFragmentManager.backStackEntryCount)
-//            if (childFragmentManager.backStackEntryCount == 0)
-//                view.fragment_home_toolbar.visibility = View.VISIBLE
-//        }
-
         return view
     }
 

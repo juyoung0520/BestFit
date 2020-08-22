@@ -82,12 +82,18 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
 
         override fun createFragment(position: Int): Fragment {
-            return when (position) {
-                0 -> Fragment(R.layout.navigation_home)
-                1 -> Fragment(R.layout.navigation_dressroom)
-                2 -> Fragment(R.layout.navigation_settings)
-                else -> Fragment()
+            val bundle = Bundle()
+
+            when (position) {
+                0 -> bundle.putInt("layoutResource", R.layout.navigation_home)
+                1 -> bundle.putInt("layoutResource", R.layout.navigation_dressroom)
+                2 -> bundle.putInt("layoutResource", R.layout.navigation_settings)
             }
+
+            val fragment = ContainerFragment()
+            fragment.arguments = bundle
+
+            return fragment
         }
     }
 
