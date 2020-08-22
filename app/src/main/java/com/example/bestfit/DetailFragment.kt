@@ -1,26 +1,32 @@
 package com.example.bestfit
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.addCallback
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.AccountDTO
+import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.example.bestfit.viewmodel.DetailFragmentViewModel
-import androidx.lifecycle.Observer
-import com.example.bestfit.model.ItemDTO
-import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class DetailFragment : Fragment() {
     private lateinit var viewModel: DetailFragmentViewModel
@@ -90,11 +96,12 @@ class DetailFragment : Fragment() {
         }, 5)
     }
 
-    private fun initDetailFragment(view : View, accountDTO: AccountDTO) {
+    private fun initDetailFragment(view: View, accountDTO: AccountDTO) {
         if (accountDTO.photo.isNullOrEmpty())
             view.fragment_detail_iv_profile.setImageResource(R.drawable.ic_profile_photo)
-        else
+        else {
             Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_detail_iv_profile)
+        }
 
         view.fragment_detail_tv_nickname.text = accountDTO.nickname
         view.fragment_detail_tv_user_size.text = accountDTO.height.toString() + " cm / " + accountDTO.weight.toString() + " kg"
@@ -104,12 +111,15 @@ class DetailFragment : Fragment() {
         val shoes = InitData.getSizeString("04", accountDTO.shoesId!!)
         //view.fragment_detail_tv_user_detail_size.text = "Top $top / Bottom $bottom / Shoes $shoes"
 
-        if (itemDTO.images.isNotEmpty()) {
-            Glide.with(view).load(itemDTO.images[0]).apply(RequestOptions().centerCrop())
-                .into(view.fragment_detail_iv_item)
+        if (!itemDTO.images.isNullOrEmpty()) {
+            view.fragment_detail_viewpager_image.adapter = ImagePagerAdapter(itemDTO.images)
+            view.fragment_detail_indicator_image.setViewPager(view.fragment_detail_viewpager_image)
         }
 
-        view.fragment_detail_tv_category.text = "${InitData.getCategoryString(itemDTO.categoryId!!)} > ${InitData.getSubCategoryString(itemDTO.categoryId!!, itemDTO.subCategoryId!!)}"
+        view.fragment_detail_tv_category.text = "${InitData.getCategoryString(itemDTO.categoryId!!)} > ${InitData.getSubCategoryString(
+            itemDTO.categoryId!!,
+            itemDTO.subCategoryId!!
+        )}"
         view.fragment_detail_tv_item_name.text = itemDTO.name
 
         val review = when (itemDTO.sizeReview) {
@@ -119,9 +129,14 @@ class DetailFragment : Fragment() {
             else -> null
         }
 
-        view.fragment_detail_tv_item_size.text = "${InitData.getSizeString(itemDTO.sizeFormatId!!, itemDTO.sizeId!!)} / $review"
+        view.fragment_detail_tv_item_size.text = "${InitData.getSizeString(
+            itemDTO.sizeFormatId!!,
+            itemDTO.sizeId!!
+        )} / $review"
         view.fragment_detail_tv_review.text = itemDTO.review
-        view.fragment_detail_tv_date.text = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(itemDTO.timestamp)
+        view.fragment_detail_tv_date.text = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(
+            itemDTO.timestamp
+        )
 
         view.fragment_detail_iv_profile.setOnClickListener {
             val action = DetailFragmentDirections.actionToAccountFragment(itemDTO.uid!!)
@@ -129,5 +144,34 @@ class DetailFragment : Fragment() {
         }
 
         restoreScrollPosition(view)
+    }
+
+    inner class ImagePagerAdapter(private val images: ArrayList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val iv = ImageView(context)
+            iv.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+
+            return ImageViewHolder(iv)
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            val viewHolder = holder as ImageViewHolder
+            val view = viewHolder.itemView as ImageView
+
+            viewHolder.bind(view, images[position])
+        }
+
+        override fun getItemCount(): Int {
+            return images.size
+        }
+
+        inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            fun bind(view: ImageView, image: String) {
+                Glide.with(view)
+                    .load(image)
+                    .apply(RequestOptions().centerCrop())
+                    .into(view)
+            }
+        }
     }
 }

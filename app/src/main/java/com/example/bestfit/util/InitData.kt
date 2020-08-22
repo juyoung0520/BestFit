@@ -4,35 +4,9 @@ import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.model.SizeFormatDTO
 
 object InitData {
-//    private val db = FirebaseFirestore.getInstance()
-//    var initialization = false
-//    var initializationCategory = false
-//    var initializationBrand = false
-//    var initializationSizeFormat = false
-    const val CATEGORY = 0
-    const val BRAND = 1
-    const val SIZEFORMAT = 2
-
-    private val initStates = arrayListOf(false, true, false)
-
     val categoryDTOs = arrayListOf<CategoryDTO>()
     val brands = arrayListOf<String>()
     val sizeFormatDTOs = arrayListOf<SizeFormatDTO>()
-
-    fun setInitState(type: Int, state: Boolean) : Boolean {
-        when (type) {
-            CATEGORY -> { initStates[type] = state }
-            BRAND -> { initStates[type] = state }
-            SIZEFORMAT -> { initStates[type] = state }
-        }
-
-        for (initState in initStates) {
-            if (!initState)
-                return false
-        }
-
-        return true
-    }
 
     fun getCategoryIndex(categoryId: String): Int {
         for (categoryDTO in categoryDTOs) {
