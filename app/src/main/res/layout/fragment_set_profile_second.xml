@@ -21,7 +21,8 @@
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,6 +30,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_set_profile_second_layout_text_height"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/CorneredTextInputLayout"
@@ -38,7 +40,7 @@
                 android:layout_marginEnd="7.5dp"
                 android:layout_marginRight="7.5dp">
 
-                <com.example.bestfit.view.EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_set_profile_second_text_height"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -49,6 +51,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_set_profile_second_layout_text_weight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/CorneredTextInputLayout"
@@ -58,7 +61,7 @@
                 android:layout_marginStart="7.5dp"
                 android:layout_marginLeft="7.5dp">
 
-                <com.example.bestfit.view.EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_set_profile_second_text_weight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,6 +74,20 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/fragment_set_profile_second_error_user_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="신체 사이즈가 선택되지 않았습니다."
+            android:textStyle="bold"
+            android:textColor="@color/design_default_color_error"
+            android:gravity="center"
+            android:drawableStart="@drawable/ic_error_icon"
+            android:drawableLeft="@drawable/ic_error_icon"
+            android:drawablePadding="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="평소 의류 사이즈"
@@ -78,7 +95,8 @@
             android:textStyle="bold"
             android:layout_marginTop="15dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,6 +104,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_set_profile_second_layout_text_top"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/CorneredTextInputLayout"
@@ -94,7 +113,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp">
 
-                <com.example.bestfit.view.EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_set_profile_second_text_top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -105,6 +124,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_set_profile_second_layout_text_bottom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/CorneredTextInputLayout"
@@ -113,7 +133,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp">
 
-                <com.example.bestfit.view.EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_set_profile_second_text_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -124,6 +144,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragment_set_profile_second_layout_text_shoes"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/CorneredTextInputLayout"
@@ -132,7 +153,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp">
 
-                <com.example.bestfit.view.EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/fragment_set_profile_second_text_shoes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -143,6 +164,20 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/fragment_set_profile_second_error_clothes_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="평소 의류 사이즈가 선택되지 않았습니다."
+            android:textStyle="bold"
+            android:textColor="@color/design_default_color_error"
+            android:gravity="center"
+            android:drawableStart="@drawable/ic_error_icon"
+            android:drawableLeft="@drawable/ic_error_icon"
+            android:drawablePadding="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

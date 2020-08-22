@@ -34,15 +34,17 @@ class SignInFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_signin, container, false)
 
-        view.fragment_signin_text_email.setTextInputLayout(view.fragment_signin_layout_text_email)
-        view.fragment_signin_text_password.setTextInputLayout(view.fragment_signin_layout_text_password)
-
         view.fragment_signin_text_email.doOnTextChanged { text, start, before, count ->
+            view.fragment_signin_error.visibility = View.GONE
+
             view.fragment_signin_btn_signin.isEnabled =
                 !(view.fragment_signin_text_email.text.isNullOrEmpty() || view.fragment_signin_text_password.text.isNullOrEmpty())
         }
 
         view.fragment_signin_text_password.doOnTextChanged { text, start, before, count ->
+            if (view.fragment_signin_error.text == "존재하지 않는 이메일이거나, 잘못된 비밀번호입니다.")
+                view.fragment_signin_error.visibility = View.GONE
+
             view.fragment_signin_btn_signin.isEnabled =
                 !(view.fragment_signin_text_email.text.isNullOrEmpty() || view.fragment_signin_text_password.text.isNullOrEmpty())
         }
@@ -101,14 +103,17 @@ class SignInFragment : Fragment() {
 
                     if (task.exception?.message?.indexOf("badly formatted") != -1) {
                         // 올바른 이메일 형식
-                        view.fragment_signin_layout_text_email.error = "잘못된 형식의 이메일입니다."
+                        view.fragment_signin_error.visibility = View.VISIBLE
+                        view.fragment_signin_error.text = "잘못된 이메일 형식입니다."
                     }
                     else if (task.exception?.message?.indexOf("no user record") != -1) {
                         // 존재하지 않는 이메일
-                        view.fragment_signin_layout_text_email.error = "존재하지 않는 이메일입니다."
+                        view.fragment_signin_error.visibility = View.VISIBLE
+                        view.fragment_signin_error.text = "존재하지 않는 이메일이거나, 잘못된 비밀번호입니다."
                     } else if (task.exception?.message?.indexOf("password is invalid") != -1) {
                         // 비밀번호 틀림
-                        view.fragment_signin_layout_text_email.error = "비밀번호 틀림"
+                        view.fragment_signin_error.visibility = View.VISIBLE
+                        view.fragment_signin_error.text = "존재하지 않는 이메일이거나, 잘못된 비밀번호입니다."
                     }
 
                     println(task.exception?.message)

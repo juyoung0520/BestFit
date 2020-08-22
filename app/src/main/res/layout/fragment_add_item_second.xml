@@ -40,6 +40,20 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
+            android:id="@+id/fragment_add_item_second_error_brand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="브랜드/쇼핑몰이 입력되지 않았습니다."
+            android:textStyle="bold"
+            android:textColor="@color/design_default_color_error"
+            android:gravity="center"
+            android:drawableStart="@drawable/ic_error_icon"
+            android:drawableLeft="@drawable/ic_error_icon"
+            android:drawablePadding="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="상품명"
@@ -63,6 +77,20 @@
                 android:layout_height="wrap_content"/>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/fragment_add_item_second_error_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이름이 입력되지 않았습니다."
+            android:textStyle="bold"
+            android:textColor="@color/design_default_color_error"
+            android:gravity="center"
+            android:drawableStart="@drawable/ic_error_icon"
+            android:drawableLeft="@drawable/ic_error_icon"
+            android:drawablePadding="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

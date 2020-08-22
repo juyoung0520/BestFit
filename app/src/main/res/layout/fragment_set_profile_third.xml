@@ -30,22 +30,25 @@
             android:textSize="12sp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="5dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
         
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_set_profile_third_layout_text_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/CorneredTextInputLayout"
-            android:hint="프로필 메시지를 입력해주세요!">
+            app:hintEnabled="false"
+            style="@style/CorneredTextInputLayout">
 
-            <com.example.bestfit.view.EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragment_set_profile_third_text_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:lines="7"
-                android:scrollbars="vertical"/>
+                android:scrollbars="vertical"
+                android:hint="프로필 메시지를 입력해주세요!"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

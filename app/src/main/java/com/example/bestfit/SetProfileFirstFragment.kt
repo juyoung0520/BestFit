@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_set_profile_first.view.*
+import kotlinx.android.synthetic.main.fragment_set_profile_second.view.*
 
 class SetProfileFirstFragment  : Fragment() {
     lateinit var fragmentView: View
@@ -20,9 +21,9 @@ class SetProfileFirstFragment  : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_set_profile_first, container, false)
 
-        fragmentView.fragment_set_profile_first_text_nickname.setTextInputLayout(fragmentView.fragment_set_profile_first_layout_text_nickname)
-
         fragmentView.fragment_set_profile_first_text_nickname.setOnFocusChangeListener { _, b ->
+            fragmentView.fragment_set_profile_first_error_nickname.visibility = View.GONE
+
             if (!b) {
                 val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(fragmentView.windowToken, 0)
@@ -30,12 +31,12 @@ class SetProfileFirstFragment  : Fragment() {
         }
 
         fragmentView.fragment_set_profile_first_group_gender.addOnButtonCheckedListener { _, _, _ ->
-            fragmentView.fragment_set_profile_first_group_gender_error.visibility = View.GONE
+            fragmentView.fragment_set_profile_first_error_group_gender.visibility = View.GONE
             fragmentView.fragment_set_profile_first_text_nickname.clearFocus()
         }
 
         fragmentView.fragment_set_profile_first_actv_birth.setOnFocusChangeListener{ _, b ->
-            fragmentView.fragment_set_profile_first_layout_actv_birth.error = ""
+            fragmentView.fragment_set_profile_first_error_birth.visibility = View.GONE
         }
 
         fragmentView.fragment_set_profile_first_btn_submit.setOnClickListener {

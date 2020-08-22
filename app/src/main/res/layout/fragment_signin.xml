@@ -44,21 +44,22 @@
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_signin_layout_text_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/CorneredTextInputLayout"
-            android:hint="이메일"
-            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
             app:endIconMode="clear_text">
 
-            <com.example.bestfit.view.EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragment_signin_text_email"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:hint="이메일"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,7 +71,8 @@
             android:textStyle="bold"
             android:layout_marginTop="15dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_signin_layout_text_password"
@@ -78,16 +80,31 @@
             android:layout_height="wrap_content"
             style="@style/CorneredTextInputLayout"
             android:hint="비밀번호"
-            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
             app:endIconMode="password_toggle">
 
-            <com.example.bestfit.view.EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragment_signin_text_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:hint="비밀번호"/>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/fragment_signin_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/design_default_color_error"
+            android:gravity="center"
+            android:drawableStart="@drawable/ic_error_icon"
+            android:drawableLeft="@drawable/ic_error_icon"
+            android:drawablePadding="5dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -19,6 +19,8 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_add_item.*
+import kotlinx.android.synthetic.main.activity_add_item.view.*
+import kotlinx.android.synthetic.main.activity_set_profile.*
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_fourth.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
@@ -68,7 +70,8 @@ class AddItemActivity : AppCompatActivity() {
                         activity_add_item_toolbar.setOnMenuItemClickListener { item ->
                             when (item.itemId) {
                                 R.id.menu_activity_add_item_submit -> {
-                                    submitAddItem()
+                                    if (emptyCheckAddItem())
+                                        submitAddItem()
 
                                     true
                                 }
@@ -122,6 +125,21 @@ class AddItemActivity : AppCompatActivity() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
+
+    fun changeViewPage(position: Int) {
+        if (position < 0) {
+            finish()
+            return
+        }
+        else if (position > activity_add_item_viewpager.adapter!!.itemCount)
+            return
+
+        activity_add_item_viewpager.currentItem = position
+
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }
+
 
     fun submitAddItem() {
         val firstFragment = fragments[0] as AddItemFirstFragment
@@ -212,5 +230,52 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         return keywords
+    }
+
+    fun emptyCheckAddItem(): Boolean {
+        val firstFragment =  (fragments[0] as AddItemFirstFragment).fragmentView
+        val secondFragment = (fragments[1] as AddItemSecondFragment).fragmentView
+        val thirdFragment = (fragments[2] as AddItemThirdFragment).fragmentView
+        val fourthFragment = (fragments[3] as AddItemFourthFragment).fragmentView
+
+        //fistFragment
+        if (firstFragment.fragment_add_item_first_actv_category.text.isNullOrEmpty() || firstFragment.fragment_add_item_first_actv_sub_category.text.isNullOrEmpty()) {
+            changeViewPage(0)
+            firstFragment.fragment_add_item_first_error_category.visibility = View.VISIBLE
+            return false
+        }
+        if ((fragments[0] as AddItemFirstFragment).itemImages.size == 0) {
+            changeViewPage(0)
+            firstFragment.fragment_add_item_first_error_image.visibility = View.VISIBLE
+        }
+
+        //secondFragment
+        if (secondFragment.fragment_add_item_second_actv_brand.text.isNullOrEmpty()) {
+            changeViewPage(1)
+            return false
+        }
+        if (secondFragment.fragment_add_item_second_text_item_name.text.isNullOrEmpty()) {
+            changeViewPage(1)
+            return false
+        }
+
+        //thirdFragment
+        if ((fragments[2] as AddItemThirdFragment).selectedSizeFormatId == null || (fragments[2] as AddItemThirdFragment).selectedSizeId == null) {
+            changeViewPage(2)
+            thirdFragment.fragment_add_item_third_error_size.visibility = View.VISIBLE
+        }
+        if (thirdFragment.fragment_add_item_third_group_size_review.tag == null) {
+            changeViewPage(2)
+            thirdFragment.fragment_add_item_third_error_size_review.visibility = View.VISIBLE
+        }
+
+        //fourthFragment
+        if (fourthFragment.fragment_add_item_fourth_text_review.text.isNullOrEmpty()) {
+            fourthFragment.fragment_add_item_fourth_error_review.visibility = View.VISIBLE
+        }
+
+
+
+        return true
     }
 }
