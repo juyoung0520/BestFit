@@ -15,6 +15,7 @@ data class ItemDTO(
     var sizeFormatId: String? = null,
     var sizeId: String? = null,
     var sizeReview: Int? = null,
+    var ratingReview: Float? = null,
     var review: String? = null,
     var searchKeywords: ArrayList<String> = arrayListOf()
 
@@ -31,6 +32,7 @@ data class ItemDTO(
         parcel.readString(),
         parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(Float::class.java.classLoader) as? Float,
         parcel.readString(),
         parcel.readArrayList(String::class.java.classLoader) as ArrayList<String>
     ) {
@@ -48,6 +50,7 @@ data class ItemDTO(
         parcel.writeString(sizeFormatId)
         parcel.writeString(sizeId)
         parcel.writeValue(sizeReview)
+        parcel.writeValue(ratingReview)
         parcel.writeString(review)
         parcel.writeStringList(searchKeywords)
     }

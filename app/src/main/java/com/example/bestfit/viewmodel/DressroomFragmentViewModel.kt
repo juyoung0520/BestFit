@@ -40,8 +40,10 @@ class DressroomFragmentViewModel : ViewModel() {
             val document = db.collection("accounts").document(currentUid).get().await()
             val accountDTO = document.toObject(AccountDTO::class.java)!!
 
-            if (accountDTO.items!!.isEmpty()) {
-                _isInitialized.value = true
+            if (accountDTO.items.isNullOrEmpty()) {
+                withContext(Dispatchers.Main) {
+                    _isInitialized.value = true
+                }
                 return@launch
             }
 

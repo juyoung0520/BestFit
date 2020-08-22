@@ -14,6 +14,8 @@ import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
@@ -25,6 +27,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_account.view.*
+import kotlinx.android.synthetic.main.fragment_account.view.fragment_settings_iv_profile
+import kotlinx.android.synthetic.main.fragment_account.view.fragment_settings_tv_message
+import kotlinx.android.synthetic.main.fragment_account.view.fragment_settings_tv_nickname
+import kotlinx.android.synthetic.main.fragment_account.view.fragment_settings_tv_user_detail_size
+import kotlinx.android.synthetic.main.fragment_account.view.fragment_settings_tv_user_size
+import kotlinx.android.synthetic.main.fragment_settings.view.*
 import kotlin.math.abs
 
 class AccountFragment : Fragment() {

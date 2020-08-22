@@ -160,6 +160,7 @@
                         android:layout_marginBottom="5dp"/>
 
                     <RatingBar
+                        android:id="@+id/fragment_detail_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:rating="3"

@@ -129,10 +129,8 @@ class DetailFragment : Fragment() {
             else -> null
         }
 
-        view.fragment_detail_tv_item_size.text = "${InitData.getSizeString(
-            itemDTO.sizeFormatId!!,
-            itemDTO.sizeId!!
-        )} / $review"
+        view.fragment_detail_tv_item_size.text = "${InitData.getSizeString(itemDTO.sizeFormatId!!, itemDTO.sizeId!!)} / $review"
+        view.fragment_detail_rating.rating = itemDTO.ratingReview!!
         view.fragment_detail_tv_review.text = itemDTO.review
         view.fragment_detail_tv_date.text = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(
             itemDTO.timestamp
