@@ -247,15 +247,19 @@ class AddItemActivity : AppCompatActivity() {
         if ((fragments[0] as AddItemFirstFragment).itemImages.size == 0) {
             changeViewPage(0)
             firstFragment.fragment_add_item_first_error_image.visibility = View.VISIBLE
+            println("이프이프이프")
+            return false
         }
 
         //secondFragment
         if (secondFragment.fragment_add_item_second_actv_brand.text.isNullOrEmpty()) {
             changeViewPage(1)
+            secondFragment.fragment_add_item_second_error_brand.visibility = View.VISIBLE
             return false
         }
         if (secondFragment.fragment_add_item_second_text_item_name.text.isNullOrEmpty()) {
             changeViewPage(1)
+            secondFragment.fragment_add_item_second_error_item_name.visibility = View.VISIBLE
             return false
         }
 
@@ -263,15 +267,18 @@ class AddItemActivity : AppCompatActivity() {
         if ((fragments[2] as AddItemThirdFragment).selectedSizeFormatId == null || (fragments[2] as AddItemThirdFragment).selectedSizeId == null) {
             changeViewPage(2)
             thirdFragment.fragment_add_item_third_error_size.visibility = View.VISIBLE
+            return false
         }
         if (thirdFragment.fragment_add_item_third_group_size_review.tag == null) {
             changeViewPage(2)
             thirdFragment.fragment_add_item_third_error_size_review.visibility = View.VISIBLE
+            return false
         }
 
         //fourthFragment
         if (fourthFragment.fragment_add_item_fourth_text_review.text.isNullOrEmpty()) {
             fourthFragment.fragment_add_item_fourth_error_review.visibility = View.VISIBLE
+            return false
         }
 
 

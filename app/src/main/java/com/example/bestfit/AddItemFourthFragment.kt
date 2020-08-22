@@ -17,6 +17,10 @@ class AddItemFourthFragment : Fragment() {
 
         fragmentView.fragment_add_item_fourth_text_review.setTextInputLayout(fragmentView.fragment_add_item_fourth_layout_text_review)
 
+        fragmentView.fragment_add_item_fourth_text_review.setOnFocusChangeListener { view, b ->
+            fragmentView.fragment_add_item_fourth_error_review.visibility = View.GONE
+        }
+
         return fragmentView
     }
 }

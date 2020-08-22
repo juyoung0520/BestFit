@@ -20,22 +20,23 @@
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_add_item_second_layout_actv_brand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/CorneredTextInputLayout"
-            android:hint="브랜드/쇼핑몰"
-            app:hintAnimationEnabled="false">
+            app:hintEnabled="false">
 
             <AutoCompleteTextView
                 android:id="@+id/fragment_add_item_second_actv_brand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
-                style="@style/ExposedDropdownMenu"/>
+                style="@style/ExposedDropdownMenu"
+                android:hint="브랜드/쇼핑몰" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,20 +62,21 @@
             android:textStyle="bold"
             android:layout_marginTop="15dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fragment_add_item_second_layout_text_item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/CorneredTextInputLayout"
-            android:hint="상품명"
-            app:hintAnimationEnabled="false">
+            app:hintEnabled="false">
 
             <com.example.bestfit.view.EditText
                 android:id="@+id/fragment_add_item_second_text_item_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:hint="상품명" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
