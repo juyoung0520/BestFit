@@ -3,6 +3,9 @@ package com.example.bestfit.viewmodel
 import androidx.lifecycle.*
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
+import com.example.bestfit.util.InitData
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,8 +50,13 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
                 return@launch
             }
 
-            for (itemId in accountDTO.items!!) {
-                val doc = db.collection("items").document(itemId).get().await()
+            val tasks = accountDTO.items!!.map { itemId ->
+                db.collection("items").document(itemId).get()
+            }
+
+            val result = Tasks.whenAllComplete(tasks).await()
+            for (task in result) {
+                val doc = task.result as DocumentSnapshot
                 val itemDTO = doc.toObject(ItemDTO::class.java)!!
 
                 _itemDTOs.value!!.add(itemDTO)

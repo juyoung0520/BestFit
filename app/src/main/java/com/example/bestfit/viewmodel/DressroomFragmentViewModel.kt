@@ -4,7 +4,11 @@ import androidx.lifecycle.*
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,17 +45,22 @@ class DressroomFragmentViewModel : ViewModel() {
                 return@launch
             }
 
-            for (itemId in accountDTO.items!!) {
-                val doc = db.collection("items").document(itemId).get().await()
+            val tasks = accountDTO.items!!.map { itemId ->
+                db.collection("items").document(itemId).get()
+            }
+
+            val result = Tasks.whenAllComplete(tasks).await()
+            for (task in result) {
+                val doc = task.result as DocumentSnapshot
                 val itemDTO = doc.toObject(ItemDTO::class.java)!!
                 val categoryIndex = InitData.getCategoryIndex(itemDTO.categoryId!!)
 
                 _itemDTOs.value!![0].add(itemDTO)
                 _itemDTOs.value!![categoryIndex].add(itemDTO)
-
-                for (itemDTO in _itemDTOs.value!!)
-                    itemDTO.sortByDescending { itemDTO -> itemDTO.timestamp }
             }
+
+            for (itemDTO in _itemDTOs.value!!)
+                itemDTO.sortByDescending { itemDTO -> itemDTO.timestamp }
 
             withContext(Dispatchers.Main) {
                 _isInitialized.value = true

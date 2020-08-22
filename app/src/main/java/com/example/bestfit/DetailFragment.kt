@@ -89,7 +89,7 @@ class DetailFragment : Fragment() {
 
             view.fragment_detail_scrollview.scrollTo(0, y)
             initScrollView(view)
-        }, 10)
+        }, 5)
     }
 
     private fun initDetailFragment(view : View, accountDTO: AccountDTO) {
