@@ -4,26 +4,36 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavArgs
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
+import com.example.bestfit.util.InitData
+import com.example.bestfit.viewmodel.AccountFragmentViewModel
+import com.example.bestfit.viewmodel.DressroomFragmentViewModel
+import com.example.bestfit.viewmodel.SettingsFragmentViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_account.view.*
-import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlin.math.abs
 
 class AccountFragment : Fragment() {
+    private lateinit var viewModel: AccountFragmentViewModel
+
+    private val args: AccountFragmentArgs by navArgs()
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
-    private val tabArray: ArrayList<String> = arrayListOf()
-    private lateinit var uid: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,84 +41,65 @@ class AccountFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_account, container, false)
-        uid = requireArguments().getString("uid")!!
 
+        initViewModel()
         initToolbar(view)
-        initTab(view)
+        initTabAdapter(view)
 
         return view
     }
 
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this, AccountFragmentViewModel.Factory(args.uid)).get(AccountFragmentViewModel::class.java)
+
+        val initObserver = Observer<Boolean> { isInit ->
+            if (isInit) {
+                initAccountFragment()
+            }
+        }
+
+        val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
+//            initAccount(view, accountDTO)
+        }
+
+        viewModel.isInitialized.observe(viewLifecycleOwner, initObserver)
+        viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
+    }
+
     private fun initToolbar(view: View) {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            findNavController().navigateUp()
+        }
+
         view.fragment_account_appbarlayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
             if (abs(p1) - p0.totalScrollRange == 0) {
-                view.fragment_account_toolbar_title.visibility = View.VISIBLE
-
+                if (view.fragment_account_toolbar_title.visibility == View.GONE)
+                    view.fragment_account_toolbar_title.visibility = View.VISIBLE
             }
-            else if (p1 == 0) {
-                view.fragment_account_toolbar_title.visibility = View.GONE
+            else {
+                if (view.fragment_account_toolbar_title.visibility == View.VISIBLE)
+                    view.fragment_account_toolbar_title.visibility = View.GONE
             }
         })
 
         view.fragment_account_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         view.fragment_account_toolbar.setNavigationOnClickListener {
-            val mainActivity: MainActivity = requireActivity() as MainActivity
-            mainActivity.changeFragment(null, null, true)
-        }
-    }
-
-    private fun initTab(view : View) {
-        tabArray.add("드레스룸")
-        tabArray.add("게시글")
-
-        initTabAdapter(view)
-        initItem()
-    }
-
-    private fun initItem() {
-        val itemDTOs : ArrayList<ItemDTO> = arrayListOf()
-
-        db.collection("accounts").document(uid).get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                if (task.result!!["items"] == null)
-                    return@addOnCompleteListener
-
-                val items = task.result!!["items"] as ArrayList<String>
-                var cnt = 0
-
-                for (itemId in items) {
-                    db.collection("items").document(itemId).get().addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val itemDTO = task.result!!.toObject(ItemDTO::class.java)!!
-                            itemDTOs.add(itemDTO)
-
-                            cnt += 1
-
-                            if (cnt >= items.size) {
-                                itemDTOs.sortByDescending { itemDTO -> itemDTO.timestamp }
-
-                                val bundle = Bundle()
-                                bundle.putParcelableArrayList("itemDTOs", itemDTOs)
-
-                                setFragmentResult("itemDTOs.${uid}.-1", bundle)
-                            }
-                        }
-                    }
-                }
-            }
+            requireActivity().onBackPressed()
         }
     }
 
     private fun initTabAdapter(view: View) {
-        view.fragment_account_viewpager.adapter = TabPagerAdapter(requireActivity())
+        val tabArray = arrayListOf("드레스룸", "게시글")
+
+        view.fragment_account_viewpager.adapter = TabPagerAdapter()
         TabLayoutMediator(view.fragment_account_tab, view.fragment_account_viewpager) { tab, position ->
             tab.text = tabArray[position]
         }.attach()
     }
 
-    inner class TabPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
+    inner class TabPagerAdapter : FragmentStateAdapter(this) {
         override fun getItemCount(): Int {
-            return tabArray.size
+            return 2
         }
 
         override fun createFragment(position: Int): Fragment {
@@ -117,7 +108,7 @@ class AccountFragment : Fragment() {
                     val fragment = DressroomCategoryFragment()
                     val bundle = Bundle()
 
-                    bundle.putString("uid", uid)
+                    bundle.putString("uid", args.uid)
                     bundle.putInt("position", -1)
 
                     fragment.arguments = bundle
@@ -129,7 +120,12 @@ class AccountFragment : Fragment() {
                 else -> Fragment()
             }
         }
-
     }
 
+    private fun initAccountFragment() {
+        val bundle = Bundle()
+        bundle.putParcelableArrayList("itemDTOs", viewModel.itemDTOs.value!!)
+
+        childFragmentManager.setFragmentResult("itemDTOs.${args.uid}.-1", bundle)
+    }
 }

@@ -10,6 +10,10 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -101,14 +105,23 @@ class DressroomCategoryFragment : Fragment() {
 
             view.item_dressroom_tv_item_name.text = itemDTOs[position].name
             view.setOnClickListener {
-                val fragment = DetailFragment()
-                val bundle = Bundle()
+//                val fragment = DetailFragment()
+//                val bundle = Bundle()
+//
+//                bundle.putParcelable("itemDTO", itemDTOs[position])
+//                fragment.arguments = bundle
+//
+//                val mainActivity = activity as MainActivity
+//                mainActivity.changeFragment(fragment, bundle)
 
-                bundle.putParcelable("itemDTO", itemDTOs[position])
-                fragment.arguments = bundle
+                val navController = findNavController()
+                val action = when (navController.currentDestination!!.id) {
+                    R.id.dressroomFragment -> DressroomFragmentDirections.actionToDetailFragment(itemDTOs[position])
+                    R.id.accountFragment -> AccountFragmentDirections.actionToDetailFragment(itemDTOs[position])
+                    else -> null
+                }
 
-                val mainActivity = activity as MainActivity
-                mainActivity.changeFragment(fragment, bundle)
+                findNavController().navigate(action!!)
             }
         }
     }

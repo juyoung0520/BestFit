@@ -120,7 +120,7 @@ class SetProfileActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
-    fun changeViewPage(position: Int) {
+    private fun changeViewPage(position: Int) {
         if (position < 0) {
             finish()
             return

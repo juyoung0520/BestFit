@@ -1,76 +1,37 @@
 package com.example.bestfit.util
 
-import android.util.Size
-import android.util.SizeF
 import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.model.SizeFormatDTO
-import com.google.firebase.firestore.FirebaseFirestore
 
 object InitData {
-    private val db = FirebaseFirestore.getInstance()
-    var initialization = false
-    var initializationCategory = false
-    var initializationBrand = false
-    var initializationSizeFormat = false
+//    private val db = FirebaseFirestore.getInstance()
+//    var initialization = false
+//    var initializationCategory = false
+//    var initializationBrand = false
+//    var initializationSizeFormat = false
+    const val CATEGORY = 0
+    const val BRAND = 1
+    const val SIZEFORMAT = 2
+
+    private val initStates = arrayListOf(false, true, false)
+
     val categoryDTOs = arrayListOf<CategoryDTO>()
-    val categories = arrayListOf<String>()
     val brands = arrayListOf<String>()
     val sizeFormatDTOs = arrayListOf<SizeFormatDTO>()
 
-    fun initData() {
-        initialization = false
-        initializationCategory = false
-        initializationBrand = false
-        initializationSizeFormat = false
-
-        categoryDTOs.clear()
-        categories.clear()
-        brands.clear()
-        sizeFormatDTOs.clear()
-
-        initCategory()
-        initBrand()
-        initSizeFormat()
-    }
-
-    private fun initCategory() {
-        db.collection("categories").orderBy("index").get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                for (snapshot in task.result!!) {
-                    val categoryDTO = snapshot.toObject(CategoryDTO::class.java)
-                    categoryDTOs.add(categoryDTO)
-                    categories.add(categoryDTO.name!!)
-                }
-
-                initializationCategory = true
-                if (initializationBrand)
-                    initialization = true
-            }
-        }
-    }
-
-    private fun initBrand() {
-        db.collection("brands").document("brands").get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                brands.addAll(task.result!!["list"] as ArrayList<String>)
-
-                initializationBrand = true
-                if (initializationCategory)
-                    initialization = true
-            }
-        }
-    }
-
-    private fun initSizeFormat() {
-        db.collection("sizes").orderBy("index").get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                for (snapshot in task.result!!) {
-                    val sizeFormatDTO = snapshot.toObject(SizeFormatDTO::class.java)
-                    sizeFormatDTOs.add(sizeFormatDTO)
-                }
-            }
+    fun setInitState(type: Int, state: Boolean) : Boolean {
+        when (type) {
+            CATEGORY -> { initStates[type] = state }
+            BRAND -> { initStates[type] = state }
+            SIZEFORMAT -> { initStates[type] = state }
         }
 
+        for (initState in initStates) {
+            if (!initState)
+                return false
+        }
+
+        return true
     }
 
     fun getCategoryIndex(categoryId: String): Int {
@@ -88,10 +49,10 @@ object InitData {
         if (categoryIndex == -1)
             return null
 
-        return categories[categoryIndex]
+        return categoryDTOs[categoryIndex].name
     }
 
-    fun getSubCategoryIndex (categoryId: String, subCategoryId: String) : Int {
+    fun getSubCategoryIndex(categoryId: String, subCategoryId: String) : Int {
         val categoryIndex = getCategoryIndex(categoryId)
 
         if (categoryIndex == -1)

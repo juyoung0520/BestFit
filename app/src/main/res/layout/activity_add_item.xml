@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SetProfileActivity">
+    tools:context=".AddItemActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/activity_add_item_toolbar"
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/activity_add_item_toolbar"
-        android:background="@color/colorBlack"
+        android:background="@color/colorDivision"
         android:orientation="horizontal" />
 
     <androidx.viewpager2.widget.ViewPager2

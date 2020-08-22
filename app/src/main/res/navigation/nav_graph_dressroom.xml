@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_dressroom"
+    app:startDestination="@id/dressroomFragment">
+    <activity
+        android:id="@+id/addItemActivity"
+        android:name="com.example.bestfit.AddItemActivity"
+        android:label="fragment_add_item_first"
+        tools:layout="@layout/fragment_add_item_first" />
+    <fragment
+        android:id="@+id/dressroomFragment"
+        android:name="com.example.bestfit.DressroomFragment"
+        android:label="DressroomFragment" >
+        <action
+            android:id="@+id/action_to_addItemActivity"
+            app:destination="@id/addItemActivity" />
+        <action
+            android:id="@+id/action_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.bestfit.DetailFragment"
+        android:label="DetailFragment">
+        <argument
+            android:name="itemDTO"
+            app:argType="com.example.bestfit.model.ItemDTO" />
+        <action
+            android:id="@+id/action_to_accountFragment"
+            app:destination="@id/accountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.example.bestfit.AccountFragment"
+        android:label="AccountFragment">
+        <argument
+            android:name="uid"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+</navigation>

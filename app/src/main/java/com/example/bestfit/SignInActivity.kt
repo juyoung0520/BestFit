@@ -34,6 +34,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.activity_signin_layout_frame, fragment).commit()
+        supportFragmentManager.beginTransaction().setCustomAnimations(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim, R.anim.nav_default_pop_enter_anim, R.anim.nav_default_pop_exit_anim)
+            .replace(R.id.activity_signin_layout_frame, fragment).commit()
     }
 }
