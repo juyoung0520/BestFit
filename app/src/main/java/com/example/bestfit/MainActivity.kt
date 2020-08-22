@@ -33,29 +33,27 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         setContentView(R.layout.activity_main)
 
         initViewModel()
-        initViewPager()
+        checkSetProfile()
 
         activity_main_bottom_nav.setOnNavigationItemSelectedListener(this)
 
-        if (savedInstanceState == null) {
-            InitData.initData()
-
-            // SetProfile Check
-            checkSetProfile()
-        }
+//        if (savedInstanceState == null) {
+//
+//            // SetProfile Check
+//            checkSetProfile()
+//        }
     }
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
-//        if (!viewModel.isInitialized()) {
-//            viewModel.setInitializedState(true)
-//
-//            viewModel.getCategoryDTO()
-//            viewModel.getSizeFormatDTO()
-//        }
+        val initObserver = Observer<Boolean> { isInit ->
+            if (isInit) {
+                initViewPager()
+            }
+        }
 
-        // loading check?? 다 로딩되기 전에 settingsfragment 가면 죽음
+        viewModel.isInitialized.observe(this, initObserver)
     }
 
     private fun initViewPager() {
@@ -75,7 +73,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         activity_main_viewpager.isUserInputEnabled = false
     }
 
-    inner class NavigationPagerAdapter(
+    class NavigationPagerAdapter(
         fragmentActivity: FragmentActivity,
         private val fragmentSize: Int
     ) : FragmentStateAdapter(fragmentActivity) {

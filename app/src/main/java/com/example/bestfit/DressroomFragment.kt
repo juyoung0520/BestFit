@@ -5,47 +5,60 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
+import com.example.bestfit.viewmodel.DataViewModel
+import com.example.bestfit.viewmodel.DressroomFragmentViewModel
+import com.example.bestfit.viewmodel.SettingsFragmentViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
 import kotlin.concurrent.timer
 
-
 class DressroomFragment : Fragment() {
+    private lateinit var viewModel: DressroomFragmentViewModel
+
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
-    private val db = FirebaseFirestore.getInstance()
-    private lateinit var fragmentView: View
-    private val itemDTOs: ArrayList<ArrayList<ItemDTO>> = arrayListOf()
-
-    // https://code.luasoftware.com/tutorials/android/android-jetpack-navigation-lost-state-after-navigation/
-    // fragment state restore
-    // scrollview position?
-    // searchFragment result???
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentView = inflater.inflate(R.layout.fragment_dressroom, container, false)
+        val view = inflater.inflate(R.layout.fragment_dressroom, container, false)
 
-        initTab()
+        initViewModel()
+        initToolbar(view)
+        initTabAdapter(view)
 
-        return fragmentView
+        return view
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-            initItem()
+//            initItem()
         }
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this).get(DressroomFragmentViewModel::class.java)
+
+        val initObserver = Observer<Boolean> { isInit ->
+            if (isInit) {
+                initDressroomFragment()
+            }
+        }
+
+        viewModel.isInitialized.observe(viewLifecycleOwner, initObserver)
     }
 
     private fun initToolbar(view: View) {
@@ -65,66 +78,9 @@ class DressroomFragment : Fragment() {
         }
     }
 
-    private fun initTab() {
-        timer(period = 200) {
-            if (InitData.initialization) {
-                cancel()
-
-                requireActivity().runOnUiThread {
-                    initToolbar(fragmentView)
-
-                    initTabAdapter()
-                    initItem()
-                }
-            }
-        }
-    }
-
-    private fun initItem() {
-        itemDTOs.clear()
-
-        for (i in 0 until InitData.categories.size)
-            itemDTOs.add(arrayListOf())
-
-        db.collection("accounts").document(currentUid).get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                if (task.result!!["items"] == null)
-                    return@addOnCompleteListener
-
-                val items = task.result!!["items"] as ArrayList<String>
-                var cnt = 0
-
-                for (itemId in items) {
-                    db.collection("items").document(itemId).get().addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val itemDTO = task.result!!.toObject(ItemDTO::class.java)!!
-                            val categoryIndex = InitData.getCategoryIndex(itemDTO.categoryId!!)
-
-                            itemDTOs[0].add(itemDTO)
-                            itemDTOs[categoryIndex].add(itemDTO)
-                            cnt += 1
-
-                            if (cnt >= items.size) {
-                                for (itemDTO in itemDTOs)
-                                    itemDTO.sortByDescending { itemDTO -> itemDTO.timestamp }
-
-                                for (position in 0 until InitData.categories.size) {
-                                    val bundle = Bundle()
-                                    bundle.putParcelableArrayList("itemDTOs", itemDTOs[position])
-
-                                    childFragmentManager.setFragmentResult("itemDTOs.$currentUid.$position", bundle)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun initTabAdapter() {
-        fragmentView.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter()
-        TabLayoutMediator(fragmentView.fragment_dressroom_tab, fragmentView.fragment_dressroom_viewpager) { tab, position ->
+    private fun initTabAdapter(view: View) {
+        view.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter()
+        TabLayoutMediator(view.fragment_dressroom_tab, view.fragment_dressroom_viewpager) { tab, position ->
             tab.text = InitData.categoryDTOs[position].name
         }.attach()
     }
@@ -143,6 +99,15 @@ class DressroomFragment : Fragment() {
 
             fragment.arguments = bundle
             return fragment
+        }
+    }
+
+    private fun initDressroomFragment() {
+        for (position in 0 until InitData.categoryDTOs.size) {
+            val bundle = Bundle()
+            bundle.putParcelableArrayList("itemDTOs", viewModel.itemDTOs.value!![position])
+
+            childFragmentManager.setFragmentResult("itemDTOs.$currentUid.$position", bundle)
         }
     }
 }

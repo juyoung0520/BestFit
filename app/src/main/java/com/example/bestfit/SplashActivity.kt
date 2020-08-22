@@ -10,21 +10,8 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        InitData.initData()
+//        InitData.initData()
 
         println("start")
-
-        timer(period = 300) {
-            println("ing")
-            if (InitData.initialization) {
-                println("finish")
-                cancel()
-
-                val intent = Intent(this@SplashActivity, SignInActivity::class.java)
-                startActivity(intent)
-
-                finish()
-            }
-        }
     }
 }

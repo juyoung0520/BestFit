@@ -1,46 +1,36 @@
 package com.example.bestfit.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.bestfit.model.AccountDTO
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
-class SettingsFragmentViewModel : ViewModel() {
+class SettingsFragmentViewModel(uid: String) : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
-
-    private val _isInitialized = MutableLiveData<Boolean>(false)
-    val isInitialized: LiveData<Boolean> = _isInitialized
-
-    private val _scrollPosition = MutableLiveData<Int>(0)
-    val scrollPosition: LiveData<Int> = _scrollPosition
 
     private val _accountDTO = MutableLiveData<AccountDTO>()
     val accountDTO: LiveData<AccountDTO> = _accountDTO
 
-    fun isInitialized() : Boolean {
-        return _isInitialized.value!!
+    class Factory(private val uid: String) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return SettingsFragmentViewModel(uid) as T
+        }
     }
 
-    fun setInitializedState(state: Boolean) {
-        _isInitialized.value = state
+    init {
+        getAccountDTO(uid)
     }
 
-    fun setScrollPosition(position: Int) {
-        _scrollPosition.value = position
-    }
-
-    fun getScrollPosition() : Int {
-        return _scrollPosition.value!!
-    }
-
-    fun getAccountDTO(uid: String) {
-        viewModelScope.launch {
+    private fun getAccountDTO(uid: String) {
+        viewModelScope.launch(Dispatchers.IO) {
             val document = db.collection("accounts").document(uid).get().await()
-            _accountDTO.value = document.toObject(AccountDTO::class.java)!!
+
+            withContext(Dispatchers.Main) {
+                _accountDTO.value = document.toObject(AccountDTO::class.java)!!
+            }
         }
     }
 }
