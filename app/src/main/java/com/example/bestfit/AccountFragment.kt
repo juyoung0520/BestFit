@@ -50,18 +50,18 @@ class AccountFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_account, container, false)
 
-        initViewModel()
+        initViewModel(view)
         initToolbar(view)
-        initTabAdapter(view)
 
         return view
     }
 
-    private fun initViewModel() {
+    private fun initViewModel(view: View) {
         viewModel = ViewModelProvider(this, AccountFragmentViewModel.Factory(args.uid)).get(AccountFragmentViewModel::class.java)
 
         val initObserver = Observer<Boolean> { isInit ->
             if (isInit) {
+                initTabAdapter(view)
                 initAccountFragment()
             }
         }
@@ -116,7 +116,6 @@ class AccountFragment : Fragment() {
                     val fragment = DressroomCategoryFragment()
                     val bundle = Bundle()
 
-                    bundle.putString("uid", args.uid)
                     bundle.putInt("position", -1)
 
                     fragment.arguments = bundle
@@ -131,9 +130,6 @@ class AccountFragment : Fragment() {
     }
 
     private fun initAccountFragment() {
-        val bundle = Bundle()
-        bundle.putParcelableArrayList("itemDTOs", viewModel.itemDTOs.value!!)
 
-        childFragmentManager.setFragmentResult("itemDTOs.${args.uid}.-1", bundle)
     }
 }
