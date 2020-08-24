@@ -61,13 +61,13 @@ class AccountFragment : Fragment() {
 
         val initObserver = Observer<Boolean> { isInit ->
             if (isInit) {
+//                initAccountFragment()
                 initTabAdapter(view)
-                initAccountFragment()
             }
         }
 
         val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
-//            initAccount(view, accountDTO)
+
         }
 
         viewModel.isInitialized.observe(viewLifecycleOwner, initObserver)
@@ -94,6 +94,10 @@ class AccountFragment : Fragment() {
         view.fragment_account_toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
+    }
+
+    private fun initAccountFragment() {
+
     }
 
     private fun initTabAdapter(view: View) {
@@ -127,9 +131,5 @@ class AccountFragment : Fragment() {
                 else -> Fragment()
             }
         }
-    }
-
-    private fun initAccountFragment() {
-
     }
 }

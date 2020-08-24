@@ -1,8 +1,8 @@
 
 package com.example.bestfit
 
-import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -11,10 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.model.ItemDTO
+import com.example.bestfit.viewmodel.AddItemActivityViewModel
+import com.example.bestfit.viewmodel.DressroomFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,6 +33,8 @@ import kotlinx.android.synthetic.main.fragment_add_item_third.view.*
 import java.io.File
 
 class AddItemActivity : AppCompatActivity() {
+    private lateinit var viewModel: AddItemActivityViewModel
+
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
@@ -39,9 +45,22 @@ class AddItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_item)
 
+        initViewModel()
         initToolbar()
 
         initViewPager()
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this).get(AddItemActivityViewModel::class.java)
+
+        val itemDTOObserver = Observer<ItemDTO> { itemDTO ->
+            setResult(RESULT_OK, Intent().putExtra("itemDTO", itemDTO))
+            finish()
+        }
+
+        viewModel.itemDTO.observe(this, itemDTOObserver)
+
     }
 
     private fun initToolbar() {
@@ -141,7 +160,6 @@ class AddItemActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
-
     fun submitAddItem() {
         val firstFragment = fragments[0] as AddItemFirstFragment
         val firstFragmentView = firstFragment.fragmentView
@@ -172,50 +190,10 @@ class AddItemActivity : AppCompatActivity() {
             imageUris.add(uri)
         }
 
-        db.collection("items").add(itemDTO).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val documentId = task.result!!.id
-
-                if (imageUris.size > 0) {
-                    val imageUrls = arrayOfNulls<String>(imageUris.size)
-                    var cnt = 0
-
-                    for ((idx, imageUri) in imageUris.withIndex()) {
-                        val storageRef = storage.reference.child("items").child(documentId).child(idx.toString())
-                        storageRef.putFile(imageUri).continueWithTask {
-                            return@continueWithTask storageRef.downloadUrl
-                        }.addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                imageUrls[idx] = task.result.toString()
-                                cnt += 1
-
-                                if (cnt >= imageUris.size) {
-                                    db.collection("items").document(documentId).update("images", imageUrls.asList())
-
-                                    db.collection("accounts").document(currentUid).update("items", FieldValue.arrayUnion(documentId)).addOnCompleteListener { task ->
-                                        if (task.isSuccessful) {
-                                            setResult(Activity.RESULT_OK)
-                                            finish()
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                else {
-                    db.collection("accounts").document(currentUid).update("items", FieldValue.arrayUnion(documentId)).addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            setResult(Activity.RESULT_OK)
-                            finish()
-                        }
-                    }
-                }
-            }
-        }
+        viewModel.submitAddItem(itemDTO, imageUris)
     }
 
-    fun getSearchKeywords(itemName: String): ArrayList<String> {
+    private fun getSearchKeywords(itemName: String): ArrayList<String> {
         var nameString = itemName.toLowerCase()
         val words = nameString.split(" ")
         val keywords = ArrayList<String>()
