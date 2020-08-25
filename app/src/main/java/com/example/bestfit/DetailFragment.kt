@@ -34,7 +34,6 @@ class DetailFragment : Fragment() {
 
     private val args: DetailFragmentArgs by navArgs()
     private lateinit var itemDTO: ItemDTO
-    private val currentUid = FirebaseAuth.getInstance().currentUser!!.uid
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -153,11 +152,11 @@ class DetailFragment : Fragment() {
         view.fragment_detail_btn_dibs.setOnCheckedChangeListener { compoundButton, b ->
             if (!b) {
                 view.fragment_detail_btn_dibs.isChecked = false
-                viewModel.removeDibs(currentUid, itemDTO.id!!)
+                viewModel.removeDibs(itemDTO.id!!)
 
             } else {
                 view.fragment_detail_btn_dibs.isChecked = true
-                viewModel.addDibs(currentUid, itemDTO.id!!)
+                viewModel.addDibs(itemDTO.id!!)
             }
         }
 
