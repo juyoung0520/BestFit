@@ -118,8 +118,8 @@ class SearchFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val view = (holder as CustomViewHolder).itemView
 
-            if (itemDTOs[position].images.size > 0) {
-                Glide.with(view).load(itemDTOs[position].images[0]).apply(
+            if (itemDTOs[position].images!!.size > 0) {
+                Glide.with(view).load(itemDTOs[position].images!![0]).apply(
                     RequestOptions().placeholder(R.color.img_loding_placeholder)
                         .error(R.color.image_loading_error_color).centerCrop()
                 ).into(view.item_dressroom_iv_item)

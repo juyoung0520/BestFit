@@ -1,16 +1,10 @@
 package com.example.bestfit
 
-import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -23,8 +17,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.viewmodel.AccountFragmentViewModel
 import com.example.bestfit.viewmodel.DressroomFragmentViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
 
@@ -87,6 +79,7 @@ class DressroomCategoryFragment : Fragment() {
             oldItem: ItemDTO,
             newItem: ItemDTO
         ): Boolean {
+            // itemDTO의 id 비교?
             return oldItem == newItem
         }
 
@@ -112,7 +105,7 @@ class DressroomCategoryFragment : Fragment() {
                 val view = itemView
 
                 Glide.with(view)
-                    .load(itemDTO.images[0])
+                    .load(itemDTO.images!![0])
                     .apply(RequestOptions().centerCrop())
                     .into(view.item_dressroom_iv_item)
 
@@ -125,7 +118,7 @@ class DressroomCategoryFragment : Fragment() {
                         else -> null
                     }
 
-                    findNavController().navigate(action!!)
+                    navController.navigate(action!!)
                 }
             }
         }

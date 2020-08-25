@@ -2,38 +2,33 @@ package com.example.bestfit
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageView
-import androidx.annotation.RequiresApi
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
-import com.example.bestfit.viewmodel.DataViewModel
 import com.example.bestfit.viewmodel.DressroomFragmentViewModel
-import com.example.bestfit.viewmodel.SettingsFragmentViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
-import kotlinx.android.synthetic.main.item_dressroom.view.*
-import java.util.ArrayList
-import kotlin.concurrent.timer
 
 class DressroomFragment : Fragment() {
     private lateinit var viewModel: DressroomFragmentViewModel
 
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
+
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val itemDTO = result.data!!.getParcelableExtra<ItemDTO>("itemDTO")!!
+            viewModel.addItemDTO(itemDTO)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,20 +44,21 @@ class DressroomFragment : Fragment() {
         return view
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-//            initItem()
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+////            initItem()
+//        }
+//    }
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(DressroomFragmentViewModel::class.java)
 
         val initObserver = Observer<Boolean> { isInit ->
             if (isInit) {
-                initDressroomFragment()
+                // 로딩 여기다가 넣음 될 듯??
+//                initDressroomFragment()
             }
         }
 
@@ -74,8 +70,8 @@ class DressroomFragment : Fragment() {
         view.fragment_dressroom_toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_fragment_dressroom_add -> {
-                    startActivityForResult(Intent(activity, AddItemActivity::class.java), 1)
-//                    findNavController().navigate(DressroomFragmentDirections.actionGlobalAddItemActivity())
+//                    startActivityForResult(Intent(activity, AddItemActivity::class.java), 1)
+                    startForResult.launch(Intent(context, AddItemActivity::class.java))
 
                     true
                 }
@@ -106,15 +102,6 @@ class DressroomFragment : Fragment() {
 
             fragment.arguments = bundle
             return fragment
-        }
-    }
-
-    private fun initDressroomFragment() {
-        for (position in 0 until InitData.categoryDTOs.size) {
-            val bundle = Bundle()
-            bundle.putParcelableArrayList("itemDTOs", viewModel.itemDTOs.value!![position])
-
-            childFragmentManager.setFragmentResult("itemDTOs.$currentUid.$position", bundle)
         }
     }
 }

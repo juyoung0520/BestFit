@@ -30,6 +30,10 @@ class DressroomFragmentViewModel : ViewModel() {
         getItemDTOs()
     }
 
+    private fun notifyItemDTOsChanged() {
+        _itemDTOs.value = _itemDTOs.value
+    }
+
     private fun getItemDTOs() {
         viewModelScope.launch(Dispatchers.IO) {
             _itemDTOs.value!!.clear()
@@ -68,5 +72,23 @@ class DressroomFragmentViewModel : ViewModel() {
                 _isInitialized.value = true
             }
         }
+    }
+
+    fun addItemDTO(itemDTO: ItemDTO) {
+        val categoryIndex = InitData.getCategoryIndex(itemDTO.categoryId!!)
+
+        _itemDTOs.value!![0].add(0, itemDTO)
+        _itemDTOs.value!![categoryIndex].add(0, itemDTO)
+
+        notifyItemDTOsChanged()
+    }
+
+    fun removeItemDTO(itemDTO: ItemDTO) {
+        val categoryIndex = InitData.getCategoryIndex(itemDTO.categoryId!!)
+
+        _itemDTOs.value!![0].add(itemDTO)
+        _itemDTOs.value!![categoryIndex].add(itemDTO)
+
+        notifyItemDTOsChanged()
     }
 }

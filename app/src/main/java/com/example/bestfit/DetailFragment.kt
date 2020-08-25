@@ -116,7 +116,7 @@ class DetailFragment : Fragment() {
 
         if (!itemDTO.images.isNullOrEmpty()) {
             // 이미지 뷰페이저를 누르고 스크롤하면 툴바에 스크롤 상태 적용이 안됨. -> 안되는 만큼 스크롤이 전부 다 내려가지 않음. (툴바 확장된 크기만큼?)
-            view.fragment_detail_viewpager_image.adapter = ImagePagerAdapter(itemDTO.images)
+            view.fragment_detail_viewpager_image.adapter = ImagePagerAdapter(itemDTO.images!!)
             view.fragment_detail_indicator_image.setViewPager(view.fragment_detail_viewpager_image)
         }
 
