@@ -175,6 +175,7 @@ class AddItemActivity : AppCompatActivity() {
         db.collection("items").add(itemDTO).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val documentId = task.result!!.id
+                db.collection("items").document(documentId).update("id", documentId)
 
                 if (imageUris.size > 0) {
                     val imageUrls = arrayOfNulls<String>(imageUris.size)

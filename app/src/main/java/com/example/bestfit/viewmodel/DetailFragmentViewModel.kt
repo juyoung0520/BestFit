@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bestfit.model.AccountDTO
+import com.example.bestfit.model.ItemDTO
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -42,5 +44,36 @@ class DetailFragmentViewModel : ViewModel() {
             val document = db.collection("accounts").document(uid).get().await()
             _accountDTO.value = document.toObject(AccountDTO::class.java)!!
         }
+    }
+
+    fun addDibs(currentUid: String, itemId: String) {
+        viewModelScope.launch {
+            db.collection("accounts").document(currentUid).update("dibsItems", FieldValue.arrayUnion(itemId)).await()
+
+            val documentRef = db.collection("items").document(itemId)
+            db.runTransaction { transaction ->
+                val dibs = transaction.get(documentRef).toObject(ItemDTO::class.java)!!.dibs
+                transaction.update(documentRef, "dibs",dibs!!+1 )
+            }.await()
+
+            getAccountDTO(currentUid)
+            _isInitialized.value = true
+        }
+    }
+
+    fun deleteDibs(currentUid: String, itemId: String) {
+         viewModelScope.launch {
+             db.collection("accounts").document(currentUid).update("dibsItems", FieldValue.arrayRemove(itemId)).await()
+
+             val documentRef = db.collection("items").document(itemId)
+             db.runTransaction { transaction ->
+                 val dibs = transaction.get(documentRef).toObject(ItemDTO::class.java)!!.dibs
+                 transaction.update(documentRef, "dibs",dibs!!-1 )
+             }.await()
+
+             getAccountDTO(currentUid)
+             _isInitialized.value = true
+         }
+
     }
 }

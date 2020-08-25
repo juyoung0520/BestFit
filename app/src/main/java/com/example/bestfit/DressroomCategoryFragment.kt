@@ -51,6 +51,14 @@ class DressroomCategoryFragment : Fragment() {
     private fun initAccountViewModel(view: View) {
         accountViewModel = ViewModelProvider(this.requireParentFragment()).get(AccountFragmentViewModel::class.java)
         initDressroomCategoryFragment(view, accountViewModel.itemDTOs.value!!)
+
+        val initObserver = Observer<Boolean> { isInit ->
+            if (isInit) {
+                initDressroomCategoryFragment(view, accountViewModel.itemDTOs.value!!)
+            }
+        }
+
+        accountViewModel.isInitialized.observe(viewLifecycleOwner, initObserver)
     }
 
     private fun initDressroomViewModel(view: View, position: Int) {

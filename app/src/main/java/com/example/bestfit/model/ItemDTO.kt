@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class ItemDTO(
+    var id: String? = null,
     var timestamp: Long? = null,
     var uid: String? = null,
     var categoryId: String? = null,
@@ -17,10 +18,12 @@ data class ItemDTO(
     var sizeReview: Int? = null,
     var ratingReview: Float? = null,
     var review: String? = null,
-    var searchKeywords: ArrayList<String> = arrayListOf()
+    var searchKeywords: ArrayList<String> = arrayListOf(),
+    var dibs: Int? = 0,
 
     ) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readValue(Long::class.java.classLoader) as? Long,
         parcel.readString(),
         parcel.readString(),
@@ -34,11 +37,13 @@ data class ItemDTO(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Float::class.java.classLoader) as? Float,
         parcel.readString(),
-        parcel.readArrayList(String::class.java.classLoader) as ArrayList<String>
+        parcel.readArrayList(String::class.java.classLoader) as ArrayList<String>,
+        parcel.readValue(Int::class.java.classLoader) as? Int
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
         parcel.writeValue(timestamp)
         parcel.writeString(uid)
         parcel.writeString(categoryId)
@@ -53,6 +58,7 @@ data class ItemDTO(
         parcel.writeValue(ratingReview)
         parcel.writeString(review)
         parcel.writeStringList(searchKeywords)
+        parcel.writeValue(dibs)
     }
 
     override fun describeContents(): Int {
