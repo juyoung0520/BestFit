@@ -39,7 +39,6 @@ class AddItemActivityViewModel : ViewModel() {
             }
 
             val tasksResult = Tasks.whenAllComplete(tasks).await()
-
             val uploadTasks = tasksResult.map { task ->
                 val taskSnapshot = task.result as UploadTask.TaskSnapshot
                 taskSnapshot.storage.downloadUrl
@@ -50,8 +49,7 @@ class AddItemActivityViewModel : ViewModel() {
                 task.result.toString()
             }
 
-//            return@launch
-//
+            // 뭐가 더 빠른지 비교 필요
 //            val uris = imageUris.mapIndexed { index, uri ->
 //                storage.reference.child("items").child(docId).child(index.toString())
 //                    .putFile(uri)

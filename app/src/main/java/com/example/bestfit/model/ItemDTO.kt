@@ -41,7 +41,8 @@ data class ItemDTO(
         parcel.readString(),
         arrayListOf<String>().apply {
             parcel.readList(this, String::class.java.classLoader)
-        }
+        },
+        parcel.readValue(Int::class.java.classLoader) as? Int,
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -60,6 +61,7 @@ data class ItemDTO(
         parcel.writeValue(ratingReview)
         parcel.writeString(review)
         parcel.writeList(searchKeywords)
+        parcel.writeValue(dibs)
     }
 
     override fun describeContents(): Int {

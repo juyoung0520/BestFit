@@ -47,7 +47,6 @@ class AddItemActivity : AppCompatActivity() {
 
         initViewModel()
         initToolbar()
-
         initViewPager()
     }
 
@@ -60,7 +59,6 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         viewModel.itemDTO.observe(this, itemDTOObserver)
-
     }
 
     private fun initToolbar() {
@@ -95,9 +93,7 @@ class AddItemActivity : AppCompatActivity() {
 
                                     true
                                 }
-                                else -> {
-                                    false
-                                }
+                                else -> false
                             }
                         }
                     }
@@ -146,7 +142,7 @@ class AddItemActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
-    fun changeViewPage(position: Int) {
+    private fun changeViewPage(position: Int) {
         if (position < 0) {
             finish()
             return

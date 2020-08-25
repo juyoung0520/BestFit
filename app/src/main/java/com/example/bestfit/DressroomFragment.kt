@@ -44,14 +44,6 @@ class DressroomFragment : Fragment() {
         return view
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
-////            initItem()
-//        }
-//    }
-
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(DressroomFragmentViewModel::class.java)
 
