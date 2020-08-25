@@ -45,8 +45,10 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
                 _accountDTO.value = accountDTO
             }
 
-            if (accountDTO.items!!.isEmpty()) {
-                _isInitialized.value = true
+            if (accountDTO.items!!.isNullOrEmpty()) {
+                withContext(Dispatchers.Main) {
+                    _isInitialized.value = true
+                }
                 return@launch
             }
 

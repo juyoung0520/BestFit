@@ -4,18 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_dressroom"
     app:startDestination="@id/dressroomFragment">
-    <activity
-        android:id="@+id/addItemActivity"
-        android:name="com.example.bestfit.AddItemActivity"
-        android:label="fragment_add_item_first"
-        tools:layout="@layout/fragment_add_item_first" />
     <fragment
         android:id="@+id/dressroomFragment"
         android:name="com.example.bestfit.DressroomFragment"
         android:label="DressroomFragment" >
-        <action
-            android:id="@+id/action_to_addItemActivity"
-            app:destination="@id/addItemActivity" />
         <action
             android:id="@+id/action_to_detailFragment"
             app:destination="@id/detailFragment" />

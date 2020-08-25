@@ -4,11 +4,12 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class ItemDTO(
+    var id: String? = null,
     var timestamp: Long? = null,
     var uid: String? = null,
     var categoryId: String? = null,
     var subCategoryId: String? = null,
-    var images: ArrayList<String> = arrayListOf(),
+    var images: ArrayList<String>? = arrayListOf(),
     var brandId: String? = null,
     var name: String? = null,
     var sizeImage: String? = null,
@@ -17,15 +18,19 @@ data class ItemDTO(
     var sizeReview: Int? = null,
     var ratingReview: Float? = null,
     var review: String? = null,
-    var searchKeywords: ArrayList<String> = arrayListOf()
+    var searchKeywords: ArrayList<String> = arrayListOf(),
+    var dibs: Int? = 0,
 
     ) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readValue(Long::class.java.classLoader) as? Long,
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readArrayList(String::class.java.classLoader) as ArrayList<String>,
+        arrayListOf<String>().apply {
+            parcel.readList(this, String::class.java.classLoader)
+        },
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -34,16 +39,18 @@ data class ItemDTO(
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Float::class.java.classLoader) as? Float,
         parcel.readString(),
-        parcel.readArrayList(String::class.java.classLoader) as ArrayList<String>
-    ) {
-    }
+        arrayListOf<String>().apply {
+            parcel.readList(this, String::class.java.classLoader)
+        }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
         parcel.writeValue(timestamp)
         parcel.writeString(uid)
         parcel.writeString(categoryId)
         parcel.writeString(subCategoryId)
-        parcel.writeStringList(images)
+        parcel.writeList(images)
         parcel.writeString(brandId)
         parcel.writeString(name)
         parcel.writeString(sizeImage)
@@ -52,7 +59,7 @@ data class ItemDTO(
         parcel.writeValue(sizeReview)
         parcel.writeValue(ratingReview)
         parcel.writeString(review)
-        parcel.writeStringList(searchKeywords)
+        parcel.writeList(searchKeywords)
     }
 
     override fun describeContents(): Int {

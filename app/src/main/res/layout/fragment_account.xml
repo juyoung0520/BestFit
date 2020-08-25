@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/fragment_settings_iv_profile"
+                        android:id="@+id/fragment_account_iv_profile"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:src="@drawable/jinu_profile"
@@ -48,7 +48,7 @@
                         android:layout_alignParentEnd="true">
 
                         <TextView
-                            android:id="@+id/fragment_settings_tv_nickname"
+                            android:id="@+id/fragment_account_tv_nickname"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="두부낑"
@@ -58,14 +58,14 @@
                             android:layout_marginBottom="15dp"/>
 
                         <TextView
-                            android:id="@+id/fragment_settings_tv_user_size"
+                            android:id="@+id/fragment_account_tv_user_size"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="165 cm / 45 kg"
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:id="@+id/fragment_settings_tv_user_detail_size"
+                            android:id="@+id/fragment_account_tv_user_detail_size"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="55 size / 26 in / 245 mm"
@@ -76,7 +76,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/fragment_settings_tv_message"
+                    android:id="@+id/fragment_account_tv_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/profile_message"

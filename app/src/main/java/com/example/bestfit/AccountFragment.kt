@@ -27,11 +27,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_account.view.*
-import kotlinx.android.synthetic.main.fragment_account.view.fragment_settings_iv_profile
-import kotlinx.android.synthetic.main.fragment_account.view.fragment_settings_tv_message
-import kotlinx.android.synthetic.main.fragment_account.view.fragment_settings_tv_nickname
-import kotlinx.android.synthetic.main.fragment_account.view.fragment_settings_tv_user_detail_size
-import kotlinx.android.synthetic.main.fragment_account.view.fragment_settings_tv_user_size
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 import kotlin.math.abs
 
@@ -50,27 +45,20 @@ class AccountFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_account, container, false)
 
-        initViewModel()
+        initViewModel(view)
         initToolbar(view)
         initTabAdapter(view)
 
         return view
     }
 
-    private fun initViewModel() {
+    private fun initViewModel(view: View) {
         viewModel = ViewModelProvider(this, AccountFragmentViewModel.Factory(args.uid)).get(AccountFragmentViewModel::class.java)
 
-        val initObserver = Observer<Boolean> { isInit ->
-            if (isInit) {
-                initAccountFragment()
-            }
-        }
-
         val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
-//            initAccount(view, accountDTO)
+            initAccountFragment(view, accountDTO)
         }
 
-        viewModel.isInitialized.observe(viewLifecycleOwner, initObserver)
         viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
     }
 
@@ -96,6 +84,10 @@ class AccountFragment : Fragment() {
         }
     }
 
+    private fun initAccountFragment() {
+
+    }
+
     private fun initTabAdapter(view: View) {
         val tabArray = arrayListOf("드레스룸", "게시글")
 
@@ -116,7 +108,6 @@ class AccountFragment : Fragment() {
                     val fragment = DressroomCategoryFragment()
                     val bundle = Bundle()
 
-                    bundle.putString("uid", args.uid)
                     bundle.putInt("position", -1)
 
                     fragment.arguments = bundle
@@ -130,10 +121,21 @@ class AccountFragment : Fragment() {
         }
     }
 
-    private fun initAccountFragment() {
-        val bundle = Bundle()
-        bundle.putParcelableArrayList("itemDTOs", viewModel.itemDTOs.value!!)
+    private fun initAccountFragment(view: View, accountDTO: AccountDTO) {
+        if (accountDTO.photo.isNullOrEmpty())
+            view.fragment_account_iv_profile.setImageResource(R.drawable.ic_profile_photo)
+        else
+            Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_settings_iv_profile)
 
-        childFragmentManager.setFragmentResult("itemDTOs.${args.uid}.-1", bundle)
+        view.fragment_account_toolbar_title.text = "${accountDTO.nickname}님의 프로필"
+        view.fragment_account_tv_nickname.text = accountDTO.nickname
+        view.fragment_account_tv_user_size.text = "${accountDTO.height} cm / ${accountDTO.weight} kg"
+
+        val top = InitData.getSizeString("01", accountDTO.topId!!)
+        val bottom = InitData.getSizeString("03", accountDTO.bottomId!!)
+        val shoes = InitData.getSizeString("04", accountDTO.shoesId!!)
+        view.fragment_account_tv_user_detail_size.text = "TOP " + top + " / BOTTOM "+ bottom + " / SHOES " + shoes
+
+        view.fragment_account_tv_message.text = accountDTO.message
     }
 }

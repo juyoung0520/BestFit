@@ -12,29 +12,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/item_dressroom_layout_item"
+        <ImageView
+            android:id="@+id/item_dressroom_iv_item"
             android:layout_width="match_parent"
-            android:layout_height="160dp">
-
-            <ImageView
-                android:id="@+id/item_dressroom_iv_item"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:background="@drawable/image_default"
-                android:scaleType="centerCrop"/>
-
-            <ImageView
-                android:id="@+id/item_dressroom_iv_heart"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/image_heart"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_margin="10dp"/>
-
-        </RelativeLayout>
+            android:layout_height="160dp"
+            android:background="@drawable/image_default"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/item_dressroom_tv_brand"

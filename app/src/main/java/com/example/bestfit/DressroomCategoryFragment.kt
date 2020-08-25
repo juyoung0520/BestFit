@@ -1,35 +1,28 @@
 package com.example.bestfit
 
-import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
-import androidx.navigation.NavDirections
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.example.bestfit.viewmodel.AccountFragmentViewModel
+import com.example.bestfit.viewmodel.DressroomFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
 
 class DressroomCategoryFragment : Fragment() {
-    private val auth = FirebaseAuth.getInstance()
-    private val currentUid = auth.currentUser!!.uid
-    private val db = FirebaseFirestore.getInstance()
-    private var itemDTOs = arrayListOf<ItemDTO>()
-    private var itemRecyclerViewAdapter = ItemRecyclerViewAdapter()
+    private lateinit var dressroomViewModel: DressroomFragmentViewModel
+    private lateinit var accountViewModel: AccountFragmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,143 +31,96 @@ class DressroomCategoryFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dressroom_category, container, false)
 
-        view.fragment_dressroom_category_recyclerview.setHasFixedSize(true)
-        view.fragment_dressroom_category_recyclerview.adapter = itemRecyclerViewAdapter
-        view.fragment_dressroom_category_recyclerview.layoutManager = GridLayoutManager(activity, 2)
-
-//        while (view.fragment_dressroom_category_recyclerview.itemDecorationCount > 0)
-//            view.fragment_dressroom_category_recyclerview.removeItemDecorationAt(0)
-//
-//        view.fragment_dressroom_category_recyclerview.addItemDecoration(ItemDecoration())
-
-        if (savedInstanceState == null) {
-            val uid = requireArguments().getString("uid")
-            val position = requireArguments().getInt("position")
-
-            setFragmentResultListener("itemDTOs.${uid}.${position}") { _, bundle ->
-                val itemDTOs = bundle.getParcelableArrayList<ItemDTO>("itemDTOs")
-
-                if (itemDTOs != null) {
-                    this.itemDTOs.clear()
-                    this.itemDTOs.addAll(itemDTOs)
-                    itemRecyclerViewAdapter.notifyDataSetChanged()
-                }
-            }
-        }
-        else {
-            val itemDTOs = savedInstanceState.getParcelableArrayList<ItemDTO>("itemDTOs")
-
-            if (itemDTOs != null) {
-                this.itemDTOs.clear()
-                this.itemDTOs.addAll(itemDTOs)
-                itemRecyclerViewAdapter.notifyDataSetChanged()
-            }
-        }
+        val position = requireArguments().getInt("position")
+        if (position == -1)
+            initAccountViewModel(view)
+        else
+            initDressroomViewModel(view, position)
 
         return view
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList("itemDTOs", itemDTOs)
+    private fun initAccountViewModel(view: View) {
+        accountViewModel = ViewModelProvider(this.requireParentFragment()).get(AccountFragmentViewModel::class.java)
+        initDressroomCategoryFragment(view, accountViewModel.itemDTOs.value!!)
+
+        val initObserver = Observer<Boolean> { isInit ->
+            if (isInit) {
+                initDressroomCategoryFragment(view, accountViewModel.itemDTOs.value!!)
+            }
+        }
+
+        accountViewModel.isInitialized.observe(viewLifecycleOwner, initObserver)
     }
 
-    inner class ItemRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private fun initDressroomViewModel(view: View, position: Int) {
+        dressroomViewModel = ViewModelProvider(this.requireParentFragment()).get(DressroomFragmentViewModel::class.java)
+
+        // diffutil 사용해야함. (추가, 삭제)
+        val initObserver = Observer<Boolean> { isInit ->
+            if (isInit) {
+                initDressroomCategoryFragment(view, dressroomViewModel.itemDTOs.value!![position])
+            }
+        }
+
+        dressroomViewModel.isInitialized.observe(viewLifecycleOwner, initObserver)
+    }
+
+    private fun initDressroomCategoryFragment(view: View, itemDTOs: ArrayList<ItemDTO>) {
+//        view.fragment_dressroom_category_recyclerview.setHasFixedSize(true)
+        val itemRecyclerViewAdapter = ItemRecyclerViewAdapter()
+        view.fragment_dressroom_category_recyclerview.adapter = itemRecyclerViewAdapter
+        view.fragment_dressroom_category_recyclerview.layoutManager = GridLayoutManager(activity, 2)
+        itemRecyclerViewAdapter.submitList(itemDTOs)
+    }
+
+    inner class ItemRecyclerViewAdapter: ListAdapter<ItemDTO, RecyclerView.ViewHolder>(object : DiffUtil.ItemCallback<ItemDTO>() {
+        override fun areItemsTheSame(
+            oldItem: ItemDTO,
+            newItem: ItemDTO
+        ): Boolean {
+            // itemDTO의 id 비교?
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(
+            oldItem: ItemDTO,
+            newItem: ItemDTO
+        ): Boolean {
+            return oldItem == newItem
+        }
+    }) {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom, parent, false)
-
-            return CustomViewHolder(view)
+            return ItemViewHolder(view)
         }
 
-        inner class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view)
-        override fun getItemCount(): Int {
-            return itemDTOs.size
-        }
-
-        @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            val view = (holder as CustomViewHolder).itemView
-
-            if (itemDTOs[position].images.size > 0) {
-//                view.item_dressroom_iv_item.clipToOutline = true
-                Glide.with(view).load(itemDTOs[position].images[0]).apply(
-                    RequestOptions().placeholder(R.color.img_loding_placeholder)
-                        .error(R.color.image_loading_error_color).centerCrop()
-                ).into(view.item_dressroom_iv_item)
-            }
-
-            view.item_dressroom_tv_item_name.text = itemDTOs[position].name
-            view.setOnClickListener {
-//                val fragment = DetailFragment()
-//                val bundle = Bundle()
-//
-//                bundle.putParcelable("itemDTO", itemDTOs[position])
-//                fragment.arguments = bundle
-//
-//                val mainActivity = activity as MainActivity
-//                mainActivity.changeFragment(fragment, bundle)
-
-                val navController = findNavController()
-                val action = when (navController.currentDestination!!.id) {
-                    R.id.dressroomFragment -> DressroomFragmentDirections.actionToDetailFragment(itemDTOs[position])
-                    R.id.accountFragment -> AccountFragmentDirections.actionToDetailFragment(itemDTOs[position])
-                    else -> null
-                }
-
-                findNavController().navigate(action!!)
-            }
-        }
-    }
-
-    inner class ItemDecoration : RecyclerView.ItemDecoration() {
-        override fun getItemOffsets(
-            outRect: Rect,
-            view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            super.getItemOffsets(outRect, view, parent, state)
-
-            val position = parent.getChildAdapterPosition(view)
-            val itemCount = state.itemCount
-
-            val lp = view.layoutParams as GridLayoutManager.LayoutParams
-            val spanIndex = lp.spanIndex
-
-            val space = dpToPx(10)
-
-//            if (position == 0 || position == 1 || position == 2)
-//                outRect.bottom = space
-//            else if (position == itemCount - 3 || position == itemCount - 2 || position == itemCount - 1)
-//                outRect.top = space
-//            else
-//            {
-//                outRect.bottom = space
-//                outRect.top = space
-//            }
-
-            when (spanIndex) {
-                0 -> {
-                    outRect.left = dpToPx(6)
-                    outRect.right = dpToPx(2)
-                }
-                1 -> {
-                    outRect.left = dpToPx(4)
-                    outRect.right = dpToPx(4)
-                }
-                2 -> {
-                    outRect.left = dpToPx(2)
-                    outRect.right = dpToPx(6)
-                }
-            }
+            val viewHolder = holder as ItemViewHolder
+            viewHolder.bind(getItem(position))
         }
 
-        private fun dpToPx(dp: Int): Int {
-            return TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp.toFloat(),
-                resources.displayMetrics
-            ).toInt()
+        inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            fun bind(itemDTO: ItemDTO) {
+                val view = itemView
+
+                Glide.with(view)
+                    .load(itemDTO.images!![0])
+                    .apply(RequestOptions().centerCrop())
+                    .into(view.item_dressroom_iv_item)
+
+                view.item_dressroom_tv_item_name.text = itemDTO.name
+                view.setOnClickListener {
+                    val navController = findNavController()
+                    val action = when (navController.currentDestination!!.id) {
+                        R.id.dressroomFragment -> DressroomFragmentDirections.actionToDetailFragment(itemDTO)
+                        R.id.accountFragment -> AccountFragmentDirections.actionToDetailFragment(itemDTO)
+                        else -> null
+                    }
+
+                    navController.navigate(action!!)
+                }
+            }
         }
     }
 }

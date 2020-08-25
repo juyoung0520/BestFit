@@ -19,7 +19,12 @@ import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.example.bestfit.viewmodel.DetailFragmentViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_account.view.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
+import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,6 +34,7 @@ class DetailFragment : Fragment() {
 
     private val args: DetailFragmentArgs by navArgs()
     private lateinit var itemDTO: ItemDTO
+    private val currentUid = FirebaseAuth.getInstance().currentUser!!.uid
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,6 +105,7 @@ class DetailFragment : Fragment() {
             Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_detail_iv_profile)
         }
 
+        view.fragment_detail_collapsingtoolbarlayout.title = "${accountDTO.nickname}님의\n${itemDTO.name}"
         view.fragment_detail_tv_nickname.text = accountDTO.nickname
         view.fragment_detail_tv_user_size.text = accountDTO.height.toString() + " cm / " + accountDTO.weight.toString() + " kg"
 
@@ -109,7 +116,7 @@ class DetailFragment : Fragment() {
 
         if (!itemDTO.images.isNullOrEmpty()) {
             // 이미지 뷰페이저를 누르고 스크롤하면 툴바에 스크롤 상태 적용이 안됨. -> 안되는 만큼 스크롤이 전부 다 내려가지 않음. (툴바 확장된 크기만큼?)
-            view.fragment_detail_viewpager_image.adapter = ImagePagerAdapter(itemDTO.images)
+            view.fragment_detail_viewpager_image.adapter = ImagePagerAdapter(itemDTO.images!!)
             view.fragment_detail_indicator_image.setViewPager(view.fragment_detail_viewpager_image)
         }
 
@@ -136,6 +143,22 @@ class DetailFragment : Fragment() {
         view.fragment_detail_iv_profile.setOnClickListener {
             val action = DetailFragmentDirections.actionToAccountFragment(itemDTO.uid!!)
             findNavController().navigate(action)
+        }
+
+        if (accountDTO.dibsItems.isNullOrEmpty())
+            view.fragment_detail_btn_dibs.isChecked = false
+        else if (accountDTO.dibsItems!!.contains(itemDTO.id))
+            view.fragment_detail_btn_dibs.isChecked = true
+
+        view.fragment_detail_btn_dibs.setOnCheckedChangeListener { compoundButton, b ->
+            if (!b) {
+                view.fragment_detail_btn_dibs.isChecked = false
+                viewModel.deleteDibs(currentUid, itemDTO.id!!)
+
+            } else {
+                view.fragment_detail_btn_dibs.isChecked = true
+                viewModel.addDibs(currentUid, itemDTO.id!!)
+            }
         }
 
         restoreScrollPosition(view)
