@@ -153,7 +153,7 @@ class DetailFragment : Fragment() {
         view.fragment_detail_btn_dibs.setOnCheckedChangeListener { compoundButton, b ->
             if (!b) {
                 view.fragment_detail_btn_dibs.isChecked = false
-                viewModel.deleteDibs(currentUid, itemDTO.id!!)
+                viewModel.removeDibs(currentUid, itemDTO.id!!)
 
             } else {
                 view.fragment_detail_btn_dibs.isChecked = true

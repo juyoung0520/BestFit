@@ -61,7 +61,7 @@ class DetailFragmentViewModel : ViewModel() {
         }
     }
 
-    fun deleteDibs(currentUid: String, itemId: String) {
+    fun removeDibs(currentUid: String, itemId: String) {
          viewModelScope.launch {
              db.collection("accounts").document(currentUid).update("dibsItems", FieldValue.arrayRemove(itemId)).await()
 
