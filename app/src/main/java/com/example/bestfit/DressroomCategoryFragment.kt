@@ -16,15 +16,19 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.viewmodel.AccountFragmentViewModel
+import com.example.bestfit.viewmodel.DressroomCategoryFragmentViewModel
 import com.example.bestfit.viewmodel.DressroomFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
 
 class DressroomCategoryFragment : Fragment() {
+    private lateinit var viewModel: DressroomCategoryFragmentViewModel
     private lateinit var dressroomViewModel: DressroomFragmentViewModel
     private lateinit var accountViewModel: AccountFragmentViewModel
 
     private lateinit var itemRecyclerViewAdapter: ItemRecyclerViewAdapter
+    private lateinit var layoutManager: RecyclerView.LayoutManager
+    private var itemCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +36,8 @@ class DressroomCategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dressroom_category, container, false)
+
+        initRecyclerView(view)
 
         val position = requireArguments().getInt("position")
         if (position == -1)
@@ -56,29 +62,45 @@ class DressroomCategoryFragment : Fragment() {
     }
 
     private fun initDressroomViewModel(view: View, position: Int) {
-        dressroomViewModel = ViewModelProvider(this.requireParentFragment()).get(DressroomFragmentViewModel::class.java)
-
-        // diffutil 사용해야함. (추가, 삭제)
-        val initObserver = Observer<Boolean> { isInit ->
-            if (isInit) {
-                dressroomViewModel.setItemRecyclerViewAdapter(ItemRecyclerViewAdapter())
-                view.fragment_dressroom_category_recyclerview.adapter = dressroomViewModel.getItemRecyclerViewAdapter()
-                view.fragment_dressroom_category_recyclerview.layoutManager = GridLayoutManager(activity, 2)
-                dressroomViewModel.getItemRecyclerViewAdapter().submitList(dressroomViewModel.itemDTOs.value!![position].map { it.copy() })
-            }
-        }
+        dressroomViewModel = ViewModelProvider(requireParentFragment()).get(DressroomFragmentViewModel::class.java)
 
         val itemDTOsObserver = Observer<ArrayList<ArrayList<ItemDTO>>> { itemDTOs ->
-            if (!dressroomViewModel.isInitialized.value!!)
+            if (itemDTOs[position].isNullOrEmpty()) {
+                println("itemDTOs is empty")
+                return@Observer
+            }
+
+            println("observer! ${itemDTOs[position].size}")
+
+            val newItemSize = itemDTOs[position].size
+            if (itemCount == newItemSize)
                 return@Observer
 
-            println("observer! ${itemDTOs[position].size}, ${itemDTOs[position].isNullOrEmpty()}")
-            println(itemDTOs[position])
-            dressroomViewModel.getItemRecyclerViewAdapter().submitList(itemDTOs[position].map { it.copy() })
+            if (itemCount != 0 && itemCount < newItemSize)
+                view.fragment_dressroom_category_recyclerview.smoothScrollToPosition(0)
+            // 스크롤이 맨 아이템까지 안가고 하나 아래까지만 감 ㅠㅠ
+
+            itemCount = newItemSize
+            itemRecyclerViewAdapter.submitList(itemDTOs[position].map { it.copy() })
         }
 
-        dressroomViewModel.isInitialized.observe(viewLifecycleOwner, initObserver)
-        dressroomViewModel.itemDTOs.observe(viewLifecycleOwner, itemDTOsObserver)
+        dressroomViewModel.itemDTOs.observe(requireParentFragment().viewLifecycleOwner, itemDTOsObserver)
+    }
+
+    private fun initRecyclerView(view: View) {
+        viewModel = ViewModelProvider(this).get(DressroomCategoryFragmentViewModel::class.java)
+
+        if (viewModel.getItemRecyclerViewAdapter() == null) {
+            itemRecyclerViewAdapter = ItemRecyclerViewAdapter()
+            viewModel.setItemRecyclerViewAdapter(itemRecyclerViewAdapter)
+        }
+        else
+            itemRecyclerViewAdapter = viewModel.getItemRecyclerViewAdapter()!!
+
+        // 스크롤 바꾸려고 한건데 안 쓰면 필요없움
+        layoutManager = GridLayoutManager(context, 2)
+        view.fragment_dressroom_category_recyclerview.adapter = itemRecyclerViewAdapter
+        view.fragment_dressroom_category_recyclerview.layoutManager = layoutManager
     }
 
     class DiffItemCallback : DiffUtil.ItemCallback<ItemDTO>() {
@@ -86,7 +108,6 @@ class DressroomCategoryFragment : Fragment() {
             oldItem: ItemDTO,
             newItem: ItemDTO
         ): Boolean {
-//            println("${oldItem.id} ${oldItem.name}")
             return oldItem.id == newItem.id
         }
 
@@ -105,8 +126,6 @@ class DressroomCategoryFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-            println("position = $position, adapterPosition: ${holder.adapterPosition}")
-            println(getItem(holder.adapterPosition))
             holder.bind(getItem(position))
         }
 
