@@ -59,7 +59,9 @@ class AddItemActivityViewModel : ViewModel() {
 //                    .await()
 //            }
 
+            itemDTO.id = docId
             itemDTO.images = ArrayList(uris)
+            db.collection("items").document(docId).update("id",itemDTO.id).await()
             db.collection("items").document(docId).update("images", itemDTO.images).await()
             db.collection("accounts").document(currentUid).update("items", FieldValue.arrayUnion(docId)).await()
 
