@@ -61,7 +61,7 @@
             style="@style/CorneredTextInputLayout"
             app:hintEnabled="false">
 
-            <com.example.bestfit.view.EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/fragment_add_item_fourth_text_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

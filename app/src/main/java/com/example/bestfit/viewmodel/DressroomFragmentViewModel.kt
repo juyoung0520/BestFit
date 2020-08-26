@@ -1,6 +1,7 @@
 package com.example.bestfit.viewmodel
 
 import androidx.lifecycle.*
+import com.example.bestfit.DressroomCategoryFragment
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
@@ -26,18 +27,31 @@ class DressroomFragmentViewModel : ViewModel() {
     private val _itemDTOs = MutableLiveData<ArrayList<ArrayList<ItemDTO>>>(arrayListOf())
     val itemDTOs: LiveData<ArrayList<ArrayList<ItemDTO>>> = _itemDTOs
 
+    private val _itemRecyclerViewAdapter = MutableLiveData<DressroomCategoryFragment.ItemRecyclerViewAdapter>()
+    val itemRecyclerViewAdapter: LiveData<DressroomCategoryFragment.ItemRecyclerViewAdapter> = _itemRecyclerViewAdapter
+
     init {
+        println("init dressroomfragmentviewmodel")
         getItemDTOs()
     }
 
+    fun setItemRecyclerViewAdapter(adapter: DressroomCategoryFragment.ItemRecyclerViewAdapter) {
+        _itemRecyclerViewAdapter.value = adapter
+    }
+
+    fun getItemRecyclerViewAdapter(): DressroomCategoryFragment.ItemRecyclerViewAdapter {
+        return _itemRecyclerViewAdapter.value!!
+    }
+
     private fun notifyItemDTOsChanged() {
-        _itemDTOs.value = _itemDTOs.value
+        viewModelScope.launch(Dispatchers.Main) {
+            println("hihihi notify")
+            _itemDTOs.value = _itemDTOs.value
+        }
     }
 
     private fun getItemDTOs() {
         viewModelScope.launch(Dispatchers.IO) {
-            _itemDTOs.value!!.clear()
-
             for (i in 0 until InitData.categoryDTOs.size)
                 _itemDTOs.value!!.add(arrayListOf())
 
@@ -48,6 +62,7 @@ class DressroomFragmentViewModel : ViewModel() {
                 withContext(Dispatchers.Main) {
                     _isInitialized.value = true
                 }
+
                 return@launch
             }
 
@@ -66,8 +81,9 @@ class DressroomFragmentViewModel : ViewModel() {
             }
 
             for (itemDTO in _itemDTOs.value!!)
-                itemDTO.sortByDescending { itemDTO -> itemDTO.timestamp }
+                itemDTO.sortByDescending { itemDTO -> itemDTO.timestamps!![0] }
 
+//            notifyItemDTOsChanged()
             withContext(Dispatchers.Main) {
                 _isInitialized.value = true
             }
@@ -80,6 +96,7 @@ class DressroomFragmentViewModel : ViewModel() {
         _itemDTOs.value!![0].add(0, itemDTO)
         _itemDTOs.value!![categoryIndex].add(0, itemDTO)
 
+        println("in additemdto func")
         notifyItemDTOsChanged()
     }
 

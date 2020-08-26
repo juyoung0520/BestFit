@@ -15,22 +15,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.viewmodel.AddItemActivityViewModel
-import com.example.bestfit.viewmodel.DressroomFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_add_item.*
-import kotlinx.android.synthetic.main.activity_add_item.view.*
-import kotlinx.android.synthetic.main.activity_set_profile.*
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_fourth.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_third.view.*
 import java.io.File
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AddItemActivity : AppCompatActivity() {
     private lateinit var viewModel: AddItemActivityViewModel
@@ -63,8 +60,10 @@ class AddItemActivity : AppCompatActivity() {
         // rotate 할 때 다시 호출되는지 확인!!! -> viewmodel에 arguments 넘기는 방식 고민해보기
 
         val itemDTO = intent.getParcelableExtra<ItemDTO>("itemDTO")
-        if (itemDTO != null)
+        if (itemDTO != null) {
+            activity_add_item_tv_toolbar_title.text = "아이템 수정"
             viewModel.setTempItemDTO(itemDTO)
+        }
     }
 
     private fun initToolbar() {
@@ -76,9 +75,13 @@ class AddItemActivity : AppCompatActivity() {
     private fun initViewPager() {
         activity_add_item_viewpager.offscreenPageLimit = 3
         activity_add_item_viewpager.adapter = AddItemFragmentPagerAdapter(this, 4)
-        activity_add_item_viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        activity_add_item_viewpager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(activity_add_item_viewpager.windowToken, 0)
 
                 when (position) {
                     0 -> {
@@ -110,7 +113,10 @@ class AddItemActivity : AppCompatActivity() {
         activity_add_item_indicator.setViewPager(activity_add_item_viewpager)
     }
 
-    inner class AddItemFragmentPagerAdapter(fragmentActivity: FragmentActivity, private val fragmentSize: Int) : FragmentStateAdapter(fragmentActivity) {
+    inner class AddItemFragmentPagerAdapter(
+        fragmentActivity: FragmentActivity,
+        private val fragmentSize: Int
+    ) : FragmentStateAdapter(fragmentActivity) {
         override fun getItemCount(): Int {
             return fragmentSize
         }
@@ -144,9 +150,6 @@ class AddItemActivity : AppCompatActivity() {
             return
 
         activity_add_item_viewpager.currentItem = newPosition
-
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     private fun changeViewPage(position: Int) {
@@ -158,22 +161,6 @@ class AddItemActivity : AppCompatActivity() {
             return
 
         activity_add_item_viewpager.currentItem = position
-
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-    }
-
-    private fun initModifyItemActivity(itemDTO: ItemDTO) {
-        val firstFragment = fragments[0] as AddItemFirstFragment
-        val firstFragmentView = firstFragment.fragmentView
-        val secondFragment = fragments[1] as AddItemSecondFragment
-        val secondFragmentView = secondFragment.fragmentView
-        val thirdFragment = fragments[2] as AddItemThirdFragment
-        val thirdFragmentView = thirdFragment.fragmentView
-        val fourthFragment = fragments[3] as AddItemFourthFragment
-        val fourthFragmentView = fourthFragment.fragmentView
-
-//        firstFragmentView.
     }
 
     fun submitAddItem() {
@@ -186,8 +173,13 @@ class AddItemActivity : AppCompatActivity() {
         val fourthFragment = fragments[3] as AddItemFourthFragment
         val fourthFragmentView = fourthFragment.fragmentView
 
+        var timestamps: ArrayList<Long> = arrayListOf()
+        if (viewModel.tempItemDTO.value != null)
+            timestamps = viewModel.tempItemDTO.value!!.timestamps!!
+        timestamps.add(System.currentTimeMillis())
+
         val itemDTO = ItemDTO()
-        itemDTO.timestamp = System.currentTimeMillis()
+        itemDTO.timestamps = timestamps
         itemDTO.uid = currentUid
         itemDTO.categoryId = firstFragmentView.fragment_add_item_first_actv_category.tag as String
         itemDTO.subCategoryId = firstFragmentView.fragment_add_item_first_actv_sub_category.tag as String
@@ -202,7 +194,11 @@ class AddItemActivity : AppCompatActivity() {
 
         val imageUris = arrayListOf<Uri>()
         for (image in firstFragment.itemImages) {
-            val uri = FileProvider.getUriForFile(this, "com.jinu.imagepickerlib.fileprovider", File(image))
+            val uri = FileProvider.getUriForFile(
+                this, "com.jinu.imagepickerlib.fileprovider", File(
+                    image
+                )
+            )
             imageUris.add(uri)
         }
 
@@ -210,7 +206,7 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     private fun getSearchKeywords(itemName: String): ArrayList<String> {
-        var nameString = itemName.toLowerCase()
+        var nameString = itemName.toLowerCase(Locale.ROOT)
         val words = nameString.split(" ")
         val keywords = ArrayList<String>()
 
@@ -229,55 +225,70 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     fun emptyCheckAddItem(): Boolean {
-        val firstFragment =  (fragments[0] as AddItemFirstFragment).fragmentView
-        val secondFragment = (fragments[1] as AddItemSecondFragment).fragmentView
-        val thirdFragment = (fragments[2] as AddItemThirdFragment).fragmentView
-        val fourthFragment = (fragments[3] as AddItemFourthFragment).fragmentView
+        val firstFragment = fragments[0] as AddItemFirstFragment
+        val firstFragmentView = firstFragment.fragmentView
+        val secondFragment = fragments[1] as AddItemSecondFragment
+        val secondFragmentView = secondFragment.fragmentView
+        val thirdFragment = fragments[2] as AddItemThirdFragment
+        val thirdFragmentView = thirdFragment.fragmentView
+        val fourthFragment = fragments[3] as AddItemFourthFragment
+        val fourthFragmentView = fourthFragment.fragmentView
 
-        //fistFragment
-        if (firstFragment.fragment_add_item_first_actv_category.text.isNullOrEmpty() || firstFragment.fragment_add_item_first_actv_sub_category.text.isNullOrEmpty()) {
+        // firstFragment
+        if (firstFragmentView.fragment_add_item_first_actv_category.text.isNullOrEmpty() || firstFragmentView.fragment_add_item_first_actv_sub_category.text.isNullOrEmpty()) {
             changeViewPage(0)
-            firstFragment.fragment_add_item_first_error_category.visibility = View.VISIBLE
+            firstFragmentView.fragment_add_item_first_error_category.visibility = View.VISIBLE
+
             return false
         }
-        if ((fragments[0] as AddItemFirstFragment).itemImages.size == 0) {
+
+        if (firstFragment.itemImages.size == 0) {
             changeViewPage(0)
-            firstFragment.fragment_add_item_first_error_image.visibility = View.VISIBLE
+            firstFragmentView.fragment_add_item_first_error_image.visibility = View.VISIBLE
+
             return false
         }
 
-        //secondFragment
-        if (secondFragment.fragment_add_item_second_actv_brand.text.isNullOrEmpty()) {
+        // secondFragment
+        if (secondFragmentView.fragment_add_item_second_actv_brand.text.isNullOrEmpty()) {
             changeViewPage(1)
-            secondFragment.fragment_add_item_second_error_brand.visibility = View.VISIBLE
+            secondFragmentView.fragment_add_item_second_error_brand.visibility = View.VISIBLE
+
             return false
         }
-        if (secondFragment.fragment_add_item_second_text_item_name.text.isNullOrEmpty()) {
+
+        if (secondFragmentView.fragment_add_item_second_text_item_name.text.isNullOrEmpty()) {
             changeViewPage(1)
-            secondFragment.fragment_add_item_second_error_item_name.visibility = View.VISIBLE
+            secondFragmentView.fragment_add_item_second_error_item_name.visibility = View.VISIBLE
+
             return false
         }
 
-        //thirdFragment
-        if ((fragments[2] as AddItemThirdFragment).selectedSizeFormatId == null || (fragments[2] as AddItemThirdFragment).selectedSizeId == null) {
+        // thirdFragment
+        if (thirdFragment.selectedSizeFormatId == null || thirdFragment.selectedSizeId == null) {
             changeViewPage(2)
-            thirdFragment.fragment_add_item_third_error_size.visibility = View.VISIBLE
+            thirdFragmentView.fragment_add_item_third_error_size.visibility = View.VISIBLE
+
             return false
         }
-        if (thirdFragment.fragment_add_item_third_group_size_review.tag == null) {
+
+        if (thirdFragmentView.fragment_add_item_third_group_size_review.tag == null) {
             changeViewPage(2)
-            thirdFragment.fragment_add_item_third_error_size_review.visibility = View.VISIBLE
+            thirdFragmentView.fragment_add_item_third_error_size_review.visibility = View.VISIBLE
+
             return false
         }
 
-        //fourthFragment
-        if (fourthFragment.fragment_add_item_fourth_text_review.text.isNullOrEmpty()) {
-            fourthFragment.fragment_add_item_fourth_error_review.visibility = View.VISIBLE
+        // fourthFragment
+        if (fourthFragmentView.fragment_add_item_fourth_text_review.text.isNullOrEmpty()) {
+            fourthFragmentView.fragment_add_item_fourth_error_review.visibility = View.VISIBLE
+
             return false
         }
 
-        if (fourthFragment.fragment_add_item_fourth_rating.rating.equals(0.0)) {
-            fourthFragment.fragment_add_item_fourth_error_rating.visibility = View.VISIBLE
+        if (fourthFragmentView.fragment_add_item_fourth_rating.rating.equals(0.toFloat())) {
+            fourthFragmentView.fragment_add_item_fourth_error_rating.visibility = View.VISIBLE
+
             return false
         }
 

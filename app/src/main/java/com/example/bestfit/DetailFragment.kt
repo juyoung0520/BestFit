@@ -160,7 +160,7 @@ class DetailFragment : Fragment() {
         view.fragment_detail_rating.rating = itemDTO.ratingReview!!
         view.fragment_detail_tv_review.text = itemDTO.review
         view.fragment_detail_tv_date.text = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(
-            itemDTO.timestamp
+            itemDTO.timestamps!![0]
         )
 
         view.fragment_detail_iv_profile.setOnClickListener {

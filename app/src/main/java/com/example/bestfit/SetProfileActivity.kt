@@ -51,6 +51,9 @@ class SetProfileActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
 
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(activity_set_profile_viewpager.windowToken, 0)
+
                 when (position) {
                     0 -> {
                         activity_set_profile_toolbar.navigationIcon = null
@@ -116,9 +119,6 @@ class SetProfileActivity : AppCompatActivity() {
             return
 
         activity_set_profile_viewpager.currentItem = newPosition
-
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     private fun changeViewPage(position: Int) {
