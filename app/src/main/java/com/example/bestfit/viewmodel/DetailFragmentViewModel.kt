@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class DetailFragmentViewModel(private val uid: String) : ViewModel() {
+class DetailFragmentViewModel(private val uid: String, private val itemId: String) : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
     private val currentUid = FirebaseAuth.getInstance().currentUser!!.uid
 
@@ -24,21 +24,22 @@ class DetailFragmentViewModel(private val uid: String) : ViewModel() {
     private val _accountDTO = MutableLiveData<AccountDTO>()
     val accountDTO: LiveData<AccountDTO> = _accountDTO
 
-    private val _dibsItem = MutableLiveData<ArrayList<String>>()
-    val dibsItem: LiveData<ArrayList<String>> = _dibsItem
+    private val _initDibs = MutableLiveData<Boolean>()
+    val initDibs: LiveData<Boolean> = _initDibs
 
     private val _dibs = MutableLiveData<Int>()
     val dibs: LiveData<Int> = _dibs
 
-    class Factory(private val uid: String) : ViewModelProvider.Factory {
+    class Factory(private val uid: String, private val itemId: String) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return DetailFragmentViewModel(uid) as T
+            return DetailFragmentViewModel(uid, itemId) as T
         }
     }
 
     init {
         // 여기다가 dibsitems 가져오는 함수 호출
         getAccountDTO()
+        initDibs()
     }
 
     fun setScrollPosition(position: Int) {
@@ -58,16 +59,16 @@ class DetailFragmentViewModel(private val uid: String) : ViewModel() {
         }
     }
 
-    fun getDibsItem() {
+    fun initDibs() {
         viewModelScope.launch(Dispatchers.IO) {
             val document = db.collection("accounts").document(currentUid).get().await()
             withContext(Dispatchers.Main) {
-                _dibsItem.value = document.toObject(AccountDTO::class.java)!!.dibsItems!!
+                _initDibs.value = document.toObject(AccountDTO::class.java)!!.dibsItems!!.contains(itemId)
             }
         }
     }
 
-    fun addDibs(itemId: String) {
+    fun addDibs() {
         viewModelScope.launch(Dispatchers.IO) {
             db.collection("accounts").document(currentUid).update("dibsItems", FieldValue.arrayUnion(itemId)).await()
 
@@ -84,7 +85,7 @@ class DetailFragmentViewModel(private val uid: String) : ViewModel() {
         }
     }
 
-    fun removeDibs(itemId: String) {
+    fun removeDibs() {
          viewModelScope.launch(Dispatchers.IO) {
              db.collection("accounts").document(currentUid).update("dibsItems", FieldValue.arrayRemove(itemId)).await()
 

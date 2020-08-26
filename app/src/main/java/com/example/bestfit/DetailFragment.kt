@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DetailFragment : Fragment() {
@@ -51,7 +52,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun initViewModel(view: View) {
-        viewModel = ViewModelProvider(this, DetailFragmentViewModel.Factory(itemDTO.uid!!)).get(DetailFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(this, DetailFragmentViewModel.Factory(itemDTO.uid!!, itemDTO.id!!)).get(DetailFragmentViewModel::class.java)
 
         // 여기다가 dibsitems 옵저버 하나 생성
         // 여기다가 dibs count 옵저버 하나 생성
@@ -62,7 +63,17 @@ class DetailFragment : Fragment() {
             initDetailFragment(view, accountDTO)
         }
 
+        val initDibsObserver = Observer<Boolean> { initDibs ->
+            changeDibs(view, initDibs)
+        }
+
+        val dibsObserver = Observer<Int> { dibs ->
+            getDibs(view, dibs)
+        }
+
         viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
+        viewModel.initDibs.observe(viewLifecycleOwner, initDibsObserver)
+        viewModel.dibs.observe(viewLifecycleOwner, dibsObserver)
     }
 
     private fun initToolbar(view: View) {
@@ -136,29 +147,34 @@ class DetailFragment : Fragment() {
         view.fragment_detail_tv_date.text = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(
             itemDTO.timestamp
         )
+        view.fragment_detail_tv_dibs.text = "찜 ${itemDTO.dibs}"
 
         view.fragment_detail_iv_profile.setOnClickListener {
             val action = DetailFragmentDirections.actionToAccountFragment(itemDTO.uid!!)
             findNavController().navigate(action)
         }
 
-        if (accountDTO.dibsItems.isNullOrEmpty())
-            view.fragment_detail_btn_dibs.isChecked = false
-        else if (accountDTO.dibsItems!!.contains(itemDTO.id))
+        restoreScrollPosition(view)
+    }
+
+    private fun changeDibs(view: View, initDibs: Boolean) {
+        if (initDibs)
             view.fragment_detail_btn_dibs.isChecked = true
 
         view.fragment_detail_btn_dibs.setOnCheckedChangeListener { compoundButton, b ->
             if (!b) {
                 view.fragment_detail_btn_dibs.isChecked = false
-                viewModel.removeDibs(itemDTO.id!!)
+                viewModel.removeDibs()
 
             } else {
                 view.fragment_detail_btn_dibs.isChecked = true
-                viewModel.addDibs(itemDTO.id!!)
+                viewModel.addDibs()
             }
         }
+    }
 
-        restoreScrollPosition(view)
+    private fun getDibs(view:View, dibs: Int) {
+        view.fragment_detail_tv_dibs.text = "찜 $dibs"
     }
 
     inner class ImagePagerAdapter(private val images: ArrayList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
