@@ -6,11 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
+import com.example.bestfit.viewmodel.AddItemActivityViewModel
+import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
 
 
 class AddItemSecondFragment  : Fragment() {
+    private lateinit var viewModel: AddItemActivityViewModel
+
     lateinit var fragmentView: View
 
     override fun onCreateView(
@@ -55,6 +62,22 @@ class AddItemSecondFragment  : Fragment() {
             println("test")
             view.fragment_add_item_second_text_item_name.requestFocus()
         }
+
+        initViewModel(view)
+    }
+
+    private fun initViewModel(view: View) {
+        viewModel = ViewModelProvider(requireActivity()).get(AddItemActivityViewModel::class.java)
+
+        val tempItemDTOObserver = Observer<ItemDTO> { tempItemDTO ->
+            initTempCategory(view, tempItemDTO)
+        }
+
+        viewModel.tempItemDTO.observe(viewLifecycleOwner, tempItemDTOObserver)
+    }
+
+    private fun initTempCategory(view: View, tempItemDTO: ItemDTO) {
+        view.fragment_add_item_second_text_item_name.setText(tempItemDTO.name)
     }
 
     private fun submitAddItem() {

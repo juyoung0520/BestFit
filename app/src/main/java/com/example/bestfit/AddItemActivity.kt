@@ -59,6 +59,12 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         viewModel.itemDTO.observe(this, itemDTOObserver)
+
+        // rotate 할 때 다시 호출되는지 확인!!! -> viewmodel에 arguments 넘기는 방식 고민해보기
+
+        val itemDTO = intent.getParcelableExtra<ItemDTO>("itemDTO")
+        if (itemDTO != null)
+            viewModel.setTempItemDTO(itemDTO)
     }
 
     private fun initToolbar() {
@@ -68,6 +74,7 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     private fun initViewPager() {
+        activity_add_item_viewpager.offscreenPageLimit = 3
         activity_add_item_viewpager.adapter = AddItemFragmentPagerAdapter(this, 4)
         activity_add_item_viewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -156,6 +163,19 @@ class AddItemActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
+    private fun initModifyItemActivity(itemDTO: ItemDTO) {
+        val firstFragment = fragments[0] as AddItemFirstFragment
+        val firstFragmentView = firstFragment.fragmentView
+        val secondFragment = fragments[1] as AddItemSecondFragment
+        val secondFragmentView = secondFragment.fragmentView
+        val thirdFragment = fragments[2] as AddItemThirdFragment
+        val thirdFragmentView = thirdFragment.fragmentView
+        val fourthFragment = fragments[3] as AddItemFourthFragment
+        val fourthFragmentView = fourthFragment.fragmentView
+
+//        firstFragmentView.
+    }
+
     fun submitAddItem() {
         val firstFragment = fragments[0] as AddItemFirstFragment
         val firstFragmentView = firstFragment.fragmentView
@@ -169,7 +189,7 @@ class AddItemActivity : AppCompatActivity() {
         val itemDTO = ItemDTO()
         itemDTO.timestamp = System.currentTimeMillis()
         itemDTO.uid = currentUid
-        itemDTO.categoryId = (firstFragmentView.fragment_add_item_first_actv_category.tag as CategoryDTO).id
+        itemDTO.categoryId = firstFragmentView.fragment_add_item_first_actv_category.tag as String
         itemDTO.subCategoryId = firstFragmentView.fragment_add_item_first_actv_sub_category.tag as String
 //        itemDTO.brandId
         itemDTO.name = secondFragmentView.fragment_add_item_second_text_item_name.text.toString()

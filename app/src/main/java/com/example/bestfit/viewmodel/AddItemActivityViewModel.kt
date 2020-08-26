@@ -24,8 +24,15 @@ class AddItemActivityViewModel : ViewModel() {
     private val _itemDTO = MutableLiveData<ItemDTO>()
     val itemDTO: LiveData<ItemDTO> = _itemDTO
 
+    private val _tempItemDTO = MutableLiveData<ItemDTO>()
+    val tempItemDTO: LiveData<ItemDTO> = _tempItemDTO
+
     init {
 //        getAccountDTO()
+    }
+
+    fun setTempItemDTO(itemDTO: ItemDTO) {
+        _tempItemDTO.value = itemDTO
     }
 
     fun submitAddItem(itemDTO: ItemDTO, imageUris: ArrayList<Uri>) {

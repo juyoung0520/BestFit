@@ -62,9 +62,7 @@ class DressroomFragment : Fragment() {
         view.fragment_dressroom_toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_fragment_dressroom_add -> {
-//                    startActivityForResult(Intent(activity, AddItemActivity::class.java), 1)
                     startForResult.launch(Intent(context, AddItemActivity::class.java))
-
                     true
                 }
                 else -> {

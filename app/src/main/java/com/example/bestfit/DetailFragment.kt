@@ -1,11 +1,15 @@
 package com.example.bestfit
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.addCallback
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -22,6 +26,7 @@ import com.example.bestfit.viewmodel.DetailFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.fragment_account.view.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.coroutines.tasks.await
@@ -35,6 +40,13 @@ class DetailFragment : Fragment() {
     private val args: DetailFragmentArgs by navArgs()
     private lateinit var itemDTO: ItemDTO
     private val currentUid = FirebaseAuth.getInstance().currentUser!!.uid
+
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val itemDTO = result.data!!.getParcelableExtra<ItemDTO>("itemDTO")!!
+            this.itemDTO = itemDTO
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,6 +88,17 @@ class DetailFragment : Fragment() {
         view.fragment_detail_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         view.fragment_detail_toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
+        }
+        view.fragment_detail_toolbar.inflateMenu(R.menu.menu_fragment_detail)
+        view.fragment_detail_toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_fragment_detail_modify_item -> {
+                    val intent = Intent(context, AddItemActivity::class.java).putExtra("itemDTO", itemDTO)
+                    startForResult.launch(intent)
+                    true
+                }
+                else -> false
+            }
         }
     }
 
