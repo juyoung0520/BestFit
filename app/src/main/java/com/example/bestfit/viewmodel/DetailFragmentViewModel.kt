@@ -1,9 +1,6 @@
 package com.example.bestfit.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.google.firebase.auth.FirebaseAuth
@@ -14,7 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class DetailFragmentViewModel : ViewModel() {
+class DetailFragmentViewModel(private val uid: String) : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
     private val currentUid = FirebaseAuth.getInstance().currentUser!!.uid
 
@@ -33,12 +30,15 @@ class DetailFragmentViewModel : ViewModel() {
     private val _dibs = MutableLiveData<Int>()
     val dibs: LiveData<Int> = _dibs
 
-    fun isInitialized() : Boolean {
-        return _isInitialized.value!!
+    class Factory(private val uid: String) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return DetailFragmentViewModel(uid) as T
+        }
     }
 
-    fun setInitializedState(state: Boolean) {
-        _isInitialized.value = state
+    init {
+        // 여기다가 dibsitems 가져오는 함수 호출
+        getAccountDTO()
     }
 
     fun setScrollPosition(position: Int) {
@@ -49,7 +49,7 @@ class DetailFragmentViewModel : ViewModel() {
         return _scrollPosition.value!!
     }
 
-    fun getAccountDTO(uid: String) {
+    private fun getAccountDTO() {
         viewModelScope.launch(Dispatchers.IO) {
             val document = db.collection("accounts").document(uid).get().await()
             withContext(Dispatchers.Main) {

@@ -45,20 +45,18 @@ class DetailFragment : Fragment() {
 
         initViewModel(view)
         initToolbar(view)
+        initScrollView(view)
 
         return view
     }
 
     private fun initViewModel(view: View) {
-        viewModel = ViewModelProvider(this).get(DetailFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(this, DetailFragmentViewModel.Factory(itemDTO.uid!!)).get(DetailFragmentViewModel::class.java)
 
-        if (!viewModel.isInitialized()) {
-            viewModel.setInitializedState(true)
-
-            initScrollView(view)
-
-            viewModel.getAccountDTO(itemDTO.uid!!)
-        }
+        // 여기다가 dibsitems 옵저버 하나 생성
+        // 여기다가 dibs count 옵저버 하나 생성
+        // 옵저버 안에서 각각 ui (하트 이미지랑 찜 숫자) 바꾸는 함수 호출!
+        // 사랑해 팟팅!
 
         val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
             initDetailFragment(view, accountDTO)
