@@ -50,21 +50,23 @@ class AddItemActivity : AppCompatActivity() {
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(AddItemActivityViewModel::class.java)
 
+        val initializedObserver = Observer<Boolean> { initialized ->
+            if (initialized) {
+                val itemDTO = intent.getParcelableExtra<ItemDTO>("itemDTO")
+                if (itemDTO != null) {
+                    activity_add_item_tv_toolbar_title.text = "아이템 수정"
+                    viewModel.setTempItemDTO(itemDTO)
+                }
+            }
+        }
+
         val itemDTOObserver = Observer<ItemDTO> { itemDTO ->
             setResult(RESULT_OK, Intent().putExtra("itemDTO", itemDTO))
             finish()
         }
 
         viewModel.itemDTO.observe(this, itemDTOObserver)
-
-        // rotate 할 때 다시 호출되는지 확인!!! -> viewmodel에 arguments 넘기는 방식 고민해보기
-
-        val itemDTO = intent.getParcelableExtra<ItemDTO>("itemDTO")
-        if (itemDTO != null) {
-            println("ho")
-            activity_add_item_tv_toolbar_title.text = "아이템 수정"
-            viewModel.setTempItemDTO(itemDTO)
-        }
+        viewModel.initialized.observe(this, initializedObserver)
     }
 
     private fun initToolbar() {
@@ -195,11 +197,7 @@ class AddItemActivity : AppCompatActivity() {
 
         val imageUris = arrayListOf<Uri>()
         for (image in firstFragment.itemImages) {
-            val uri = FileProvider.getUriForFile(
-                this, "com.jinu.imagepickerlib.fileprovider", File(
-                    image
-                )
-            )
+            val uri = FileProvider.getUriForFile(this, "com.jinu.imagepickerlib.fileprovider", File(image))
             imageUris.add(uri)
         }
 
@@ -236,11 +234,11 @@ class AddItemActivity : AppCompatActivity() {
         val fourthFragmentView = fourthFragment.fragmentView
 
         // firstFragment
-        if (firstFragmentView.fragment_add_item_first_actv_category.text.isNullOrEmpty() || firstFragmentView.fragment_add_item_first_actv_sub_category.text.isNullOrEmpty()) {
-            changeViewPage(0)
-            firstFragmentView.fragment_add_item_first_error_category.visibility = View.VISIBLE
+            if (firstFragmentView.fragment_add_item_first_actv_category.text.isNullOrEmpty() || firstFragmentView.fragment_add_item_first_actv_sub_category.text.isNullOrEmpty()) {
+                changeViewPage(0)
+                firstFragmentView.fragment_add_item_first_error_category.visibility = View.VISIBLE
 
-            return false
+                return false
         }
 
         if (firstFragment.itemImages.size == 0) {

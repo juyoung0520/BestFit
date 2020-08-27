@@ -64,7 +64,7 @@ class AddItemThirdFragment  : Fragment() {
         }
 
         view.fragment_add_item_third_group_format.addOnButtonCheckedListener { group, _, isChecked ->
-            if (selectedSizeFormatId == null )
+            if (selectedSizeFormatId == null)
                 view.fragment_add_item_third_error_size.visibility = View.GONE
 
             if (group.checkedButtonId == -1) {

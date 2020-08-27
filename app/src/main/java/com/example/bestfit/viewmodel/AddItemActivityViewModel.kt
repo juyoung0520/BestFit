@@ -3,7 +3,6 @@ package com.example.bestfit.viewmodel
 import android.net.Uri
 import androidx.lifecycle.*
 import com.example.bestfit.model.ItemDTO
-import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
@@ -21,14 +20,21 @@ class AddItemActivityViewModel : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
     private val storage = FirebaseStorage.getInstance()
 
+    private val _initialized = SingleLiveEvent<Boolean>()
+    val initialized: SingleLiveEvent<Boolean> = _initialized
+
     private val _itemDTO = MutableLiveData<ItemDTO>()
     val itemDTO: LiveData<ItemDTO> = _itemDTO
 
     private val _tempItemDTO = MutableLiveData<ItemDTO>()
-    val tempItemDTO: LiveData<ItemDTO> = _tempItemDTO
+    val tempItemDTO: MutableLiveData<ItemDTO> = _tempItemDTO
 
     init {
-//        getAccountDTO()
+        _initialized.value = true
+    }
+
+    fun getTempItemDTO(): ItemDTO? {
+        return _tempItemDTO.value
     }
 
     fun setTempItemDTO(itemDTO: ItemDTO) {

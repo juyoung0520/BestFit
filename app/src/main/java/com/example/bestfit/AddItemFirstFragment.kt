@@ -22,13 +22,16 @@ import com.example.bestfit.model.CategoryDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.example.bestfit.viewmodel.AddItemActivityViewModel
+import com.example.bestfit.viewmodel.AddItemFirstFragmentViewModel
 import com.jinu.imagepickerlib.PhotoPickerActivity
 import com.jinu.imagepickerlib.utils.YPhotoPickerIntent
+import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.item_add_item_image.view.*
 
 class AddItemFirstFragment  : Fragment() {
-    private lateinit var viewModel: AddItemActivityViewModel
+    private lateinit var viewModel: AddItemFirstFragmentViewModel
+    private lateinit var addItemActivityViewModel: AddItemActivityViewModel
 
     lateinit var fragmentView: View
     var itemImages: ArrayList<String> = arrayListOf()
@@ -41,6 +44,8 @@ class AddItemFirstFragment  : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_first, container, false)
 
+        initViewModel(fragmentView)
+
         fragmentView.fragment_add_item_first_layout_add.setOnClickListener {
             fragmentView.fragment_add_item_first_error_image.visibility = View.GONE
             addImage()
@@ -50,19 +55,20 @@ class AddItemFirstFragment  : Fragment() {
             submitAddItem()
         }
 
-        initCategory(fragmentView)
-
         return fragmentView
     }
 
     private fun initViewModel(view: View) {
-        viewModel = ViewModelProvider(requireActivity()).get(AddItemActivityViewModel::class.java)
+        addItemActivityViewModel = ViewModelProvider(requireActivity()).get(AddItemActivityViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(AddItemFirstFragmentViewModel::class.java)
 
-        val tempItemDTOObserver = Observer<ItemDTO> { tempItemDTO ->
-            initTempCategory(view, tempItemDTO)
+        val initializedObserver = Observer<Boolean> { initialized ->
+            if (initialized) {
+                initCategoryAdapter(fragmentView)
+            }
         }
 
-        viewModel.tempItemDTO.observe(viewLifecycleOwner, tempItemDTOObserver)
+        viewModel.initialized.observe(viewLifecycleOwner, initializedObserver)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -88,14 +94,14 @@ class AddItemFirstFragment  : Fragment() {
         view.fragment_add_item_first_layout_sub_category.visibility = View.VISIBLE
 
         val categoryIndex = InitData.getCategoryIndex(view.fragment_add_item_first_actv_category.tag as String)
-        initSubCategory(view, InitData.categoryDTOs[categoryIndex].sub!!)
+        initSubCategoryAdapter(view, InitData.categoryDTOs[categoryIndex].sub!!)
 
         val subCategory = InitData.getSubCategoryString(tempItemDTO.categoryId!!, tempItemDTO.subCategoryId!!)
         view.fragment_add_item_first_actv_sub_category.setText(subCategory, false)
         view.fragment_add_item_first_actv_sub_category.tag = tempItemDTO.subCategoryId
     }
 
-    private fun initCategory(view: View) {
+    private fun initCategoryAdapter(view: View) {
         val categoryDTOs = InitData.categoryDTOs.subList(1, InitData.categoryDTOs.lastIndex + 1)
         val categories = categoryDTOs.map { categoryDTO -> categoryDTO.name!! }
         val categoryAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, categories)
@@ -118,13 +124,15 @@ class AddItemFirstFragment  : Fragment() {
 
             view.fragment_add_item_first_actv_category.tag = categoryDTOs[position].id
             view.fragment_add_item_first_actv_sub_category.text = null
-            initSubCategory(view, categoryDTOs[position].sub!!)
+            initSubCategoryAdapter(view, categoryDTOs[position].sub!!)
         }
 
-        initViewModel(view)
+        val tempItemDTO = addItemActivityViewModel.getTempItemDTO()
+        if (tempItemDTO != null)
+            initTempCategory(view, tempItemDTO)
     }
 
-    private fun initSubCategory(view: View, subCategories: ArrayList<String>) {
+    private fun initSubCategoryAdapter(view: View, subCategories: ArrayList<String>) {
         val categoryAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, subCategories)
 
         view.fragment_add_item_first_actv_sub_category.setAdapter(categoryAdapter)
