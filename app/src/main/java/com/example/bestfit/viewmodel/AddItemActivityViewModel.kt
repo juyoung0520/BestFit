@@ -24,8 +24,15 @@ class AddItemActivityViewModel : ViewModel() {
     private val _itemDTO = MutableLiveData<ItemDTO>()
     val itemDTO: LiveData<ItemDTO> = _itemDTO
 
+    private val _tempItemDTO = MutableLiveData<ItemDTO>()
+    val tempItemDTO: LiveData<ItemDTO> = _tempItemDTO
+
     init {
 //        getAccountDTO()
+    }
+
+    fun setTempItemDTO(itemDTO: ItemDTO) {
+        _tempItemDTO.value = itemDTO
     }
 
     fun submitAddItem(itemDTO: ItemDTO, imageUris: ArrayList<Uri>) {
@@ -39,7 +46,6 @@ class AddItemActivityViewModel : ViewModel() {
             }
 
             val tasksResult = Tasks.whenAllComplete(tasks).await()
-
             val uploadTasks = tasksResult.map { task ->
                 val taskSnapshot = task.result as UploadTask.TaskSnapshot
                 taskSnapshot.storage.downloadUrl
@@ -50,8 +56,7 @@ class AddItemActivityViewModel : ViewModel() {
                 task.result.toString()
             }
 
-//            return@launch
-//
+            // 뭐가 더 빠른지 비교 필요
 //            val uris = imageUris.mapIndexed { index, uri ->
 //                storage.reference.child("items").child(docId).child(index.toString())
 //                    .putFile(uri)
@@ -63,7 +68,8 @@ class AddItemActivityViewModel : ViewModel() {
 
             itemDTO.id = docId
             itemDTO.images = ArrayList(uris)
-            db.collection("items").document(docId).update("id",itemDTO.id).await()
+
+            db.collection("items").document(docId).update("id", itemDTO.id).await()
             db.collection("items").document(docId).update("images", itemDTO.images).await()
             db.collection("accounts").document(currentUid).update("items", FieldValue.arrayUnion(docId)).await()
 

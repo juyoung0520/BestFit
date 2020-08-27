@@ -4,14 +4,20 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.model.SizeFormatDTO
 import com.example.bestfit.util.InitData
+import com.example.bestfit.viewmodel.AddItemActivityViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_third.view.*
 
 class AddItemThirdFragment  : Fragment() {
+    private lateinit var viewModel: AddItemActivityViewModel
+
     lateinit var fragmentView: View
     var selectedSizeFormatId: String? = null
     var selectedSizeId: String? = null
@@ -120,6 +126,32 @@ class AddItemThirdFragment  : Fragment() {
             if (!hasFocus)
                 view.fragment_add_item_third_layout_divider.setBackgroundColor(resources.getColor(R.color.colorHintTransparent))
         }
+
+        initViewModel(view)
+    }
+
+    private fun initViewModel(view: View) {
+        viewModel = ViewModelProvider(requireActivity()).get(AddItemActivityViewModel::class.java)
+
+        val tempItemDTOObserver = Observer<ItemDTO> { tempItemDTO ->
+            initTempCategory(view, tempItemDTO)
+        }
+
+        viewModel.tempItemDTO.observe(viewLifecycleOwner, tempItemDTOObserver)
+    }
+
+    private fun initTempCategory(view: View, tempItemDTO: ItemDTO) {
+        view.fragment_add_item_third_group_format.check(InitData.getSizeFormatIndex(tempItemDTO.sizeFormatId!!))
+        view.fragment_add_item_third_group_size.check(InitData.getSizeIndex(tempItemDTO.sizeFormatId!!, tempItemDTO.sizeId!!))
+
+        val sizeReviewId = when (tempItemDTO.sizeReview) {
+            0 -> R.id.fragment_add_item_third_btn_s
+            1 -> R.id.fragment_add_item_third_btn_m
+            2 -> R.id.fragment_add_item_third_btn_l
+            else -> -1
+        }
+
+        view.fragment_add_item_third_group_size_review.check(sizeReviewId)
     }
 
     private fun submitAddItem() {

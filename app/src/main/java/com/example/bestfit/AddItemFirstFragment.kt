@@ -12,18 +12,24 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.CategoryDTO
+import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
+import com.example.bestfit.viewmodel.AddItemActivityViewModel
 import com.jinu.imagepickerlib.PhotoPickerActivity
 import com.jinu.imagepickerlib.utils.YPhotoPickerIntent
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.item_add_item_image.view.*
 
 class AddItemFirstFragment  : Fragment() {
+    private lateinit var viewModel: AddItemActivityViewModel
+
     lateinit var fragmentView: View
     var itemImages: ArrayList<String> = arrayListOf()
     private val ADD_IMAGE_CODE = 1
@@ -49,6 +55,16 @@ class AddItemFirstFragment  : Fragment() {
         return fragmentView
     }
 
+    private fun initViewModel(view: View) {
+        viewModel = ViewModelProvider(requireActivity()).get(AddItemActivityViewModel::class.java)
+
+        val tempItemDTOObserver = Observer<ItemDTO> { tempItemDTO ->
+            initTempCategory(view, tempItemDTO)
+        }
+
+        viewModel.tempItemDTO.observe(viewLifecycleOwner, tempItemDTOObserver)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -61,6 +77,22 @@ class AddItemFirstFragment  : Fragment() {
                 initImageReyclerview(images)
             }
         }
+    }
+
+    private fun initTempCategory(view: View, tempItemDTO: ItemDTO) {
+        val category = InitData.getCategoryString(tempItemDTO.categoryId!!)
+        view.fragment_add_item_first_actv_category.setText(category, false)
+        view.fragment_add_item_first_actv_category.tag = tempItemDTO.categoryId
+
+        view.fragment_add_item_first_layout_divider_category.visibility = View.VISIBLE
+        view.fragment_add_item_first_layout_sub_category.visibility = View.VISIBLE
+
+        val categoryIndex = InitData.getCategoryIndex(view.fragment_add_item_first_actv_category.tag as String)
+        initSubCategory(view, InitData.categoryDTOs[categoryIndex].sub!!)
+
+        val subCategory = InitData.getSubCategoryString(tempItemDTO.categoryId!!, tempItemDTO.subCategoryId!!)
+        view.fragment_add_item_first_actv_sub_category.setText(subCategory, false)
+        view.fragment_add_item_first_actv_sub_category.tag = tempItemDTO.subCategoryId
     }
 
     private fun initCategory(view: View) {
@@ -84,10 +116,12 @@ class AddItemFirstFragment  : Fragment() {
                 view.fragment_add_item_first_layout_sub_category.visibility = View.VISIBLE
             }
 
-            view.fragment_add_item_first_actv_category.tag = categoryDTOs[position]
+            view.fragment_add_item_first_actv_category.tag = categoryDTOs[position].id
             view.fragment_add_item_first_actv_sub_category.text = null
             initSubCategory(view, categoryDTOs[position].sub!!)
         }
+
+        initViewModel(view)
     }
 
     private fun initSubCategory(view: View, subCategories: ArrayList<String>) {
@@ -103,8 +137,8 @@ class AddItemFirstFragment  : Fragment() {
                 view.fragment_add_item_first_layout_sub_category.hint = "소분류"
         }
         view.fragment_add_item_first_actv_sub_category.setOnItemClickListener { _, _, position, _ ->
-            val categoryDTO = view.fragment_add_item_first_actv_category.tag as CategoryDTO
-            view.fragment_add_item_first_actv_sub_category.tag = categoryDTO.subId!![position]
+            val categoryIndex = InitData.getCategoryIndex(view.fragment_add_item_first_actv_category.tag as String)
+            view.fragment_add_item_first_actv_sub_category.tag = InitData.categoryDTOs[categoryIndex].subId!![position]
         }
     }
 

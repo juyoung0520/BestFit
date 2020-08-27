@@ -11,27 +11,23 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
-class DressroomFragmentViewModel : ViewModel() {
-    private val auth = FirebaseAuth.getInstance()
-    private val currentUid = auth.currentUser!!.uid
+class DibsFragmentViewModel() : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
+    private val currentUid = FirebaseAuth.getInstance().currentUser!!.uid
 
-    private val _itemDTOs = MutableLiveData<ArrayList<ArrayList<ItemDTO>>>(arrayListOf())
-    val itemDTOs: MutableLiveData<ArrayList<ArrayList<ItemDTO>>> = _itemDTOs
+    private val _itemDTOs = MutableLiveData<ArrayList<ItemDTO>>()
+    val itemDTOs: LiveData<ArrayList<ItemDTO>> = _itemDTOs
 
     init {
         getItemDTOs()
     }
 
-    private fun notifyItemDTOsChanged() {
-        viewModelScope.launch(Dispatchers.Main) {
-            _itemDTOs.value = _itemDTOs.value
-        }
-    }
-
     private fun getItemDTOs() {
         viewModelScope.launch(Dispatchers.IO) {
+            _itemDTOs.value!!.clear()
+
             for (i in 0 until InitData.categoryDTOs.size)
                 _itemDTOs.value!!.add(arrayListOf())
 
@@ -39,8 +35,9 @@ class DressroomFragmentViewModel : ViewModel() {
             val accountDTO = document.toObject(AccountDTO::class.java)!!
 
             if (accountDTO.items.isNullOrEmpty()) {
-                notifyItemDTOsChanged()
-
+                withContext(Dispatchers.Main) {
+                    _isInitialized.value = true
+                }
                 return@launch
             }
 
@@ -59,27 +56,13 @@ class DressroomFragmentViewModel : ViewModel() {
             }
 
             for (itemDTO in _itemDTOs.value!!)
-                itemDTO.sortByDescending { itemDTO -> itemDTO.timestamps!![0] }
+                itemDTO.sortByDescending { itemDTO -> itemDTO.timestamp }
 
-            notifyItemDTOsChanged()
+            withContext(Dispatchers.Main) {
+                _isInitialized.value = true
+            }
+
+            }
         }
-    }
-
-    fun addItemDTO(itemDTO: ItemDTO) {
-        val categoryIndex = InitData.getCategoryIndex(itemDTO.categoryId!!)
-
-        _itemDTOs.value!![0].add(0, itemDTO)
-        _itemDTOs.value!![categoryIndex].add(0, itemDTO)
-
-        notifyItemDTOsChanged()
-    }
-
-    fun removeItemDTO(itemDTO: ItemDTO) {
-        val categoryIndex = InitData.getCategoryIndex(itemDTO.categoryId!!)
-
-        _itemDTOs.value!![0].add(itemDTO)
-        _itemDTOs.value!![categoryIndex].add(itemDTO)
-
-        notifyItemDTOsChanged()
     }
 }

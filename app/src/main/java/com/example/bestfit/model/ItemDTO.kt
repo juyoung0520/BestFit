@@ -5,7 +5,7 @@ import android.os.Parcelable
 
 data class ItemDTO(
     var id: String? = null,
-    var timestamp: Long? = null,
+    var timestamps: ArrayList<Long>? = arrayListOf(),
     var uid: String? = null,
     var categoryId: String? = null,
     var subCategoryId: String? = null,
@@ -24,7 +24,9 @@ data class ItemDTO(
     ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
-        parcel.readValue(Long::class.java.classLoader) as? Long,
+        arrayListOf<Long>().apply {
+            parcel.readList(this, Long::class.java.classLoader)
+        },
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -41,12 +43,13 @@ data class ItemDTO(
         parcel.readString(),
         arrayListOf<String>().apply {
             parcel.readList(this, String::class.java.classLoader)
-        }
+        },
+        parcel.readValue(Int::class.java.classLoader) as? Int,
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
-        parcel.writeValue(timestamp)
+        parcel.writeList(timestamps)
         parcel.writeString(uid)
         parcel.writeString(categoryId)
         parcel.writeString(subCategoryId)
@@ -60,6 +63,7 @@ data class ItemDTO(
         parcel.writeValue(ratingReview)
         parcel.writeString(review)
         parcel.writeList(searchKeywords)
+        parcel.writeValue(dibs)
     }
 
     override fun describeContents(): Int {

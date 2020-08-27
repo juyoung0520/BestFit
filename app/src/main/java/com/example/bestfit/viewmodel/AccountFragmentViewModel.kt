@@ -49,6 +49,7 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
                 withContext(Dispatchers.Main) {
                     _isInitialized.value = true
                 }
+
                 return@launch
             }
 
@@ -64,7 +65,7 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
                 _itemDTOs.value!!.add(itemDTO)
             }
 
-            _itemDTOs.value!!.sortByDescending { itemDTO -> itemDTO.timestamp }
+            _itemDTOs.value!!.sortByDescending { itemDTO -> itemDTO.timestamps!![0] }
 
             withContext(Dispatchers.Main) {
                 _isInitialized.value = true

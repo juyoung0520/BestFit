@@ -90,6 +90,9 @@ object InitData {
     }
 
     fun getSizeString(sizeFormatId: String, sizeId: String): String? {
+        if (sizeFormatId == "00")
+            return "FREE"
+
         val sizeIndex = getSizeIndex(sizeFormatId, sizeId)
 
         if (sizeIndex == -1)
