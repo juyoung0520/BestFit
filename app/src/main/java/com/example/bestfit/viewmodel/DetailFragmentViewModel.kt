@@ -1,18 +1,19 @@
 package com.example.bestfit.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
-class DetailFragmentViewModel : ViewModel() {
+class DetailFragmentViewModel(private val uid: String, private val itemId: String) : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
+    private val currentUid = FirebaseAuth.getInstance().currentUser!!.uid
 
     private val _isInitialized = MutableLiveData<Boolean>(false)
     val isInitialized: LiveData<Boolean> = _isInitialized
@@ -23,12 +24,22 @@ class DetailFragmentViewModel : ViewModel() {
     private val _accountDTO = MutableLiveData<AccountDTO>()
     val accountDTO: LiveData<AccountDTO> = _accountDTO
 
-    fun isInitialized() : Boolean {
-        return _isInitialized.value!!
+    private val _initDibs = MutableLiveData<Boolean>()
+    val initDibs: LiveData<Boolean> = _initDibs
+
+    private val _dibs = MutableLiveData<Int>()
+    val dibs: LiveData<Int> = _dibs
+
+    class Factory(private val uid: String, private val itemId: String) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return DetailFragmentViewModel(uid, itemId) as T
+        }
     }
 
-    fun setInitializedState(state: Boolean) {
-        _isInitialized.value = state
+    init {
+        // 여기다가 dibsitems 가져오는 함수 호출
+        getAccountDTO()
+        initDibs()
     }
 
     fun setScrollPosition(position: Int) {
@@ -39,40 +50,55 @@ class DetailFragmentViewModel : ViewModel() {
         return _scrollPosition.value!!
     }
 
-    fun getAccountDTO(uid: String) {
-        viewModelScope.launch {
+    private fun getAccountDTO() {
+        viewModelScope.launch(Dispatchers.IO) {
             val document = db.collection("accounts").document(uid).get().await()
-            _accountDTO.value = document.toObject(AccountDTO::class.java)!!
+            withContext(Dispatchers.Main) {
+                _accountDTO.value = document.toObject(AccountDTO::class.java)!!
+            }
         }
     }
 
-    fun addDibs(currentUid: String, itemId: String) {
-        viewModelScope.launch {
+    fun initDibs() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val document = db.collection("accounts").document(currentUid).get().await()
+            withContext(Dispatchers.Main) {
+                _initDibs.value = document.toObject(AccountDTO::class.java)!!.dibsItems!!.contains(itemId)
+            }
+        }
+    }
+
+    fun addDibs() {
+        viewModelScope.launch(Dispatchers.IO) {
             db.collection("accounts").document(currentUid).update("dibsItems", FieldValue.arrayUnion(itemId)).await()
 
             val documentRef = db.collection("items").document(itemId)
+            var newDibs: Int?= null
             db.runTransaction { transaction ->
-                val dibs = transaction.get(documentRef).toObject(ItemDTO::class.java)!!.dibs
-                transaction.update(documentRef, "dibs",dibs!!+1 )
+                newDibs = transaction.get(documentRef).toObject(ItemDTO::class.java)!!.dibs!!+1
+                transaction.update(documentRef, "dibs", newDibs)
             }.await()
 
-            getAccountDTO(currentUid)
-            _isInitialized.value = true
+            withContext(Dispatchers.Main) {
+                _dibs.value = newDibs!!
+            }
         }
     }
 
-    fun deleteDibs(currentUid: String, itemId: String) {
-         viewModelScope.launch {
+    fun removeDibs() {
+         viewModelScope.launch(Dispatchers.IO) {
              db.collection("accounts").document(currentUid).update("dibsItems", FieldValue.arrayRemove(itemId)).await()
 
              val documentRef = db.collection("items").document(itemId)
+             var newDibs: Int?= null
              db.runTransaction { transaction ->
-                 val dibs = transaction.get(documentRef).toObject(ItemDTO::class.java)!!.dibs
-                 transaction.update(documentRef, "dibs",dibs!!-1 )
+                newDibs = transaction.get(documentRef).toObject(ItemDTO::class.java)!!.dibs!!-1
+                 transaction.update(documentRef, "dibs",newDibs )
              }.await()
 
-             getAccountDTO(currentUid)
-             _isInitialized.value = true
+             withContext(Dispatchers.Main) {
+                 _dibs.value = newDibs!!
+             }
          }
 
     }

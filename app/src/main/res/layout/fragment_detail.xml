@@ -71,19 +71,26 @@
                 android:orientation="vertical"
                 android:layout_margin="15dp">
 
-                <CheckBox
-                    android:id="@+id/fragment_detail_btn_dibs"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:button="@drawable/check_box_default"
-                    android:layout_gravity="end"/>
+                    android:orientation="vertical"
+                    android:layout_gravity="end">
 
-                <TextView
-                    android:id="@+id/fragment_detail_tv_dibsnum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="찜 125,500"
-                    android:layout_gravity="end" />
+                    <CheckBox
+                        android:id="@+id/fragment_detail_btn_dibs"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:button="@drawable/check_box_default"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/fragment_detail_tv_dibs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
