@@ -61,6 +61,7 @@ class AddItemActivity : AppCompatActivity() {
 
         val itemDTO = intent.getParcelableExtra<ItemDTO>("itemDTO")
         if (itemDTO != null) {
+            println("ho")
             activity_add_item_tv_toolbar_title.text = "아이템 수정"
             viewModel.setTempItemDTO(itemDTO)
         }
