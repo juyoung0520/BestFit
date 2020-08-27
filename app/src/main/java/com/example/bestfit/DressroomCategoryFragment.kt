@@ -16,13 +16,19 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.viewmodel.AccountFragmentViewModel
+import com.example.bestfit.viewmodel.DressroomCategoryFragmentViewModel
 import com.example.bestfit.viewmodel.DressroomFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
 
 class DressroomCategoryFragment : Fragment() {
+    private lateinit var viewModel: DressroomCategoryFragmentViewModel
     private lateinit var dressroomViewModel: DressroomFragmentViewModel
     private lateinit var accountViewModel: AccountFragmentViewModel
+
+    private lateinit var itemRecyclerViewAdapter: ItemRecyclerViewAdapter
+    private lateinit var layoutManager: RecyclerView.LayoutManager
+    private var itemCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +36,8 @@ class DressroomCategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dressroom_category, container, false)
+
+        initRecyclerView(view)
 
         val position = requireArguments().getInt("position")
         if (position == -1)
@@ -42,11 +50,11 @@ class DressroomCategoryFragment : Fragment() {
 
     private fun initAccountViewModel(view: View) {
         accountViewModel = ViewModelProvider(this.requireParentFragment()).get(AccountFragmentViewModel::class.java)
-        initDressroomCategoryFragment(view, accountViewModel.itemDTOs.value!!)
+//        initDressroomCategoryFragment(view, accountViewModel.itemDTOs.value!!)
 
         val initObserver = Observer<Boolean> { isInit ->
             if (isInit) {
-                initDressroomCategoryFragment(view, accountViewModel.itemDTOs.value!!)
+//                initDressroomCategoryFragment(view, accountViewModel.itemDTOs.value!!)
             }
         }
 
@@ -54,50 +62,73 @@ class DressroomCategoryFragment : Fragment() {
     }
 
     private fun initDressroomViewModel(view: View, position: Int) {
-        dressroomViewModel = ViewModelProvider(this.requireParentFragment()).get(DressroomFragmentViewModel::class.java)
+        dressroomViewModel = ViewModelProvider(requireParentFragment()).get(DressroomFragmentViewModel::class.java)
 
-        // diffutil 사용해야함. (추가, 삭제)
-        val initObserver = Observer<Boolean> { isInit ->
-            if (isInit) {
-                initDressroomCategoryFragment(view, dressroomViewModel.itemDTOs.value!![position])
+        val itemDTOsObserver = Observer<ArrayList<ArrayList<ItemDTO>>> { itemDTOs ->
+            if (itemDTOs[position].isNullOrEmpty()) {
+                println("itemDTOs is empty")
+                return@Observer
             }
+
+            println("observer! ${itemDTOs[position].size}")
+            itemRecyclerViewAdapter.submitList(itemDTOs[position].map { it.copy() })
         }
 
-        dressroomViewModel.isInitialized.observe(viewLifecycleOwner, initObserver)
+        dressroomViewModel.itemDTOs.observe(requireParentFragment().viewLifecycleOwner, itemDTOsObserver)
     }
 
-    private fun initDressroomCategoryFragment(view: View, itemDTOs: ArrayList<ItemDTO>) {
-//        view.fragment_dressroom_category_recyclerview.setHasFixedSize(true)
-        val itemRecyclerViewAdapter = ItemRecyclerViewAdapter()
+    private fun initRecyclerView(view: View) {
+        viewModel = ViewModelProvider(this).get(DressroomCategoryFragmentViewModel::class.java)
+
+        if (viewModel.getItemRecyclerViewAdapter() == null) {
+            itemRecyclerViewAdapter = ItemRecyclerViewAdapter()
+            viewModel.setItemRecyclerViewAdapter(itemRecyclerViewAdapter)
+        }
+        else
+            itemRecyclerViewAdapter = viewModel.getItemRecyclerViewAdapter()!!
+
+        layoutManager = GridLayoutManager(context, 2)
         view.fragment_dressroom_category_recyclerview.adapter = itemRecyclerViewAdapter
-        view.fragment_dressroom_category_recyclerview.layoutManager = GridLayoutManager(activity, 2)
-        itemRecyclerViewAdapter.submitList(itemDTOs)
+        view.fragment_dressroom_category_recyclerview.layoutManager = layoutManager
     }
 
-    inner class ItemRecyclerViewAdapter: ListAdapter<ItemDTO, RecyclerView.ViewHolder>(object : DiffUtil.ItemCallback<ItemDTO>() {
+    class DiffItemCallback : DiffUtil.ItemCallback<ItemDTO>() {
         override fun areItemsTheSame(
             oldItem: ItemDTO,
             newItem: ItemDTO
         ): Boolean {
-            // itemDTO의 id 비교?
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
             oldItem: ItemDTO,
             newItem: ItemDTO
         ): Boolean {
-            return oldItem == newItem
+            return oldItem.id == newItem.id
         }
-    }) {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    }
+
+    inner class ItemRecyclerViewAdapter: ListAdapter<ItemDTO, ItemRecyclerViewAdapter.ItemViewHolder>(DiffItemCallback()) {
+        override fun onCurrentListChanged(
+            previousList: MutableList<ItemDTO>,
+            currentList: MutableList<ItemDTO>
+        ) {
+            super.onCurrentListChanged(previousList, currentList)
+
+            println("changed ${previousList.size} -> ${currentList.size}")
+
+            val newItemSize = currentList.size
+            if (previousList.size != 0 && previousList.size < newItemSize)
+                layoutManager.scrollToPosition(0)
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom, parent, false)
             return ItemViewHolder(view)
         }
 
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            val viewHolder = holder as ItemViewHolder
-            viewHolder.bind(getItem(position))
+        override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+            holder.bind(getItem(position))
         }
 
         inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

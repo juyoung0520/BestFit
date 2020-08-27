@@ -47,14 +47,16 @@ class DressroomFragment : Fragment() {
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(DressroomFragmentViewModel::class.java)
 
-        val initObserver = Observer<Boolean> { isInit ->
-            if (isInit) {
-                // 로딩 여기다가 넣음 될 듯??
-//                initDressroomFragment()
-            }
-        }
+        // 아 여기다가 로딩 넣어야되니까 필요한가??? 아 근데 itemdtos observer로 하면 될 듯?
 
-        viewModel.isInitialized.observe(viewLifecycleOwner, initObserver)
+//        val initObserver = Observer<Boolean> { isInit ->
+//            if (isInit) {
+//                // 로딩 여기다가 넣음 될 듯??
+////                initDressroomFragment()
+//            }
+//        }
+//
+//        viewModel.isInitialized.observe(viewLifecycleOwner, initObserver)
     }
 
     private fun initToolbar(view: View) {
@@ -62,9 +64,7 @@ class DressroomFragment : Fragment() {
         view.fragment_dressroom_toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_fragment_dressroom_add -> {
-//                    startActivityForResult(Intent(activity, AddItemActivity::class.java), 1)
                     startForResult.launch(Intent(context, AddItemActivity::class.java))
-
                     true
                 }
                 else -> {
@@ -75,6 +75,7 @@ class DressroomFragment : Fragment() {
     }
 
     private fun initTabAdapter(view: View) {
+        view.fragment_dressroom_viewpager.offscreenPageLimit = InitData.categoryDTOs.size
         view.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter()
         TabLayoutMediator(view.fragment_dressroom_tab, view.fragment_dressroom_viewpager) { tab, position ->
             tab.text = InitData.categoryDTOs[position].name

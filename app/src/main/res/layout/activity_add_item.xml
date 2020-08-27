@@ -13,9 +13,10 @@
         android:layout_height="48dp">
 
         <TextView
+            android:id="@+id/activity_add_item_tv_toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="상품 추가"
+            android:text="아이템 추가"
             android:textColor="@color/colorBlack"
             android:textSize="18sp"
             android:layout_gravity="center_horizontal"/>

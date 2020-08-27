@@ -63,8 +63,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/ExposedDropdownMenu"
-                android:hint="소분류"
-                app:hintAnimationEnabled="false"
+                app:hintEnabled="false"
                 android:layout_weight="1"
                 android:visibility="gone">
 
@@ -74,7 +73,8 @@
                     android:layout_height="wrap_content"
                     android:dropDownHeight="270dp"
                     android:inputType="none"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:hint="소분류"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,7 +97,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="상품 사진"
+            android:text="아이템 사진"
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:layout_marginTop="15dp"
