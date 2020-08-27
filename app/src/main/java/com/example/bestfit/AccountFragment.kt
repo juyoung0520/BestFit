@@ -84,10 +84,6 @@ class AccountFragment : Fragment() {
         }
     }
 
-    private fun initAccountFragment() {
-
-    }
-
     private fun initTabAdapter(view: View) {
         val tabArray = arrayListOf("드레스룸", "게시글")
 
