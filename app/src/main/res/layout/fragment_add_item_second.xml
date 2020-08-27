@@ -57,7 +57,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="상품명"
+            android:text="아이템명"
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
             android:layout_marginTop="15dp"

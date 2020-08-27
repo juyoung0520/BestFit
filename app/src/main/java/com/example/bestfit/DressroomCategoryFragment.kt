@@ -71,16 +71,6 @@ class DressroomCategoryFragment : Fragment() {
             }
 
             println("observer! ${itemDTOs[position].size}")
-
-            val newItemSize = itemDTOs[position].size
-            if (itemCount == newItemSize)
-                return@Observer
-
-            if (itemCount != 0 && itemCount < newItemSize)
-                view.fragment_dressroom_category_recyclerview.smoothScrollToPosition(0)
-            // 스크롤이 맨 아이템까지 안가고 하나 아래까지만 감 ㅠㅠ
-
-            itemCount = newItemSize
             itemRecyclerViewAdapter.submitList(itemDTOs[position].map { it.copy() })
         }
 
@@ -97,7 +87,6 @@ class DressroomCategoryFragment : Fragment() {
         else
             itemRecyclerViewAdapter = viewModel.getItemRecyclerViewAdapter()!!
 
-        // 스크롤 바꾸려고 한건데 안 쓰면 필요없움
         layoutManager = GridLayoutManager(context, 2)
         view.fragment_dressroom_category_recyclerview.adapter = itemRecyclerViewAdapter
         view.fragment_dressroom_category_recyclerview.layoutManager = layoutManager
@@ -120,6 +109,19 @@ class DressroomCategoryFragment : Fragment() {
     }
 
     inner class ItemRecyclerViewAdapter: ListAdapter<ItemDTO, ItemRecyclerViewAdapter.ItemViewHolder>(DiffItemCallback()) {
+        override fun onCurrentListChanged(
+            previousList: MutableList<ItemDTO>,
+            currentList: MutableList<ItemDTO>
+        ) {
+            super.onCurrentListChanged(previousList, currentList)
+
+            println("changed ${previousList.size} -> ${currentList.size}")
+
+            val newItemSize = currentList.size
+            if (previousList.size != 0 && previousList.size < newItemSize)
+                layoutManager.scrollToPosition(0)
+        }
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom, parent, false)
             return ItemViewHolder(view)
