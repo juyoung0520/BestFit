@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.viewmodel.AccountFragmentViewModel
+import com.example.bestfit.viewmodel.DibsFragmentViewModel
 import com.example.bestfit.viewmodel.DressroomFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.item_dressroom.view.*
 class DressroomCategoryFragment : Fragment() {
     private lateinit var dressroomViewModel: DressroomFragmentViewModel
     private lateinit var accountViewModel: AccountFragmentViewModel
+    private lateinit var dibsViewModel: DibsFragmentViewModel
 
     private lateinit var itemRecyclerViewAdapter: ItemRecyclerViewAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
@@ -37,10 +39,12 @@ class DressroomCategoryFragment : Fragment() {
         initRecyclerView(view)
 
         val position = requireArguments().getInt("position")
-        if (position == -1)
-            initAccountViewModel(view)
-        else
-            initDressroomViewModel(view, position)
+
+        when (parentFragment) {
+            is AccountFragment -> initAccountViewModel(view)
+            is DressroomFragment -> initDressroomViewModel(view, position)
+            is DibsFragment -> initDibsViewModel(view)
+        }
 
         return view
     }
@@ -72,6 +76,17 @@ class DressroomCategoryFragment : Fragment() {
         }
 
         dressroomViewModel.itemDTOs.observe(requireParentFragment().viewLifecycleOwner, itemDTOsObserver)
+    }
+
+    private fun initDibsViewModel(view: View) {
+        dibsViewModel = ViewModelProvider(requireParentFragment()).get(DibsFragmentViewModel::class.java)
+
+        val itemDTOsObserver = Observer<ArrayList<ItemDTO>> { itemDTOs ->
+            itemRecyclerViewAdapter.submitList(itemDTOs.map { it.copy() })
+
+        }
+
+        dibsViewModel.itemDTOs.observe(requireParentFragment().viewLifecycleOwner, itemDTOsObserver)
     }
 
     private fun initRecyclerView(view: View) {
@@ -122,7 +137,7 @@ class DressroomCategoryFragment : Fragment() {
         }
 
         inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            fun bind(itemDTO: ItemDTO) {
+                fun bind(itemDTO: ItemDTO) {
                 val view = itemView
 
                 Glide.with(view)
