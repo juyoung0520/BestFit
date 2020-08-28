@@ -84,4 +84,47 @@ class AddItemActivityViewModel : ViewModel() {
             }
         }
     }
+
+    fun submitModifyItem(tempItemDTO: ItemDTO) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val doc = db.collection("items").add(itemDTO).await()
+            val docId = doc.id
+
+//            val tasks = imageUris.mapIndexed { index, uri ->
+//                storage.reference.child("items").child(docId).child(index.toString())
+//                    .putFile(uri)
+//            }
+//
+//            val tasksResult = Tasks.whenAllComplete(tasks).await()
+//            val uploadTasks = tasksResult.map { task ->
+//                val taskSnapshot = task.result as UploadTask.TaskSnapshot
+//                taskSnapshot.storage.downloadUrl
+//            }
+//
+//            val uploadTasksResult = Tasks.whenAllComplete(uploadTasks).await()
+//            val uris = uploadTasksResult.map { task ->
+//                task.result.toString()
+//            }
+
+            // 뭐가 더 빠른지 비교 필요
+//            val uris = imageUris.mapIndexed { index, uri ->
+//                storage.reference.child("items").child(docId).child(index.toString())
+//                    .putFile(uri)
+//                    .await()
+//                    .storage
+//                    .downloadUrl
+//                    .await()
+//            }
+
+//            itemDTO.id = docId
+//            itemDTO.images = ArrayList(uris)
+
+//            db.collection("items").document(docId).update(tempItemDTO).await()
+//            db.collection("accounts").document(currentUid).update("items", FieldValue.arrayUnion(docId)).await()
+//
+//            withContext(Dispatchers.Main) {
+//                _itemDTO.value = itemDTO
+//            }
+        }
+    }
 }

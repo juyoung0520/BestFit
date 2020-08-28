@@ -29,15 +29,16 @@ class AddItemThirdFragment  : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_third, container, false)
 
-        initSelectedSizeTable(fragmentView)
+        initViewModel(fragmentView)
 
         fragmentView.fragment_add_item_third_group_size_review.addOnButtonCheckedListener { group, _, isChecked ->
-            fragmentView.fragment_add_item_third_error_size_review.visibility = View.GONE
+            if (fragmentView.fragment_add_item_third_error_size_review.visibility == View.VISIBLE)
+                fragmentView.fragment_add_item_third_error_size_review.visibility = View.GONE
 
             if (!isChecked)
                 return@addOnButtonCheckedListener
 
-            fragmentView.fragment_add_item_third_group_size_review.tag = when (group.checkedButtonId) {
+            viewModel.tempItemDTO.value!!.sizeReview = when (group.checkedButtonId) {
                 fragmentView.fragment_add_item_third_btn_s.id -> 0
                 fragmentView.fragment_add_item_third_btn_m.id -> 1
                 fragmentView.fragment_add_item_third_btn_l.id -> 2
@@ -52,6 +53,37 @@ class AddItemThirdFragment  : Fragment() {
         return fragmentView
     }
 
+    private fun initViewModel(view: View) {
+        viewModel = ViewModelProvider(requireActivity()).get(AddItemActivityViewModel::class.java)
+
+        val tempItemDTOObserver = Observer<ItemDTO> {
+            initSelectedSizeTable(view)
+        }
+
+        viewModel.tempItemDTO.observe(viewLifecycleOwner, tempItemDTOObserver)
+    }
+
+    private fun initViewFromTempItemDTO(view: View) {
+        val tempItemDTO = viewModel.tempItemDTO.value!!
+
+        if (tempItemDTO.sizeFormatId != null)
+            view.fragment_add_item_third_group_format.check(InitData.getSizeFormatIndex(tempItemDTO.sizeFormatId!!))
+
+        if (tempItemDTO.sizeId != null)
+            view.fragment_add_item_third_group_size.check(InitData.getSizeIndex(tempItemDTO.sizeFormatId!!, tempItemDTO.sizeId!!))
+
+        if (tempItemDTO.sizeReview != null) {
+            val sizeReviewId = when (tempItemDTO.sizeReview) {
+                0 -> R.id.fragment_add_item_third_btn_s
+                1 -> R.id.fragment_add_item_third_btn_m
+                2 -> R.id.fragment_add_item_third_btn_l
+                else -> -1
+            }
+
+            view.fragment_add_item_third_group_size_review.check(sizeReviewId)
+        }
+    }
+
     private fun initSelectedSizeTable(view: View) {
         val sizeFormats = InitData.sizeFormatDTOs
 
@@ -64,7 +96,7 @@ class AddItemThirdFragment  : Fragment() {
         }
 
         view.fragment_add_item_third_group_format.addOnButtonCheckedListener { group, _, isChecked ->
-            if (selectedSizeFormatId == null)
+            if (view.fragment_add_item_third_error_size.visibility == View.VISIBLE)
                 view.fragment_add_item_third_error_size.visibility = View.GONE
 
             if (group.checkedButtonId == -1) {
@@ -73,14 +105,17 @@ class AddItemThirdFragment  : Fragment() {
 
                 view.fragment_add_item_third_group_size.removeAllViews()
 
-                selectedSizeFormatId = null
-                selectedSizeId = null
+                viewModel.tempItemDTO.value!!.sizeFormatId = null
+                viewModel.tempItemDTO.value!!.sizeId = null
 
                 return@addOnButtonCheckedListener
             }
 
-            if (!isChecked)
+            if (!isChecked) {
+                viewModel.tempItemDTO.value!!.sizeId = null
+
                 return@addOnButtonCheckedListener
+            }
 
             view.fragment_add_item_third_layout_selected_size.requestFocus()
             view.fragment_add_item_third_layout_divider.setBackgroundColor(resources.getColor(R.color.colorPrimaryTransparent))
@@ -99,19 +134,18 @@ class AddItemThirdFragment  : Fragment() {
                 view.fragment_add_item_third_group_size.addView(sizeButton, -1, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (40 * resources.displayMetrics.density).toInt()))
             }
 
-            selectedSizeFormatId = format.id
+            viewModel.tempItemDTO.value!!.sizeFormatId = format.id
 
-            if (selectedSizeFormatId == sizeFormats[0].id)
-                selectedSizeId = selectedSizeFormatId
-            else
-                selectedSizeId = null
+            if (viewModel.tempItemDTO.value!!.sizeFormatId == sizeFormats[0].id)
+                viewModel.tempItemDTO.value!!.sizeId = viewModel.tempItemDTO.value!!.sizeFormatId
         }
 
         view.fragment_add_item_third_group_size.addOnButtonCheckedListener { group, _, isChecked ->
-            view.fragment_add_item_third_error_size.visibility = View.GONE
+            if (view.fragment_add_item_third_error_size.visibility == View.VISIBLE)
+                view.fragment_add_item_third_error_size.visibility = View.GONE
 
             if (group.checkedButtonId == -1) {
-                selectedSizeId = null
+                viewModel.tempItemDTO.value!!.sizeId = null
 
                 return@addOnButtonCheckedListener
             }
@@ -119,7 +153,7 @@ class AddItemThirdFragment  : Fragment() {
             if (!isChecked)
                 return@addOnButtonCheckedListener
 
-            selectedSizeId = group[group.checkedButtonId].tag as String
+            viewModel.tempItemDTO.value!!.sizeId = group[group.checkedButtonId].tag as String
         }
 
         view.fragment_add_item_third_layout_selected_size.setOnFocusChangeListener { v, hasFocus ->
@@ -127,31 +161,7 @@ class AddItemThirdFragment  : Fragment() {
                 view.fragment_add_item_third_layout_divider.setBackgroundColor(resources.getColor(R.color.colorHintTransparent))
         }
 
-        initViewModel(view)
-    }
-
-    private fun initViewModel(view: View) {
-        viewModel = ViewModelProvider(requireActivity()).get(AddItemActivityViewModel::class.java)
-
-        val tempItemDTOObserver = Observer<ItemDTO> { tempItemDTO ->
-            initTempCategory(view, tempItemDTO)
-        }
-
-        viewModel.tempItemDTO.observe(viewLifecycleOwner, tempItemDTOObserver)
-    }
-
-    private fun initTempCategory(view: View, tempItemDTO: ItemDTO) {
-        view.fragment_add_item_third_group_format.check(InitData.getSizeFormatIndex(tempItemDTO.sizeFormatId!!))
-        view.fragment_add_item_third_group_size.check(InitData.getSizeIndex(tempItemDTO.sizeFormatId!!, tempItemDTO.sizeId!!))
-
-        val sizeReviewId = when (tempItemDTO.sizeReview) {
-            0 -> R.id.fragment_add_item_third_btn_s
-            1 -> R.id.fragment_add_item_third_btn_m
-            2 -> R.id.fragment_add_item_third_btn_l
-            else -> -1
-        }
-
-        view.fragment_add_item_third_group_size_review.check(sizeReviewId)
+        initViewFromTempItemDTO(view)
     }
 
     private fun submitAddItem() {
