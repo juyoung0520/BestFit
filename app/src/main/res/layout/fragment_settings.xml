@@ -81,9 +81,33 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/profile_message"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     android:textColor="@color/colorDarkGray"
                     android:layout_marginTop="20dp"/>
+
+                <LinearLayout
+                    android:id="@+id/fragment_settings_layout_dibs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="30dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_favorite_filled"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="찜한 목록"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
