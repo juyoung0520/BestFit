@@ -17,7 +17,7 @@ class DibsFragmentViewModel : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
     private val currentUid = FirebaseAuth.getInstance().currentUser!!.uid
 
-    private val _itemDTOs = MutableLiveData<ArrayList<ItemDTO>>()
+    private val _itemDTOs = MutableLiveData<ArrayList<ItemDTO>>(arrayListOf())
     val itemDTOs: LiveData<ArrayList<ItemDTO>> = _itemDTOs
 
     init {
