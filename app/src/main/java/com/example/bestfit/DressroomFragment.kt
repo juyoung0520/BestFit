@@ -88,7 +88,6 @@ class DressroomFragment : Fragment() {
         }
 
         override fun createFragment(position: Int): Fragment {
-            println("createfragment $position")
             val fragment = DressroomCategoryFragment()
             val bundle = Bundle()
 

@@ -94,7 +94,7 @@ class DressroomCategoryFragment : Fragment() {
             oldItem: ItemDTO,
             newItem: ItemDTO
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.timestamps!!.size == newItem.timestamps!!.size
         }
     }
 

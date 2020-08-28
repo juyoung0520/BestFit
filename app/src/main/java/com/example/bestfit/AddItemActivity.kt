@@ -52,18 +52,23 @@ class AddItemActivity : AppCompatActivity() {
 
         val initializedObserver = Observer<Boolean> { initialized ->
             if (initialized) {
-                val itemDTO = intent.getParcelableExtra<ItemDTO>("itemDTO")
-                if (itemDTO == null)
+                val tempItemDTO = intent.getParcelableExtra<ItemDTO>("tempItemDTO")
+                if (tempItemDTO == null)
                     viewModel.setTempItemDTO(ItemDTO())
                 else {
                     activity_add_item_tv_toolbar_title.text = "아이템 수정"
-                    viewModel.setTempItemDTO(itemDTO)
+                    viewModel.setTempItemDTO(tempItemDTO)
                 }
             }
         }
 
         val itemDTOObserver = Observer<ItemDTO> { itemDTO ->
-            setResult(RESULT_OK, Intent().putExtra("itemDTO", itemDTO))
+            val tempItemDTO = intent.getParcelableExtra<ItemDTO>("tempItemDTO")
+            if (tempItemDTO == null)
+                setResult(RESULT_OK, Intent().putExtra("itemDTO", itemDTO))
+            else
+                setResult(RESULT_OK, Intent().putExtra("tempItemDTO", tempItemDTO))
+
             finish()
         }
 
@@ -227,7 +232,7 @@ class AddItemActivity : AppCompatActivity() {
 //            imageUris.add(uri)
 //        }
 
-//        viewModel.submitModifyItem(tempItemDTO, imageUris)
+        viewModel.submitModifyItem(tempItemDTO)
     }
 
     private fun getSearchKeywords(itemName: String): ArrayList<String> {

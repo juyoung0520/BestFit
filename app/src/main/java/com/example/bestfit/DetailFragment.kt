@@ -43,8 +43,10 @@ class DetailFragment : Fragment() {
 
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val itemDTO = result.data!!.getParcelableExtra<ItemDTO>("itemDTO")!!
+            val itemDTO = result.data!!.getParcelableExtra<ItemDTO>("tempItemDTO")!!
             this.itemDTO = itemDTO
+
+            viewModel.notifyItemDTOModified()
         }
     }
 
@@ -101,7 +103,7 @@ class DetailFragment : Fragment() {
         view.fragment_detail_toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_fragment_detail_modify_item -> {
-                    val intent = Intent(context, AddItemActivity::class.java).putExtra("itemDTO", itemDTO)
+                    val intent = Intent(context, AddItemActivity::class.java).putExtra("tempItemDTO", itemDTO)
                     startForResult.launch(intent)
                     true
                 }

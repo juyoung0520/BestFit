@@ -50,6 +50,16 @@ class DetailFragmentViewModel(private val uid: String, private val itemId: Strin
         return _scrollPosition.value!!
     }
 
+    private fun notifyDTOChanged() {
+        viewModelScope.launch(Dispatchers.Main) {
+            _accountDTO.value = _accountDTO.value
+        }
+    }
+
+    fun notifyItemDTOModified() {
+        notifyDTOChanged()
+    }
+
     private fun getAccountDTO() {
         viewModelScope.launch(Dispatchers.IO) {
             val document = db.collection("accounts").document(uid).get().await()
