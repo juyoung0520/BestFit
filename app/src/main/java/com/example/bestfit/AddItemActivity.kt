@@ -50,21 +50,25 @@ class AddItemActivity : AppCompatActivity() {
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(AddItemActivityViewModel::class.java)
 
+        val initializedObserver = Observer<Boolean> { initialized ->
+            if (initialized) {
+                val itemDTO = intent.getParcelableExtra<ItemDTO>("itemDTO")
+                if (itemDTO == null)
+                    viewModel.setTempItemDTO(ItemDTO())
+                else {
+                    activity_add_item_tv_toolbar_title.text = "아이템 수정"
+                    viewModel.setTempItemDTO(itemDTO)
+                }
+            }
+        }
+
         val itemDTOObserver = Observer<ItemDTO> { itemDTO ->
             setResult(RESULT_OK, Intent().putExtra("itemDTO", itemDTO))
             finish()
         }
 
+        viewModel.initialized.observe(this, initializedObserver)
         viewModel.itemDTO.observe(this, itemDTOObserver)
-
-        // rotate 할 때 다시 호출되는지 확인!!! -> viewmodel에 arguments 넘기는 방식 고민해보기
-
-        val itemDTO = intent.getParcelableExtra<ItemDTO>("itemDTO")
-        if (itemDTO != null) {
-            println("ho")
-            activity_add_item_tv_toolbar_title.text = "아이템 수정"
-            viewModel.setTempItemDTO(itemDTO)
-        }
     }
 
     private fun initToolbar() {
@@ -165,6 +169,13 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     fun submitAddItem() {
+        val tempItemDTO = viewModel.tempItemDTO.value!!
+        if (tempItemDTO.id != null) {
+            submitModifyItem()
+
+            return
+        }
+
         val firstFragment = fragments[0] as AddItemFirstFragment
         val firstFragmentView = firstFragment.fragmentView
         val secondFragment = fragments[1] as AddItemSecondFragment
@@ -174,36 +185,49 @@ class AddItemActivity : AppCompatActivity() {
         val fourthFragment = fragments[3] as AddItemFourthFragment
         val fourthFragmentView = fourthFragment.fragmentView
 
-        var timestamps: ArrayList<Long> = arrayListOf()
-        if (viewModel.tempItemDTO.value != null)
-            timestamps = viewModel.tempItemDTO.value!!.timestamps!!
-        timestamps.add(System.currentTimeMillis())
-
         val itemDTO = ItemDTO()
-        itemDTO.timestamps = timestamps
+        itemDTO.timestamps!!.add(System.currentTimeMillis())
         itemDTO.uid = currentUid
-        itemDTO.categoryId = firstFragmentView.fragment_add_item_first_actv_category.tag as String
-        itemDTO.subCategoryId = firstFragmentView.fragment_add_item_first_actv_sub_category.tag as String
+        itemDTO.categoryId = tempItemDTO.categoryId
+        itemDTO.subCategoryId = tempItemDTO.subCategoryId
 //        itemDTO.brandId
         itemDTO.name = secondFragmentView.fragment_add_item_second_text_item_name.text.toString()
-        itemDTO.sizeFormatId = thirdFragment.selectedSizeFormatId
-        itemDTO.sizeId = thirdFragment.selectedSizeId
-        itemDTO.sizeReview = thirdFragmentView.fragment_add_item_third_group_size_review.tag as Int
+        itemDTO.sizeFormatId = tempItemDTO.sizeFormatId
+        itemDTO.sizeId = tempItemDTO.sizeId
+        itemDTO.sizeReview = tempItemDTO.sizeReview
         itemDTO.ratingReview = fourthFragmentView.fragment_add_item_fourth_rating.rating
         itemDTO.review = fourthFragmentView.fragment_add_item_fourth_text_review.text.toString()
         itemDTO.searchKeywords = getSearchKeywords(itemDTO.name.toString())
 
         val imageUris = arrayListOf<Uri>()
         for (image in firstFragment.itemImages) {
-            val uri = FileProvider.getUriForFile(
-                this, "com.jinu.imagepickerlib.fileprovider", File(
-                    image
-                )
-            )
+            val uri = FileProvider.getUriForFile(this, "com.jinu.imagepickerlib.fileprovider", File(image))
             imageUris.add(uri)
         }
 
         viewModel.submitAddItem(itemDTO, imageUris)
+    }
+
+    private fun submitModifyItem() {
+        val secondFragment = fragments[1] as AddItemSecondFragment
+        val secondFragmentView = secondFragment.fragmentView
+        val fourthFragment = fragments[3] as AddItemFourthFragment
+        val fourthFragmentView = fourthFragment.fragmentView
+
+        val tempItemDTO = viewModel.tempItemDTO.value!!
+        tempItemDTO.timestamps!!.add(System.currentTimeMillis())
+        tempItemDTO.name = secondFragmentView.fragment_add_item_second_text_item_name.text.toString()
+        tempItemDTO.ratingReview = fourthFragmentView.fragment_add_item_fourth_rating.rating
+        tempItemDTO.review = fourthFragmentView.fragment_add_item_fourth_text_review.text.toString()
+        tempItemDTO.searchKeywords = getSearchKeywords(tempItemDTO.name.toString())
+
+//        val imageUris = arrayListOf<Uri>()
+//        for (image in firstFragment.itemImages) {
+//            val uri = FileProvider.getUriForFile(this, "com.jinu.imagepickerlib.fileprovider", File(image))
+//            imageUris.add(uri)
+//        }
+
+//        viewModel.submitModifyItem(tempItemDTO, imageUris)
     }
 
     private fun getSearchKeywords(itemName: String): ArrayList<String> {
@@ -236,7 +260,7 @@ class AddItemActivity : AppCompatActivity() {
         val fourthFragmentView = fourthFragment.fragmentView
 
         // firstFragment
-        if (firstFragmentView.fragment_add_item_first_actv_category.text.isNullOrEmpty() || firstFragmentView.fragment_add_item_first_actv_sub_category.text.isNullOrEmpty()) {
+        if (viewModel.tempItemDTO.value!!.categoryId == null || viewModel.tempItemDTO.value!!.subCategoryId == null) {
             changeViewPage(0)
             firstFragmentView.fragment_add_item_first_error_category.visibility = View.VISIBLE
 
@@ -251,6 +275,7 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         // secondFragment
+        // tempitemdto로 변경 필요
         if (secondFragmentView.fragment_add_item_second_actv_brand.text.isNullOrEmpty()) {
             changeViewPage(1)
             secondFragmentView.fragment_add_item_second_error_brand.visibility = View.VISIBLE
@@ -266,14 +291,14 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         // thirdFragment
-        if (thirdFragment.selectedSizeFormatId == null || thirdFragment.selectedSizeId == null) {
+        if (viewModel.tempItemDTO.value!!.sizeFormatId == null || viewModel.tempItemDTO.value!!.sizeId == null) {
             changeViewPage(2)
             thirdFragmentView.fragment_add_item_third_error_size.visibility = View.VISIBLE
 
             return false
         }
 
-        if (thirdFragmentView.fragment_add_item_third_group_size_review.tag == null) {
+        if (viewModel.tempItemDTO.value!!.sizeReview == null) {
             changeViewPage(2)
             thirdFragmentView.fragment_add_item_third_error_size_review.visibility = View.VISIBLE
 
@@ -281,14 +306,14 @@ class AddItemActivity : AppCompatActivity() {
         }
 
         // fourthFragment
-        if (fourthFragmentView.fragment_add_item_fourth_text_review.text.isNullOrEmpty()) {
-            fourthFragmentView.fragment_add_item_fourth_error_review.visibility = View.VISIBLE
+        if (fourthFragmentView.fragment_add_item_fourth_rating.rating.equals(0.toFloat())) {
+            fourthFragmentView.fragment_add_item_fourth_error_rating.visibility = View.VISIBLE
 
             return false
         }
 
-        if (fourthFragmentView.fragment_add_item_fourth_rating.rating.equals(0.toFloat())) {
-            fourthFragmentView.fragment_add_item_fourth_error_rating.visibility = View.VISIBLE
+        if (fourthFragmentView.fragment_add_item_fourth_text_review.text.isNullOrEmpty()) {
+            fourthFragmentView.fragment_add_item_fourth_error_review.visibility = View.VISIBLE
 
             return false
         }

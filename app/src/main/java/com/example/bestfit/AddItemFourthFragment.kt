@@ -25,12 +25,14 @@ class AddItemFourthFragment : Fragment() {
 
         initViewModel(fragmentView)
 
-        fragmentView.fragment_add_item_fourth_text_review.setOnFocusChangeListener { view, b ->
-            fragmentView.fragment_add_item_fourth_error_review.visibility = View.GONE
+        fragmentView.fragment_add_item_fourth_rating.setOnRatingBarChangeListener { ratingBar, fl, b ->
+            if (fragmentView.fragment_add_item_fourth_error_rating.visibility == View.VISIBLE)
+                fragmentView.fragment_add_item_fourth_error_rating.visibility = View.GONE
         }
 
-        fragmentView.fragment_add_item_fourth_rating.setOnRatingBarChangeListener { ratingBar, fl, b ->
-            fragmentView.fragment_add_item_fourth_error_rating.visibility = View.GONE
+        fragmentView.fragment_add_item_fourth_text_review.setOnFocusChangeListener { view, b ->
+            if (fragmentView.fragment_add_item_fourth_error_review.visibility == View.VISIBLE)
+                fragmentView.fragment_add_item_fourth_error_review.visibility = View.GONE
         }
 
         return fragmentView
@@ -39,15 +41,20 @@ class AddItemFourthFragment : Fragment() {
     private fun initViewModel(view: View) {
         viewModel = ViewModelProvider(requireActivity()).get(AddItemActivityViewModel::class.java)
 
-        val tempItemDTOObserver = Observer<ItemDTO> { tempItemDTO ->
-            initTempCategory(view, tempItemDTO)
+        val tempItemDTOObserver = Observer<ItemDTO> {
+            initViewFromTempItemDTO(view)
         }
 
         viewModel.tempItemDTO.observe(viewLifecycleOwner, tempItemDTOObserver)
     }
 
-    private fun initTempCategory(view: View, tempItemDTO: ItemDTO) {
-        view.fragment_add_item_fourth_rating.rating = tempItemDTO.ratingReview!!
-        view.fragment_add_item_fourth_text_review.setText(tempItemDTO.review)
+    private fun initViewFromTempItemDTO(view: View) {
+        val tempItemDTO = viewModel.tempItemDTO.value!!
+
+        if (tempItemDTO.ratingReview != null)
+            view.fragment_add_item_fourth_rating.rating = tempItemDTO.ratingReview!!
+
+        if (tempItemDTO.review != null)
+            view.fragment_add_item_fourth_text_review.setText(tempItemDTO.review)
     }
 }

@@ -21,7 +21,7 @@
             app:collapsedTitleTextAppearance="@style/ToolbarCollapsedTitle"
             app:expandedTitleTextAppearance="@style/ToolbarExpandedTitle"
             app:expandedTitleMarginBottom="23dp"
-            app:expandedTitleMarginStart="40dp"
+            app:expandedTitleMarginStart="45dp"
             app:contentScrim="@color/colorWhite">
 
             <androidx.appcompat.widget.Toolbar
@@ -46,6 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+<!--            nestedscrollview로 감싸기-->
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/fragment_detail_viewpager_image"
