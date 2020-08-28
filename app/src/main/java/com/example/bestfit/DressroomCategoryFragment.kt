@@ -122,7 +122,7 @@ class DressroomCategoryFragment : Fragment() {
         }
 
         inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            fun bind(itemDTO: ItemDTO) {
+                fun bind(itemDTO: ItemDTO) {
                 val view = itemView
 
                 Glide.with(view)
