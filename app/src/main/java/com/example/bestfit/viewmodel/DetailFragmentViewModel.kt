@@ -62,8 +62,13 @@ class DetailFragmentViewModel(private val uid: String, private val itemId: Strin
     fun initDibs() {
         viewModelScope.launch(Dispatchers.IO) {
             val document = db.collection("accounts").document(currentUid).get().await()
+            val accountDTO = document.toObject(AccountDTO::class.java)!!
+
             withContext(Dispatchers.Main) {
-                _initDibs.value = document.toObject(AccountDTO::class.java)!!.dibsItems!!.contains(itemId)
+                if (accountDTO.dibsItems.isNullOrEmpty())
+                    _initDibs.value = false
+                else
+                    _initDibs.value = accountDTO.dibsItems!!.contains(itemId)
             }
         }
     }

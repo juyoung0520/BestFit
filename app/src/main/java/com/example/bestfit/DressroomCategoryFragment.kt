@@ -16,19 +16,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.viewmodel.AccountFragmentViewModel
-import com.example.bestfit.viewmodel.DressroomCategoryFragmentViewModel
 import com.example.bestfit.viewmodel.DressroomFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
 
 class DressroomCategoryFragment : Fragment() {
-    private lateinit var viewModel: DressroomCategoryFragmentViewModel
     private lateinit var dressroomViewModel: DressroomFragmentViewModel
     private lateinit var accountViewModel: AccountFragmentViewModel
 
     private lateinit var itemRecyclerViewAdapter: ItemRecyclerViewAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
-    private var itemCount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,16 +75,9 @@ class DressroomCategoryFragment : Fragment() {
     }
 
     private fun initRecyclerView(view: View) {
-        viewModel = ViewModelProvider(this).get(DressroomCategoryFragmentViewModel::class.java)
-
-        if (viewModel.getItemRecyclerViewAdapter() == null) {
-            itemRecyclerViewAdapter = ItemRecyclerViewAdapter()
-            viewModel.setItemRecyclerViewAdapter(itemRecyclerViewAdapter)
-        }
-        else
-            itemRecyclerViewAdapter = viewModel.getItemRecyclerViewAdapter()!!
-
+        itemRecyclerViewAdapter = ItemRecyclerViewAdapter()
         layoutManager = GridLayoutManager(context, 2)
+
         view.fragment_dressroom_category_recyclerview.adapter = itemRecyclerViewAdapter
         view.fragment_dressroom_category_recyclerview.layoutManager = layoutManager
     }

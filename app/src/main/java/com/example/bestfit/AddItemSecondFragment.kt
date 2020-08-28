@@ -27,10 +27,11 @@ class AddItemSecondFragment  : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_second, container, false)
 
-        initBrand(fragmentView)
+        initViewModel(fragmentView)
 
         fragmentView.fragment_add_item_second_text_item_name.setOnFocusChangeListener { view, b ->
-            fragmentView.fragment_add_item_second_error_item_name.visibility = View.GONE
+            if (fragmentView.fragment_add_item_second_error_item_name.visibility == View.VISIBLE)
+                fragmentView.fragment_add_item_second_error_item_name.visibility = View.GONE
         }
 
         fragmentView.fragment_add_item_second_btn_submit.setOnClickListener {
@@ -40,42 +41,37 @@ class AddItemSecondFragment  : Fragment() {
         return fragmentView
     }
 
-    private fun initBrand(view: View) {
-        val brands = InitData.brands
-        val categoryAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, brands)
-
-        view.fragment_add_item_second_actv_brand.setAdapter(categoryAdapter)
-        view.fragment_add_item_second_actv_brand.setOnFocusChangeListener { _, b ->
-            view.fragment_add_item_second_error_brand.visibility = View.GONE
-
-            println("focus")
-            if (b) {
-                view.fragment_add_item_second_layout_actv_brand.hint = ""
-                view.fragment_add_item_second_actv_brand.text = null
-            }
-            else if (view.fragment_add_item_second_actv_brand.text.isNullOrEmpty())
-                view.fragment_add_item_second_layout_actv_brand.hint = "브랜드/쇼핑몰"
-        }
-        view.fragment_add_item_second_actv_brand.setOnItemClickListener { _, _, _, _ ->
-            println("test")
-            view.fragment_add_item_second_text_item_name.requestFocus()
-        }
-
-        initViewModel(view)
-    }
-
     private fun initViewModel(view: View) {
         viewModel = ViewModelProvider(requireActivity()).get(AddItemActivityViewModel::class.java)
 
-        val tempItemDTOObserver = Observer<ItemDTO> { tempItemDTO ->
-            initTempCategory(view, tempItemDTO)
+        val tempItemDTOObserver = Observer<ItemDTO> {
+            initBrandAdapter(view)
         }
 
         viewModel.tempItemDTO.observe(viewLifecycleOwner, tempItemDTOObserver)
     }
 
-    private fun initTempCategory(view: View, tempItemDTO: ItemDTO) {
-        view.fragment_add_item_second_text_item_name.setText(tempItemDTO.name)
+    private fun initViewFromTempItemDTO(view: View) {
+        val tempItemDTO = viewModel.tempItemDTO.value!!
+
+        if (tempItemDTO.name != null)
+            view.fragment_add_item_second_text_item_name.setText(tempItemDTO.name)
+    }
+
+    private fun initBrandAdapter(view: View) {
+        val brands = InitData.brands
+        val categoryAdapter = ArrayAdapter(requireContext(), R.layout.item_dropdown, brands)
+
+        view.fragment_add_item_second_actv_brand.setAdapter(categoryAdapter)
+        view.fragment_add_item_second_actv_brand.setOnFocusChangeListener { _, _ ->
+            if (view.fragment_add_item_second_error_brand.visibility == View.VISIBLE)
+                view.fragment_add_item_second_error_brand.visibility = View.GONE
+        }
+        view.fragment_add_item_second_actv_brand.setOnItemClickListener { _, _, _, _ ->
+            view.fragment_add_item_second_text_item_name.requestFocus()
+        }
+
+        initViewFromTempItemDTO(view)
     }
 
     private fun submitAddItem() {

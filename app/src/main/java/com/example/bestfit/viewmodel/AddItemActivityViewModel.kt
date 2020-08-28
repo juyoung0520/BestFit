@@ -3,7 +3,6 @@ package com.example.bestfit.viewmodel
 import android.net.Uri
 import androidx.lifecycle.*
 import com.example.bestfit.model.ItemDTO
-import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
@@ -21,14 +20,21 @@ class AddItemActivityViewModel : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
     private val storage = FirebaseStorage.getInstance()
 
+    private val _initialized = SingleLiveEvent<Boolean>()
+    val initialized: SingleLiveEvent<Boolean> = _initialized
+
     private val _itemDTO = MutableLiveData<ItemDTO>()
     val itemDTO: LiveData<ItemDTO> = _itemDTO
 
     private val _tempItemDTO = MutableLiveData<ItemDTO>()
-    val tempItemDTO: LiveData<ItemDTO> = _tempItemDTO
+    val tempItemDTO: MutableLiveData<ItemDTO> = _tempItemDTO
 
     init {
-//        getAccountDTO()
+        _initialized.value = true
+    }
+
+    fun getTempItemDTO(): ItemDTO? {
+        return _tempItemDTO.value
     }
 
     fun setTempItemDTO(itemDTO: ItemDTO) {
@@ -76,6 +82,49 @@ class AddItemActivityViewModel : ViewModel() {
             withContext(Dispatchers.Main) {
                 _itemDTO.value = itemDTO
             }
+        }
+    }
+
+    fun submitModifyItem(tempItemDTO: ItemDTO) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val doc = db.collection("items").add(itemDTO).await()
+            val docId = doc.id
+
+//            val tasks = imageUris.mapIndexed { index, uri ->
+//                storage.reference.child("items").child(docId).child(index.toString())
+//                    .putFile(uri)
+//            }
+//
+//            val tasksResult = Tasks.whenAllComplete(tasks).await()
+//            val uploadTasks = tasksResult.map { task ->
+//                val taskSnapshot = task.result as UploadTask.TaskSnapshot
+//                taskSnapshot.storage.downloadUrl
+//            }
+//
+//            val uploadTasksResult = Tasks.whenAllComplete(uploadTasks).await()
+//            val uris = uploadTasksResult.map { task ->
+//                task.result.toString()
+//            }
+
+            // 뭐가 더 빠른지 비교 필요
+//            val uris = imageUris.mapIndexed { index, uri ->
+//                storage.reference.child("items").child(docId).child(index.toString())
+//                    .putFile(uri)
+//                    .await()
+//                    .storage
+//                    .downloadUrl
+//                    .await()
+//            }
+
+//            itemDTO.id = docId
+//            itemDTO.images = ArrayList(uris)
+
+//            db.collection("items").document(docId).update(tempItemDTO).await()
+//            db.collection("accounts").document(currentUid).update("items", FieldValue.arrayUnion(docId)).await()
+//
+//            withContext(Dispatchers.Main) {
+//                _itemDTO.value = itemDTO
+//            }
         }
     }
 }
