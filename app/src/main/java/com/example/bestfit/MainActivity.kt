@@ -4,25 +4,20 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
-import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.example.bestfit.model.AccountDTO
-import com.example.bestfit.util.InitData
 import com.example.bestfit.viewmodel.DataViewModel
-import com.example.bestfit.viewmodel.DetailFragmentViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-    private lateinit var viewModel: DataViewModel// by viewModels() // by activityViewModels()
+    private lateinit var viewModel: DataViewModel
 
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
@@ -67,7 +62,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 when (position) {
                     0 -> activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_home
                     1 -> activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_dressroom
-                    2 -> activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_settings
+                    2 -> activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_mypage
                 }
             }
         })
@@ -88,7 +83,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             when (position) {
                 0 -> bundle.putInt("layoutResource", R.layout.navigation_home)
                 1 -> bundle.putInt("layoutResource", R.layout.navigation_dressroom)
-                2 -> bundle.putInt("layoutResource", R.layout.navigation_settings)
+                2 -> bundle.putInt("layoutResource", R.layout.navigation_mypage)
             }
 
             val fragment = ContainerFragment()
@@ -113,7 +108,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         when (p0.itemId) {
             R.id.menu_bottom_nav_action_home -> activity_main_viewpager.currentItem = 0
             R.id.menu_bottom_nav_action_dressroom -> activity_main_viewpager.currentItem = 1
-            R.id.menu_bottom_nav_action_settings -> activity_main_viewpager.currentItem = 2
+            R.id.menu_bottom_nav_action_mypage -> activity_main_viewpager.currentItem = 2
         }
 
         return true

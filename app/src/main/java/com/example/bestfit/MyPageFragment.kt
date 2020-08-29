@@ -13,9 +13,9 @@ import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.util.InitData
 import com.example.bestfit.viewmodel.DataViewModel
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.fragment_settings.view.*
+import kotlinx.android.synthetic.main.fragment_mypage.view.*
 
-class SettingsFragment : Fragment() {
+class MyPageFragment : Fragment() {
     private val dataViewModel: DataViewModel by activityViewModels()
 
     private val auth = FirebaseAuth.getInstance()
@@ -25,12 +25,12 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_settings, container, false)
+        val view = inflater.inflate(R.layout.fragment_mypage, container, false)
 
         initViewModel(view)
         initToolbar(view)
 
-        view.fragment_settings_tv_signOut.setOnClickListener {
+        view.fragment_mypage_tv_signOut.setOnClickListener {
             auth.signOut()
 
             requireActivity().startActivity(Intent(requireActivity(), SignInActivity::class.java))
@@ -42,17 +42,17 @@ class SettingsFragment : Fragment() {
 
     private fun initViewModel(view: View) {
         val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
-            initSettingsFragment(view, accountDTO)
+            initMyPageFragment(view, accountDTO)
         }
 
         dataViewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
     }
 
     private fun initToolbar(view: View) {
-        view.fragment_settings_toolbar.inflateMenu(R.menu.menu_fragment_settings)
-        view.fragment_settings_toolbar.setOnMenuItemClickListener { item ->
+        view.fragment_mypage_toolbar.inflateMenu(R.menu.menu_fragment_mypage)
+        view.fragment_mypage_toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.menu_fragment_settings_modify -> {
+                R.id.menu_fragment_mypage_modify -> {
 
                     true
                 }
@@ -63,26 +63,26 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    private fun initSettingsFragment(view: View, accountDTO: AccountDTO) {
+    private fun initMyPageFragment(view: View, accountDTO: AccountDTO) {
         if (accountDTO.photo.isNullOrEmpty())
-            view.fragment_settings_iv_profile.setImageResource(R.drawable.ic_profile_photo)
+            view.fragment_mypage_iv_profile.setImageResource(R.drawable.ic_profile_photo)
         else
-            Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_settings_iv_profile)
+            Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_mypage_iv_profile)
 
-          view.fragment_settings_tv_nickname.text = accountDTO.nickname
-//                view.fragment_settings_tv_user_height.text = accountDTO.height.toString() + " cm"
-//                view.fragment_settings_tv_user_weight.text = accountDTO.weight.toString() + " kg"
-          view.fragment_settings_tv_user_size.text = accountDTO.height.toString() + " cm / " + accountDTO.weight.toString() + " kg"
+          view.fragment_mypage_tv_nickname.text = accountDTO.nickname
+//                view.fragment_mypage_tv_user_height.text = accountDTO.height.toString() + " cm"
+//                view.fragment_mypage_tv_user_weight.text = accountDTO.weight.toString() + " kg"
+          view.fragment_mypage_tv_user_size.text = accountDTO.height.toString() + " cm / " + accountDTO.weight.toString() + " kg"
 
         val top = InitData.getSizeString("01", accountDTO.topId!!)
         val bottom = InitData.getSizeString("03", accountDTO.bottomId!!)
         val shoes = InitData.getSizeString("04", accountDTO.shoesId!!)
-        view.fragment_settings_tv_user_detail_size.text = "TOP " + top + " / BOTTOM "+ bottom + " / SHOES " + shoes
+        view.fragment_mypage_tv_user_detail_size.text = "TOP " + top + " / BOTTOM "+ bottom + " / SHOES " + shoes
 
-        view.fragment_settings_tv_message.text = accountDTO.message
+        view.fragment_mypage_tv_message.text = accountDTO.message
 
-        view.fragment_settings_layout_dibs.setOnClickListener {
-            val action = SettingsFragmentDirections.actionToDibsFragment()
+        view.fragment_mypage_layout_dibs.setOnClickListener {
+            val action = MyPageFragmentDirections.actionToDibsFragment()
             findNavController().navigate(action)
         }
     }

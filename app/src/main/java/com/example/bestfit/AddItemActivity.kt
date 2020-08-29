@@ -1,7 +1,6 @@
 
 package com.example.bestfit
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -18,8 +17,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.viewmodel.AddItemActivityViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_add_item.*
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.fragment_add_item_fourth.view.*
@@ -34,8 +31,6 @@ class AddItemActivity : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
-    private val db = FirebaseFirestore.getInstance()
-    private val storage = FirebaseStorage.getInstance()
     private val fragments = arrayListOf<Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +45,8 @@ class AddItemActivity : AppCompatActivity() {
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(AddItemActivityViewModel::class.java)
 
-        val initializedObserver = Observer<Boolean> { initialized ->
-            if (initialized) {
+        val isInitializedObserver = Observer<Boolean> { isInitialized ->
+            if (isInitialized) {
                 val tempItemDTO = intent.getParcelableExtra<ItemDTO>("tempItemDTO")
                 if (tempItemDTO == null)
                     viewModel.setTempItemDTO(ItemDTO())
@@ -72,7 +67,7 @@ class AddItemActivity : AppCompatActivity() {
             finish()
         }
 
-        viewModel.initialized.observe(this, initializedObserver)
+        viewModel.isInitialized.observe(this, isInitializedObserver)
         viewModel.itemDTO.observe(this, itemDTOObserver)
     }
 
@@ -177,7 +172,6 @@ class AddItemActivity : AppCompatActivity() {
         val tempItemDTO = viewModel.tempItemDTO.value!!
         if (tempItemDTO.id != null) {
             submitModifyItem()
-
             return
         }
 
@@ -313,13 +307,11 @@ class AddItemActivity : AppCompatActivity() {
         // fourthFragment
         if (fourthFragmentView.fragment_add_item_fourth_rating.rating.equals(0.toFloat())) {
             fourthFragmentView.fragment_add_item_fourth_error_rating.visibility = View.VISIBLE
-
             return false
         }
 
         if (fourthFragmentView.fragment_add_item_fourth_text_review.text.isNullOrEmpty()) {
             fourthFragmentView.fragment_add_item_fourth_error_review.visibility = View.VISIBLE
-
             return false
         }
 

@@ -47,31 +47,25 @@ class DressroomCategoryFragment : Fragment() {
     }
 
     private fun initAccountViewModel() {
-        accountViewModel = ViewModelProvider(this.requireParentFragment()).get(AccountFragmentViewModel::class.java)
-
-        val itemDTOsObserver = Observer<ArrayList<ItemDTO>> { itemDTOs ->
-            if (itemDTOs.isNullOrEmpty()) {
-                println("itemDTOs is empty")
-                return@Observer
+        if (requireArguments().getBoolean("isMyAccount", false)) {
+            val allItemDTOsObserver = Observer<ArrayList<ArrayList<ItemDTO>>> { allItemDTOs ->
+                itemRecyclerViewAdapter.submitList(allItemDTOs[0].map { it.copy() })
             }
 
+            dataViewModel.allItemDTOs.observe(viewLifecycleOwner, allItemDTOsObserver)
+            return
+        }
+
+        val itemDTOsObserver = Observer<ArrayList<ItemDTO>> { itemDTOs ->
             itemRecyclerViewAdapter.submitList(itemDTOs.map { it.copy() })
         }
 
+        accountViewModel = ViewModelProvider(this.requireParentFragment()).get(AccountFragmentViewModel::class.java)
         accountViewModel.itemDTOs.observe(viewLifecycleOwner, itemDTOsObserver)
     }
 
     private fun initDressroomViewModel(categoryIndex: Int) {
         val allItemDTOsObserver = Observer<ArrayList<ArrayList<ItemDTO>>> { allItemDTOs ->
-            if (allItemDTOs.isNullOrEmpty())
-                return@Observer
-
-            if (allItemDTOs[categoryIndex].isNullOrEmpty()) {
-                println("allItemDTOs is empty")
-                return@Observer
-            }
-
-            println("observer! ${allItemDTOs[categoryIndex].size}")
             itemRecyclerViewAdapter.submitList(allItemDTOs[categoryIndex].map { it.copy() })
         }
 
@@ -80,14 +74,6 @@ class DressroomCategoryFragment : Fragment() {
 
     private fun initDibsViewModel() {
         val dibsItemDTOsObserver = Observer<ArrayList<ItemDTO>> { dibsItemDTOs ->
-            if (dibsItemDTOs.isNullOrEmpty())
-                return@Observer
-
-            if (dibsItemDTOs.isNullOrEmpty()) {
-                println("dibsItemDTOs is empty")
-                return@Observer
-            }
-
             itemRecyclerViewAdapter.submitList(dibsItemDTOs.map { it.copy() })
         }
 
@@ -123,6 +109,9 @@ class DressroomCategoryFragment : Fragment() {
             previousList: MutableList<ItemDTO>,
             currentList: MutableList<ItemDTO>
         ) {
+            if (previousList.size == 0 && currentList.size == 0)
+                return
+
             super.onCurrentListChanged(previousList, currentList)
 
             println("changed ${previousList.size} -> ${currentList.size}")
@@ -156,6 +145,7 @@ class DressroomCategoryFragment : Fragment() {
                     val action = when (navController.currentDestination!!.id) {
                         R.id.dressroomFragment -> DressroomFragmentDirections.actionToDetailFragment(itemDTO)
                         R.id.accountFragment -> AccountFragmentDirections.actionToDetailFragment(itemDTO)
+                        R.id.dibsFragment -> DibsFragmentDirections.actionToDetailFragment(itemDTO)
                         else -> null
                     }
 

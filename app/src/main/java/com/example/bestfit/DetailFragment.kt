@@ -42,8 +42,9 @@ class DetailFragment : Fragment() {
 
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
-            println("startforresult")
             val itemDTO = result.data!!.getParcelableExtra<ItemDTO>("tempItemDTO")!!
+
+            dataViewModel.changeItemDTO(viewModel.itemDTO.value!!, itemDTO)
             viewModel.setItemDTO(itemDTO)
         }
     }
@@ -68,29 +69,28 @@ class DetailFragment : Fragment() {
         if (viewModel.itemDTO.value == null)
             viewModel.setItemDTO(args.itemDTO)
 
-        val itemDTOObserver = Observer<ItemDTO> { itemDTO ->
-            println("itemdto observer")
-            initDetailFragment(view, itemDTO)
-
-            if (itemDTO.uid == currentUid)
-                initDetailFragment(view, dataViewModel.accountDTO.value!!)
+        val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
+            initDetailFragment(view, accountDTO)
         }
 
-        val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
-            println("account observer")
-            initDetailFragment(view, accountDTO)
+        val itemDTOObserver = Observer<ItemDTO> { itemDTO ->
+            initDetailFragment(view, itemDTO)
+
+//            if (itemDTO.uid == currentUid)
+//                initDetailFragment(view, dataViewModel.accountDTO.value!!)
         }
 
         val dibsObserver = Observer<Int> { dibs ->
             view.fragment_detail_tv_dibs.text = "찜 $dibs"
         }
 
+        viewModel.itemDTO.observe(viewLifecycleOwner, itemDTOObserver)
+
         if (viewModel.itemDTO.value!!.uid == currentUid)
             dataViewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
         else
             viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
 
-        viewModel.itemDTO.observe(viewLifecycleOwner, itemDTOObserver)
         viewModel.dibs.observe(viewLifecycleOwner, dibsObserver)
     }
 
@@ -131,19 +131,18 @@ class DetailFragment : Fragment() {
                 view.fragment_detail_appbarlayout.setExpanded(false, false)
 
             view.fragment_detail_scrollview.scrollTo(0, y)
-            // 이거 왜 있지??
-//            initScrollView(view)
         }, 5)
     }
 
     private fun initDetailFragment(view: View, accountDTO: AccountDTO) {
+        view.fragment_detail_collapsingtoolbarlayout.title = "${accountDTO.nickname}님의\n${viewModel.itemDTO.value!!.name}"
+
         if (accountDTO.photo.isNullOrEmpty())
             view.fragment_detail_iv_profile.setImageResource(R.drawable.ic_profile_photo)
         else {
             Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_detail_iv_profile)
         }
 
-        view.fragment_detail_collapsingtoolbarlayout.title = "${accountDTO.nickname}님의\n${viewModel.itemDTO.value!!.name}"
         view.fragment_detail_tv_nickname.text = accountDTO.nickname
         view.fragment_detail_tv_user_size.text = accountDTO.height.toString() + " cm / " + accountDTO.weight.toString() + " kg"
 

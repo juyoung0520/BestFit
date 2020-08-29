@@ -22,7 +22,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_account.view.*
-import kotlinx.android.synthetic.main.fragment_settings.view.*
+import kotlinx.android.synthetic.main.fragment_mypage.view.*
 import kotlin.math.abs
 
 class AccountFragment : Fragment() {
@@ -48,18 +48,16 @@ class AccountFragment : Fragment() {
     }
 
     private fun initViewModel(view: View) {
+        viewModel = ViewModelProvider(this, AccountFragmentViewModel.Factory(args.uid)).get(AccountFragmentViewModel::class.java)
+
         val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
             initAccountFragment(view, accountDTO)
         }
 
-        if (args.uid == currentUid) {
+        if (args.uid == currentUid)
             dataViewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
-
-            return
-        }
-
-        viewModel = ViewModelProvider(this, AccountFragmentViewModel.Factory(args.uid)).get(AccountFragmentViewModel::class.java)
-        viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
+        else
+            viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
     }
 
     private fun initToolbar(view: View) {
@@ -69,12 +67,16 @@ class AccountFragment : Fragment() {
 
         view.fragment_account_appbarlayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
             if (abs(p1) - p0.totalScrollRange == 0) {
-                if (view.fragment_account_toolbar_title.visibility == View.GONE)
+                if (view.fragment_account_toolbar_title.visibility == View.GONE) {
                     view.fragment_account_toolbar_title.visibility = View.VISIBLE
+                    viewModel.setExpanded(false)
+                }
             }
             else {
-                if (view.fragment_account_toolbar_title.visibility == View.VISIBLE)
+                if (view.fragment_account_toolbar_title.visibility == View.VISIBLE) {
                     view.fragment_account_toolbar_title.visibility = View.GONE
+                    viewModel.setExpanded(true)
+                }
             }
         })
 
@@ -82,6 +84,9 @@ class AccountFragment : Fragment() {
         view.fragment_account_toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
+
+        if (!viewModel.isExpanded())
+            view.fragment_account_appbarlayout.setExpanded(false)
     }
 
     private fun initTabAdapter(view: View) {
@@ -100,7 +105,15 @@ class AccountFragment : Fragment() {
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
-                0 -> DressroomCategoryFragment()
+                0 -> {
+                    val fragment = DressroomCategoryFragment()
+                    val bundle = Bundle()
+
+                    bundle.putBoolean("isMyAccount", true)
+
+                    fragment.arguments = bundle
+                    return fragment
+                }
                 1 -> Fragment()
                 else -> Fragment()
             }
@@ -111,7 +124,7 @@ class AccountFragment : Fragment() {
         if (accountDTO.photo.isNullOrEmpty())
             view.fragment_account_iv_profile.setImageResource(R.drawable.ic_profile_photo)
         else
-            Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_settings_iv_profile)
+            Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_account_iv_profile)
 
         view.fragment_account_toolbar_title.text = "${accountDTO.nickname}님의 프로필"
         view.fragment_account_tv_nickname.text = accountDTO.nickname

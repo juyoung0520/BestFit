@@ -11,6 +11,7 @@
         android:id="@+id/fragment_dibs_toolbar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        app:contentInsetStartWithNavigation="0dp"
         app:title="찜한 목록"/>
 
     <ScrollView

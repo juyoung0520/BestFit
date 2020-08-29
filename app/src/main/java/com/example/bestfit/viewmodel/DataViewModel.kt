@@ -23,17 +23,17 @@ class DataViewModel : ViewModel() {
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
 
-    private val _isInitialized = MutableLiveData<Boolean>(false)
+    private val _isInitialized = MutableLiveData(false)
     val isInitialized: LiveData<Boolean> = _isInitialized
 
     private val _accountDTO = MutableLiveData<AccountDTO>()
     val accountDTO: LiveData<AccountDTO> = _accountDTO
 
     private val _allItemDTOs = MutableLiveData<ArrayList<ArrayList<ItemDTO>>>(arrayListOf())
-    val allItemDTOs: MutableLiveData<ArrayList<ArrayList<ItemDTO>>> = _allItemDTOs
+    val allItemDTOs: LiveData<ArrayList<ArrayList<ItemDTO>>> = _allItemDTOs
 
     private val _dibsItemDTOs = MutableLiveData<ArrayList<ItemDTO>>(arrayListOf())
-    val dibsItemDTOs: MutableLiveData<ArrayList<ItemDTO>> = _dibsItemDTOs
+    val dibsItemDTOs: LiveData<ArrayList<ItemDTO>> = _dibsItemDTOs
 
     init {
         getInitialData()
@@ -102,7 +102,6 @@ class DataViewModel : ViewModel() {
 
             if (accountDTO.items.isNullOrEmpty()) {
                 notifyItemDTOsChanged()
-
                 return@launch
             }
 
@@ -123,6 +122,33 @@ class DataViewModel : ViewModel() {
             _allItemDTOs.value!!.map { itemDTOs -> itemDTOs.reverse() }
             notifyItemDTOsChanged()
         }
+    }
+
+    fun changeItemDTO(previousItemDTO: ItemDTO, newItemDTO: ItemDTO) {
+        val previousCategoryIndex = InitData.getCategoryIndex(previousItemDTO.categoryId!!)
+        val newCategoryIndex = InitData.getCategoryIndex(newItemDTO.categoryId!!)
+
+        if (previousCategoryIndex == newCategoryIndex) {
+            var itemIndex = -1
+            _allItemDTOs.value!![previousCategoryIndex].forEachIndexed { index, itemDTO ->
+                if (itemDTO.id == previousItemDTO.id) {
+                    itemIndex = index
+                    return@forEachIndexed
+                }
+            }
+
+            println("itemIndex = $itemIndex, ${_allItemDTOs.value!![previousCategoryIndex].indexOf(previousItemDTO)}")
+            if (itemIndex == -1) return
+
+            // itemIndex == -1 일 때 예외 처리 필요 (그럴 일은 없겠지만?)
+            _allItemDTOs.value!![previousCategoryIndex][itemIndex] = newItemDTO
+            return
+        }
+
+        val result = _allItemDTOs.value!![previousCategoryIndex].remove(previousItemDTO)
+        println("remove!!! $result")
+        _allItemDTOs.value!![newCategoryIndex].add(newItemDTO)
+        _allItemDTOs.value!![newCategoryIndex].sortByDescending { itemDTO -> itemDTO.timestamps!![0] }
     }
 
     fun addItemDTO(itemDTO: ItemDTO) {
@@ -147,7 +173,7 @@ class DataViewModel : ViewModel() {
     // dibsItems
     private fun notifyDibsItemDTOsChanged() {
         viewModelScope.launch(Dispatchers.Main) {
-            _allItemDTOs.value = _allItemDTOs.value
+            _dibsItemDTOs.value = _dibsItemDTOs.value
         }
     }
 
@@ -157,7 +183,6 @@ class DataViewModel : ViewModel() {
 
             if (accountDTO.value!!.dibsItems.isNullOrEmpty()) {
                 notifyDibsItemDTOsChanged()
-
                 return@launch
             }
 
@@ -186,6 +211,8 @@ class DataViewModel : ViewModel() {
 
             _accountDTO.value!!.dibsItems!!.add(itemId)
             _dibsItemDTOs.value!!.add(0, itemDTO)
+
+            notifyDibsItemDTOsChanged()
         }
     }
 
@@ -197,6 +224,8 @@ class DataViewModel : ViewModel() {
             _dibsItemDTOs.value!!.forEachIndexed { index, itemDTO ->
                 if (itemDTO.id == itemId) {
                     _dibsItemDTOs.value!!.removeAt(index)
+                    notifyDibsItemDTOsChanged()
+
                     return@forEachIndexed
                 }
             }
