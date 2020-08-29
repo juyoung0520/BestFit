@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         val initObserver = Observer<Boolean> { isInit ->
             if (isInit) {
+                viewModel.getItemDTOs()
                 initViewPager()
             }
         }

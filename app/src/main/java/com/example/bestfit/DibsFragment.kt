@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.bestfit.viewmodel.DibsFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_account.view.*
+import com.example.bestfit.viewmodel.DataViewModel
 import kotlinx.android.synthetic.main.fragment_dibs.view.*
 
 class DibsFragment : Fragment() {
-    private lateinit var viewModel: DibsFragmentViewModel
+    private val dataViewModel: DataViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +36,6 @@ class DibsFragment : Fragment() {
         view.fragment_dibs_toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
         }
-
     }
 
     inner class ViewPagerAdapter : FragmentStateAdapter(this) {
@@ -45,14 +44,8 @@ class DibsFragment : Fragment() {
         }
 
         override fun createFragment(position: Int): Fragment {
-            val fragment = DressroomCategoryFragment()
-            val bundle = Bundle()
-
-            bundle.putInt("position", -1)
-
-            fragment.arguments = bundle
-            return fragment
+            dataViewModel.getDibsItemDTOs()
+            return DressroomCategoryFragment()
         }
     }
-
 }
