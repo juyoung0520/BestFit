@@ -15,9 +15,6 @@ import kotlinx.coroutines.withContext
 class AccountFragmentViewModel(uid: String) : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
 
-    private val _isInitialized = MutableLiveData<Boolean>(false)
-    val isInitialized: LiveData<Boolean> = _isInitialized
-
     private val _accountDTO = MutableLiveData<AccountDTO>()
     val accountDTO: LiveData<AccountDTO> = _accountDTO
 
@@ -34,21 +31,25 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
         getItemDTOs(uid)
     }
 
+    private fun notifyItemDTOsChanged() {
+        viewModelScope.launch(Dispatchers.Main) {
+            _itemDTOs.value = _itemDTOs.value
+        }
+    }
+
     private fun getItemDTOs(uid: String) {
         viewModelScope.launch(Dispatchers.IO) {
             _itemDTOs.value!!.clear()
 
-            val document = db.collection("accounts").document(uid).get().await()
-            val accountDTO = document.toObject(AccountDTO::class.java)!!
+            val doc = db.collection("accounts").document(uid).get().await()
+            val accountDTO = doc.toObject(AccountDTO::class.java)!!
 
             withContext(Dispatchers.Main) {
                 _accountDTO.value = accountDTO
             }
 
             if (accountDTO.items!!.isNullOrEmpty()) {
-                withContext(Dispatchers.Main) {
-                    _isInitialized.value = true
-                }
+                notifyItemDTOsChanged()
 
                 return@launch
             }
@@ -65,11 +66,8 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
                 _itemDTOs.value!!.add(itemDTO)
             }
 
-            _itemDTOs.value!!.sortByDescending { itemDTO -> itemDTO.timestamps!![0] }
-
-            withContext(Dispatchers.Main) {
-                _isInitialized.value = true
-            }
+            _itemDTOs.value!!.reverse()
+            notifyItemDTOsChanged()
         }
     }
 }

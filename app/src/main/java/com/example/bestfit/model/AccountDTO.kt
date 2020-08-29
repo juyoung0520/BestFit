@@ -11,6 +11,6 @@ data class AccountDTO(
     var bottomId: String? = null,
     var shoesId: String? = null,
     var message: String? = null,
-    var items: ArrayList<String>? = null,
-    var dibsItems: ArrayList<String>? = null
+    var items: ArrayList<String>? = arrayListOf(),
+    var dibsItems: ArrayList<String>? = arrayListOf()
 )

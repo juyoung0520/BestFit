@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -16,15 +17,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.viewmodel.AccountFragmentViewModel
-import com.example.bestfit.viewmodel.DibsFragmentViewModel
-import com.example.bestfit.viewmodel.DressroomFragmentViewModel
+import com.example.bestfit.viewmodel.DataViewModel
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
 
 class DressroomCategoryFragment : Fragment() {
-    private lateinit var dressroomViewModel: DressroomFragmentViewModel
+    private val dataViewModel: DataViewModel by activityViewModels()
     private lateinit var accountViewModel: AccountFragmentViewModel
-    private lateinit var dibsViewModel: DibsFragmentViewModel
 
     private lateinit var itemRecyclerViewAdapter: ItemRecyclerViewAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
@@ -38,55 +37,61 @@ class DressroomCategoryFragment : Fragment() {
 
         initRecyclerView(view)
 
-        val position = requireArguments().getInt("position")
-
         when (parentFragment) {
-            is AccountFragment -> initAccountViewModel(view)
-            is DressroomFragment -> initDressroomViewModel(view, position)
-            is DibsFragment -> initDibsViewModel(view)
+            is AccountFragment -> initAccountViewModel()
+            is DressroomFragment -> initDressroomViewModel(requireArguments().getInt("categoryIndex"))
+            is DibsFragment -> initDibsViewModel()
         }
 
         return view
     }
 
-    private fun initAccountViewModel(view: View) {
+    private fun initAccountViewModel() {
         accountViewModel = ViewModelProvider(this.requireParentFragment()).get(AccountFragmentViewModel::class.java)
-//        initDressroomCategoryFragment(view, accountViewModel.itemDTOs.value!!)
 
-        val initObserver = Observer<Boolean> { isInit ->
-            if (isInit) {
-//                initDressroomCategoryFragment(view, accountViewModel.itemDTOs.value!!)
-            }
-        }
-
-        accountViewModel.isInitialized.observe(viewLifecycleOwner, initObserver)
-    }
-
-    private fun initDressroomViewModel(view: View, position: Int) {
-        dressroomViewModel = ViewModelProvider(requireParentFragment()).get(DressroomFragmentViewModel::class.java)
-
-        val itemDTOsObserver = Observer<ArrayList<ArrayList<ItemDTO>>> { itemDTOs ->
-            if (itemDTOs[position].isNullOrEmpty()) {
+        val itemDTOsObserver = Observer<ArrayList<ItemDTO>> { itemDTOs ->
+            if (itemDTOs.isNullOrEmpty()) {
                 println("itemDTOs is empty")
                 return@Observer
             }
 
-            println("observer! ${itemDTOs[position].size}")
-            itemRecyclerViewAdapter.submitList(itemDTOs[position].map { it.copy() })
+            itemRecyclerViewAdapter.submitList(itemDTOs.map { it.copy() })
         }
 
-        dressroomViewModel.itemDTOs.observe(requireParentFragment().viewLifecycleOwner, itemDTOsObserver)
+        accountViewModel.itemDTOs.observe(viewLifecycleOwner, itemDTOsObserver)
     }
 
-    private fun initDibsViewModel(view: View) {
-        dibsViewModel = ViewModelProvider(requireParentFragment()).get(DibsFragmentViewModel::class.java)
+    private fun initDressroomViewModel(categoryIndex: Int) {
+        val allItemDTOsObserver = Observer<ArrayList<ArrayList<ItemDTO>>> { allItemDTOs ->
+            if (allItemDTOs.isNullOrEmpty())
+                return@Observer
 
-        val itemDTOsObserver = Observer<ArrayList<ItemDTO>> { itemDTOs ->
-            itemRecyclerViewAdapter.submitList(itemDTOs.map { it.copy() })
+            if (allItemDTOs[categoryIndex].isNullOrEmpty()) {
+                println("allItemDTOs is empty")
+                return@Observer
+            }
 
+            println("observer! ${allItemDTOs[categoryIndex].size}")
+            itemRecyclerViewAdapter.submitList(allItemDTOs[categoryIndex].map { it.copy() })
         }
 
-        dibsViewModel.itemDTOs.observe(requireParentFragment().viewLifecycleOwner, itemDTOsObserver)
+        dataViewModel.allItemDTOs.observe(viewLifecycleOwner, allItemDTOsObserver)
+    }
+
+    private fun initDibsViewModel() {
+        val dibsItemDTOsObserver = Observer<ArrayList<ItemDTO>> { dibsItemDTOs ->
+            if (dibsItemDTOs.isNullOrEmpty())
+                return@Observer
+
+            if (dibsItemDTOs.isNullOrEmpty()) {
+                println("dibsItemDTOs is empty")
+                return@Observer
+            }
+
+            itemRecyclerViewAdapter.submitList(dibsItemDTOs.map { it.copy() })
+        }
+
+        dataViewModel.dibsItemDTOs.observe(viewLifecycleOwner, dibsItemDTOsObserver)
     }
 
     private fun initRecyclerView(view: View) {
@@ -109,7 +114,7 @@ class DressroomCategoryFragment : Fragment() {
             oldItem: ItemDTO,
             newItem: ItemDTO
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.timestamps!!.size == newItem.timestamps!!.size
         }
     }
 

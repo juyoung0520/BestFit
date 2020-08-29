@@ -7,26 +7,20 @@ import android.view.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.*
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
-import com.example.bestfit.viewmodel.DressroomFragmentViewModel
+import com.example.bestfit.viewmodel.DataViewModel
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
 
 class DressroomFragment : Fragment() {
-    private lateinit var viewModel: DressroomFragmentViewModel
-
-    private val auth = FirebaseAuth.getInstance()
-    private val currentUid = auth.currentUser!!.uid
+    private val dataViewModel: DataViewModel by activityViewModels()
 
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             val itemDTO = result.data!!.getParcelableExtra<ItemDTO>("itemDTO")!!
-            viewModel.addItemDTO(itemDTO)
+            dataViewModel.addItemDTO(itemDTO)
         }
     }
 
@@ -37,26 +31,10 @@ class DressroomFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dressroom, container, false)
 
-        initViewModel()
         initToolbar(view)
         initTabAdapter(view)
 
         return view
-    }
-
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(this).get(DressroomFragmentViewModel::class.java)
-
-        // 아 여기다가 로딩 넣어야되니까 필요한가??? 아 근데 itemdtos observer로 하면 될 듯?
-
-//        val initObserver = Observer<Boolean> { isInit ->
-//            if (isInit) {
-//                // 로딩 여기다가 넣음 될 듯??
-////                initDressroomFragment()
-//            }
-//        }
-//
-//        viewModel.isInitialized.observe(viewLifecycleOwner, initObserver)
     }
 
     private fun initToolbar(view: View) {
@@ -88,11 +66,10 @@ class DressroomFragment : Fragment() {
         }
 
         override fun createFragment(position: Int): Fragment {
-            println("createfragment $position")
             val fragment = DressroomCategoryFragment()
             val bundle = Bundle()
 
-            bundle.putInt("position", position)
+            bundle.putInt("categoryIndex", position)
 
             fragment.arguments = bundle
             return fragment

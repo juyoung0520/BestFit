@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,29 +23,28 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
+import com.example.bestfit.viewmodel.DataViewModel
 import com.example.bestfit.viewmodel.DetailFragmentViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_add_item.*
-import kotlinx.android.synthetic.main.fragment_account.view.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
-import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 class DetailFragment : Fragment() {
+    private val args: DetailFragmentArgs by navArgs()
+
+    private val dataViewModel: DataViewModel by activityViewModels()
     private lateinit var viewModel: DetailFragmentViewModel
 
-    private val args: DetailFragmentArgs by navArgs()
-    private lateinit var itemDTO: ItemDTO
+    private val auth = FirebaseAuth.getInstance()
+    private val currentUid = auth.currentUser!!.uid
 
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val itemDTO = result.data!!.getParcelableExtra<ItemDTO>("itemDTO")!!
-            this.itemDTO = itemDTO
+            println("startforresult")
+            val itemDTO = result.data!!.getParcelableExtra<ItemDTO>("tempItemDTO")!!
+            viewModel.setItemDTO(itemDTO)
         }
     }
 
@@ -54,7 +54,6 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
-        itemDTO = args.itemDTO
 
         initViewModel(view)
         initToolbar(view)
@@ -64,27 +63,34 @@ class DetailFragment : Fragment() {
     }
 
     private fun initViewModel(view: View) {
-        viewModel = ViewModelProvider(this, DetailFragmentViewModel.Factory(itemDTO.uid!!, itemDTO.id!!)).get(DetailFragmentViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(DetailFragmentViewModel::class.java)
 
-        // 여기다가 dibsitems 옵저버 하나 생성
-        // 여기다가 dibs count 옵저버 하나 생성
-        // 옵저버 안에서 각각 ui (하트 이미지랑 찜 숫자) 바꾸는 함수 호출!
-        // 사랑해 팟팅!
+        if (viewModel.itemDTO.value == null)
+            viewModel.setItemDTO(args.itemDTO)
+
+        val itemDTOObserver = Observer<ItemDTO> { itemDTO ->
+            println("itemdto observer")
+            initDetailFragment(view, itemDTO)
+
+            if (itemDTO.uid == currentUid)
+                initDetailFragment(view, dataViewModel.accountDTO.value!!)
+        }
 
         val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
+            println("account observer")
             initDetailFragment(view, accountDTO)
         }
 
-        val initDibsObserver = Observer<Boolean> { initDibs ->
-            changeDibs(view, initDibs)
-        }
-
         val dibsObserver = Observer<Int> { dibs ->
-            getDibs(view, dibs)
+            view.fragment_detail_tv_dibs.text = "찜 $dibs"
         }
 
-        viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
-        viewModel.initDibs.observe(viewLifecycleOwner, initDibsObserver)
+        if (viewModel.itemDTO.value!!.uid == currentUid)
+            dataViewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
+        else
+            viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
+
+        viewModel.itemDTO.observe(viewLifecycleOwner, itemDTOObserver)
         viewModel.dibs.observe(viewLifecycleOwner, dibsObserver)
     }
 
@@ -101,7 +107,7 @@ class DetailFragment : Fragment() {
         view.fragment_detail_toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_fragment_detail_modify_item -> {
-                    val intent = Intent(context, AddItemActivity::class.java).putExtra("itemDTO", itemDTO)
+                    val intent = Intent(context, AddItemActivity::class.java).putExtra("tempItemDTO", viewModel.itemDTO.value!!)
                     startForResult.launch(intent)
                     true
                 }
@@ -125,7 +131,8 @@ class DetailFragment : Fragment() {
                 view.fragment_detail_appbarlayout.setExpanded(false, false)
 
             view.fragment_detail_scrollview.scrollTo(0, y)
-            initScrollView(view)
+            // 이거 왜 있지??
+//            initScrollView(view)
         }, 5)
     }
 
@@ -136,7 +143,7 @@ class DetailFragment : Fragment() {
             Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_detail_iv_profile)
         }
 
-        view.fragment_detail_collapsingtoolbarlayout.title = "${accountDTO.nickname}님의\n${itemDTO.name}"
+        view.fragment_detail_collapsingtoolbarlayout.title = "${accountDTO.nickname}님의\n${viewModel.itemDTO.value!!.name}"
         view.fragment_detail_tv_nickname.text = accountDTO.nickname
         view.fragment_detail_tv_user_size.text = accountDTO.height.toString() + " cm / " + accountDTO.weight.toString() + " kg"
 
@@ -144,12 +151,28 @@ class DetailFragment : Fragment() {
         val bottom = InitData.getSizeString("03", accountDTO.bottomId!!)
         val shoes = InitData.getSizeString("04", accountDTO.shoesId!!)
         //view.fragment_detail_tv_user_detail_size.text = "Top $top / Bottom $bottom / Shoes $shoes"
+    }
 
+    private fun initDetailFragment(view: View, itemDTO: ItemDTO) {
         if (!itemDTO.images.isNullOrEmpty()) {
             // 이미지 뷰페이저를 누르고 스크롤하면 툴바에 스크롤 상태 적용이 안됨. -> 안되는 만큼 스크롤이 전부 다 내려가지 않음. (툴바 확장된 크기만큼?)
             view.fragment_detail_viewpager_image.adapter = ImagePagerAdapter(itemDTO.images!!)
             view.fragment_detail_indicator_image.setViewPager(view.fragment_detail_viewpager_image)
         }
+
+        view.fragment_detail_btn_dibs.isChecked = dataViewModel.containsDibsItem(itemDTO.id!!)
+        view.fragment_detail_btn_dibs.setOnCheckedChangeListener { _, b ->
+            // 이거 너무 빠르게 못 누르게 딜레이를 줘야할듯.
+            if (!b) {
+                dataViewModel.removeDibsItem(itemDTO.id!!)
+                viewModel.decreaseDibs()
+            }
+            else {
+                dataViewModel.addDibsItem(itemDTO.id!!)
+                viewModel.increaseDibs()
+            }
+        }
+        view.fragment_detail_tv_dibs.text = "찜 ${itemDTO.dibs}"
 
         view.fragment_detail_tv_category.text = "${InitData.getCategoryString(itemDTO.categoryId!!)} > ${InitData.getSubCategoryString(
             itemDTO.categoryId!!,
@@ -170,7 +193,6 @@ class DetailFragment : Fragment() {
         view.fragment_detail_tv_date.text = SimpleDateFormat("yyyy.MM.dd", Locale.KOREA).format(
             itemDTO.timestamps!![0]
         )
-        view.fragment_detail_tv_dibs.text = "찜 ${itemDTO.dibs}"
 
         view.fragment_detail_iv_profile.setOnClickListener {
             val action = DetailFragmentDirections.actionToAccountFragment(itemDTO.uid!!)
@@ -178,26 +200,6 @@ class DetailFragment : Fragment() {
         }
 
         restoreScrollPosition(view)
-    }
-
-    private fun changeDibs(view: View, initDibs: Boolean) {
-        if (initDibs)
-            view.fragment_detail_btn_dibs.isChecked = true
-
-        view.fragment_detail_btn_dibs.setOnCheckedChangeListener { compoundButton, b ->
-            if (!b) {
-                view.fragment_detail_btn_dibs.isChecked = false
-                viewModel.removeDibs()
-
-            } else {
-                view.fragment_detail_btn_dibs.isChecked = true
-                viewModel.addDibs()
-            }
-        }
-    }
-
-    private fun getDibs(view:View, dibs: Int) {
-        view.fragment_detail_tv_dibs.text = "찜 $dibs"
     }
 
     inner class ImagePagerAdapter(private val images: ArrayList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {

@@ -62,6 +62,7 @@
                 app:ci_width="6dp"
                 app:ci_height="6dp"
                 android:layout_margin="4dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

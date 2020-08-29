@@ -9,6 +9,8 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import kotlinx.android.synthetic.main.fragment_add_item_fourth.view.*
+import kotlinx.android.synthetic.main.fragment_add_item_second.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -87,9 +89,6 @@ class AddItemActivityViewModel : ViewModel() {
 
     fun submitModifyItem(tempItemDTO: ItemDTO) {
         viewModelScope.launch(Dispatchers.IO) {
-            val doc = db.collection("items").add(itemDTO).await()
-            val docId = doc.id
-
 //            val tasks = imageUris.mapIndexed { index, uri ->
 //                storage.reference.child("items").child(docId).child(index.toString())
 //                    .putFile(uri)
@@ -116,15 +115,25 @@ class AddItemActivityViewModel : ViewModel() {
 //                    .await()
 //            }
 
-//            itemDTO.id = docId
 //            itemDTO.images = ArrayList(uris)
 
-//            db.collection("items").document(docId).update(tempItemDTO).await()
-//            db.collection("accounts").document(currentUid).update("items", FieldValue.arrayUnion(docId)).await()
-//
-//            withContext(Dispatchers.Main) {
-//                _itemDTO.value = itemDTO
-//            }
+            val updateData = mutableMapOf<String, Any>()
+            updateData["timestamps"] = tempItemDTO.timestamps!!
+            updateData["categoryId"] = tempItemDTO.categoryId!!
+            updateData["subCategoryId"] = tempItemDTO.subCategoryId!!
+            updateData["name"] = tempItemDTO.name!!
+            updateData["sizeFormatId"] = tempItemDTO.sizeFormatId!!
+            updateData["sizeId"] = tempItemDTO.sizeId!!
+            updateData["sizeReview"] = tempItemDTO.sizeReview!!
+            updateData["ratingReview"] = tempItemDTO.ratingReview!!
+            updateData["review"] = tempItemDTO.review!!
+            updateData["searchKeywords"] = tempItemDTO.searchKeywords
+
+            db.collection("items").document(tempItemDTO.id!!).update(updateData).await()
+
+            withContext(Dispatchers.Main) {
+                _itemDTO.value = tempItemDTO
+            }
         }
     }
 }
