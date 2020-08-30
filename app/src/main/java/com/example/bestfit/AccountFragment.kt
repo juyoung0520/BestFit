@@ -61,10 +61,6 @@ class AccountFragment : Fragment() {
     }
 
     private fun initToolbar(view: View) {
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            findNavController().navigateUp()
-        }
-
         view.fragment_account_appbarlayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
             if (abs(p1) - p0.totalScrollRange == 0) {
                 if (view.fragment_account_toolbar_title.visibility == View.GONE) {

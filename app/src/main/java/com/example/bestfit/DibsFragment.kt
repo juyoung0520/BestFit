@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.bestfit.viewmodel.DataViewModel
@@ -28,10 +29,6 @@ class DibsFragment : Fragment() {
     }
 
     private fun initToolbar(view: View) {
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            findNavController().navigateUp()
-        }
-
         view.fragment_dibs_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         view.fragment_dibs_toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()

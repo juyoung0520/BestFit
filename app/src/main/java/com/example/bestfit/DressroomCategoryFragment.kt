@@ -100,6 +100,7 @@ class DressroomCategoryFragment : Fragment() {
             oldItem: ItemDTO,
             newItem: ItemDTO
         ): Boolean {
+            // 드레스룸에서 찜 표시 하려면 이거 수정해야겠다.
             return oldItem.timestamps!!.size == newItem.timestamps!!.size
         }
     }
@@ -113,8 +114,6 @@ class DressroomCategoryFragment : Fragment() {
                 return
 
             super.onCurrentListChanged(previousList, currentList)
-
-            println("changed ${previousList.size} -> ${currentList.size}")
 
             val newItemSize = currentList.size
             if (previousList.size != 0 && previousList.size < newItemSize)

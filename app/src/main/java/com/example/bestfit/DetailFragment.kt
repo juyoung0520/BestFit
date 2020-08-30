@@ -45,7 +45,6 @@ class DetailFragment : Fragment() {
             val itemDTO = result.data!!.getParcelableExtra<ItemDTO>("tempItemDTO")!!
 
             dataViewModel.changeItemDTO(viewModel.itemDTO.value!!, itemDTO)
-            viewModel.setItemDTO(itemDTO)
         }
     }
 
@@ -75,30 +74,51 @@ class DetailFragment : Fragment() {
 
         val itemDTOObserver = Observer<ItemDTO> { itemDTO ->
             initDetailFragment(view, itemDTO)
-
-//            if (itemDTO.uid == currentUid)
-//                initDetailFragment(view, dataViewModel.accountDTO.value!!)
         }
 
-        val dibsObserver = Observer<Int> { dibs ->
-            view.fragment_detail_tv_dibs.text = "찜 $dibs"
+        val allItemDTOsObserver = Observer<ArrayList<ArrayList<ItemDTO>>> { allItemDTOs ->
+            if (view.fragment_detail_viewpager_image.adapter == null) {
+                initDetailFragment(view, viewModel.itemDTO.value!!)
+                return@Observer
+            }
+
+            allItemDTOs[0].forEach { itemDTO ->
+                if (itemDTO.id == viewModel.itemDTO.value!!.id && itemDTO.timestamps!!.size != viewModel.itemDTO.value!!.timestamps!!.size) {
+                    viewModel.setItemDTO(itemDTO)
+
+                    view.fragment_detail_collapsingtoolbarlayout.title =
+                        "${dataViewModel.accountDTO.value!!.nickname}님의\n${itemDTO.name}"
+                    initDetailFragment(view, itemDTO)
+                }
+            }
         }
 
-        viewModel.itemDTO.observe(viewLifecycleOwner, itemDTOObserver)
+        val dibsItemDTOsObserver = Observer<ArrayList<ItemDTO>> { dibsItemDTOs ->
+            dibsItemDTOs.forEach { itemDTO ->
+                if (itemDTO.id == viewModel.itemDTO.value!!.id) {
+                    changeDibsState(view, true, itemDTO.dibs!!)
+                    return@Observer
+                }
+            }
 
-        if (viewModel.itemDTO.value!!.uid == currentUid)
+            val removedDibs = dataViewModel.removedDibsItems[viewModel.itemDTO.value!!.id]
+            if (removedDibs != null)
+                changeDibsState(view, false, removedDibs)
+        }
+
+        if (viewModel.itemDTO.value!!.uid == currentUid) {
             dataViewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
-        else
+            dataViewModel.allItemDTOs.observe(viewLifecycleOwner, allItemDTOsObserver)
+        }
+        else {
             viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
+            viewModel.itemDTO.observe(viewLifecycleOwner, itemDTOObserver)
+        }
 
-        viewModel.dibs.observe(viewLifecycleOwner, dibsObserver)
+        dataViewModel.dibsItemDTOs.observe(viewLifecycleOwner, dibsItemDTOsObserver)
     }
 
     private fun initToolbar(view: View) {
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            findNavController().navigateUp()
-        }
-
         view.fragment_detail_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         view.fragment_detail_toolbar.setNavigationOnClickListener {
             requireActivity().onBackPressed()
@@ -134,6 +154,11 @@ class DetailFragment : Fragment() {
         }, 5)
     }
 
+    private fun changeDibsState(view: View, isChecked: Boolean, dibs: Int) {
+        view.fragment_detail_btn_dibs.isChecked = isChecked
+        view.fragment_detail_tv_dibs.text = "찜 $dibs"
+    }
+
     private fun initDetailFragment(view: View, accountDTO: AccountDTO) {
         view.fragment_detail_collapsingtoolbarlayout.title = "${accountDTO.nickname}님의\n${viewModel.itemDTO.value!!.name}"
 
@@ -159,19 +184,15 @@ class DetailFragment : Fragment() {
             view.fragment_detail_indicator_image.setViewPager(view.fragment_detail_viewpager_image)
         }
 
-        view.fragment_detail_btn_dibs.isChecked = dataViewModel.containsDibsItem(itemDTO.id!!)
-        view.fragment_detail_btn_dibs.setOnCheckedChangeListener { _, b ->
+        changeDibsState(view, dataViewModel.containsDibsItem(itemDTO.id!!), itemDTO.dibs!!)
+
+        view.fragment_detail_btn_dibs.setOnClickListener {
             // 이거 너무 빠르게 못 누르게 딜레이를 줘야할듯.
-            if (!b) {
-                dataViewModel.removeDibsItem(itemDTO.id!!)
-                viewModel.decreaseDibs()
-            }
-            else {
+            if (view.fragment_detail_btn_dibs.isChecked)
                 dataViewModel.addDibsItem(itemDTO.id!!)
-                viewModel.increaseDibs()
-            }
+            else
+                dataViewModel.removeDibsItem(itemDTO.id!!)
         }
-        view.fragment_detail_tv_dibs.text = "찜 ${itemDTO.dibs}"
 
         view.fragment_detail_tv_category.text = "${InitData.getCategoryString(itemDTO.categoryId!!)} > ${InitData.getSubCategoryString(
             itemDTO.categoryId!!,

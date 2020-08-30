@@ -34,6 +34,7 @@ class DataViewModel : ViewModel() {
 
     private val _dibsItemDTOs = MutableLiveData<ArrayList<ItemDTO>>(arrayListOf())
     val dibsItemDTOs: LiveData<ArrayList<ItemDTO>> = _dibsItemDTOs
+    val removedDibsItems: MutableMap<String, Int> = mutableMapOf()
 
     init {
         getInitialData()
@@ -69,7 +70,7 @@ class DataViewModel : ViewModel() {
         }
     }
 
-    private fun notifyItemDTOsChanged() {
+    private fun notifyAllItemDTOsChanged() {
         viewModelScope.launch(Dispatchers.Main) {
             _allItemDTOs.value = _allItemDTOs.value
         }
@@ -86,7 +87,7 @@ class DataViewModel : ViewModel() {
     }
 
     // itemDTOs 로딩할 때 호출
-    fun getItemDTOs() {
+    fun getAllItemDTOs() {
         viewModelScope.launch(Dispatchers.IO) {
             _allItemDTOs.value!!.clear()
 
@@ -101,7 +102,7 @@ class DataViewModel : ViewModel() {
             }
 
             if (accountDTO.items.isNullOrEmpty()) {
-                notifyItemDTOsChanged()
+                notifyAllItemDTOsChanged()
                 return@launch
             }
 
@@ -120,7 +121,7 @@ class DataViewModel : ViewModel() {
             }
 
             _allItemDTOs.value!!.map { itemDTOs -> itemDTOs.reverse() }
-            notifyItemDTOsChanged()
+            notifyAllItemDTOsChanged()
         }
     }
 
@@ -128,27 +129,37 @@ class DataViewModel : ViewModel() {
         val previousCategoryIndex = InitData.getCategoryIndex(previousItemDTO.categoryId!!)
         val newCategoryIndex = InitData.getCategoryIndex(newItemDTO.categoryId!!)
 
-        if (previousCategoryIndex == newCategoryIndex) {
-            var itemIndex = -1
-            _allItemDTOs.value!![previousCategoryIndex].forEachIndexed { index, itemDTO ->
-                if (itemDTO.id == previousItemDTO.id) {
-                    itemIndex = index
-                    return@forEachIndexed
-                }
+        var itemIndex = -1
+        _allItemDTOs.value!![0].forEachIndexed { index, itemDTO ->
+            if (itemDTO.id == previousItemDTO.id) {
+                itemIndex = index
+                return@forEachIndexed
             }
+        }
 
-            println("itemIndex = $itemIndex, ${_allItemDTOs.value!![previousCategoryIndex].indexOf(previousItemDTO)}")
-            if (itemIndex == -1) return
+        _allItemDTOs.value!![0][itemIndex] = newItemDTO
 
-            // itemIndex == -1 일 때 예외 처리 필요 (그럴 일은 없겠지만?)
+        itemIndex = -1
+        _allItemDTOs.value!![previousCategoryIndex].forEachIndexed { index, itemDTO ->
+            if (itemDTO.id == previousItemDTO.id) {
+                itemIndex = index
+                return@forEachIndexed
+            }
+        }
+
+        if (previousCategoryIndex == newCategoryIndex) {
             _allItemDTOs.value!![previousCategoryIndex][itemIndex] = newItemDTO
+            notifyAllItemDTOsChanged()
+
             return
         }
 
-        val result = _allItemDTOs.value!![previousCategoryIndex].remove(previousItemDTO)
+        val result = _allItemDTOs.value!![previousCategoryIndex].removeAt(itemIndex)
         println("remove!!! $result")
         _allItemDTOs.value!![newCategoryIndex].add(newItemDTO)
         _allItemDTOs.value!![newCategoryIndex].sortByDescending { itemDTO -> itemDTO.timestamps!![0] }
+
+        notifyAllItemDTOsChanged()
     }
 
     fun addItemDTO(itemDTO: ItemDTO) {
@@ -157,7 +168,7 @@ class DataViewModel : ViewModel() {
         _allItemDTOs.value!![0].add(0, itemDTO)
         _allItemDTOs.value!![categoryIndex].add(0, itemDTO)
 
-        notifyItemDTOsChanged()
+        notifyAllItemDTOsChanged()
     }
 
     // 구현 예정
@@ -167,7 +178,7 @@ class DataViewModel : ViewModel() {
         _allItemDTOs.value!![0].add(itemDTO)
         _allItemDTOs.value!![categoryIndex].add(itemDTO)
 
-        notifyItemDTOsChanged()
+        notifyAllItemDTOsChanged()
     }
 
     // dibsItems
@@ -205,28 +216,83 @@ class DataViewModel : ViewModel() {
 
     fun addDibsItem(itemId: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            val documentRef = db.collection("items").document(itemId)
+            var itemDTO: ItemDTO? = null
+            var newDibs: Int? = 0
+
+            db.runTransaction { transaction ->
+                itemDTO = transaction.get(documentRef).toObject(ItemDTO::class.java)
+                newDibs = itemDTO!!.dibs!! + 1
+                transaction.update(documentRef, "dibs", newDibs)
+            }.await()
+
+            itemDTO!!.dibs = newDibs
             db.collection("accounts").document(currentUid).update("dibsItems", FieldValue.arrayUnion(itemId)).await()
-            val doc = db.collection("items").document(itemId).get().await()
-            val itemDTO = doc.toObject(ItemDTO::class.java)!!
 
             _accountDTO.value!!.dibsItems!!.add(itemId)
-            _dibsItemDTOs.value!!.add(0, itemDTO)
+            _dibsItemDTOs.value!!.add(0, itemDTO!!)
 
+            removedDibsItems.remove(itemId)
             notifyDibsItemDTOsChanged()
+
+            if (itemDTO!!.uid == currentUid) {
+                _allItemDTOs.value!![0].forEachIndexed { index, itemDTO ->
+                    if (itemDTO.id == itemId) {
+                        _allItemDTOs.value!![0][index].dibs = newDibs
+                        return@forEachIndexed
+                    }
+                }
+
+                val categoryIndex = InitData.getCategoryIndex(itemDTO!!.categoryId!!)
+                _allItemDTOs.value!![categoryIndex].forEachIndexed { index, itemDTO ->
+                    if (itemDTO.id == itemId) {
+                        _allItemDTOs.value!![categoryIndex][index].dibs = newDibs
+                        return@forEachIndexed
+                    }
+                }
+            }
         }
     }
 
     fun removeDibsItem(itemId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            db.collection("accounts").document(currentUid).update("dibsItems", FieldValue.arrayRemove(itemId)).await()
-            _accountDTO.value!!.dibsItems!!.remove(itemId)
+            val documentRef = db.collection("items").document(itemId)
+            var itemDTO: ItemDTO? = null
+            var newDibs: Int? = 0
 
+            db.runTransaction { transaction ->
+                itemDTO = transaction.get(documentRef).toObject(ItemDTO::class.java)
+                newDibs = itemDTO!!.dibs!! - 1
+                transaction.update(documentRef, "dibs", newDibs)
+            }.await()
+
+            db.collection("accounts").document(currentUid).update("dibsItems", FieldValue.arrayRemove(itemId)).await()
+
+            removedDibsItems[itemId] = newDibs!!
+            _accountDTO.value!!.dibsItems!!.remove(itemId)
             _dibsItemDTOs.value!!.forEachIndexed { index, itemDTO ->
                 if (itemDTO.id == itemId) {
                     _dibsItemDTOs.value!!.removeAt(index)
                     notifyDibsItemDTOsChanged()
 
                     return@forEachIndexed
+                }
+            }
+
+            if (itemDTO!!.uid == currentUid) {
+                _allItemDTOs.value!![0].forEachIndexed { index, itemDTO ->
+                    if (itemDTO.id == itemId) {
+                        _allItemDTOs.value!![0][index].dibs = newDibs
+                        return@forEachIndexed
+                    }
+                }
+
+                val categoryIndex = InitData.getCategoryIndex(itemDTO!!.categoryId!!)
+                _allItemDTOs.value!![categoryIndex].forEachIndexed { index, itemDTO ->
+                    if (itemDTO.id == itemId) {
+                        _allItemDTOs.value!![categoryIndex][index].dibs = newDibs
+                        return@forEachIndexed
+                    }
                 }
             }
         }

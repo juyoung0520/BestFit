@@ -4,10 +4,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.bestfit.viewmodel.DataViewModel
@@ -44,7 +49,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         val initObserver = Observer<Boolean> { isInit ->
             if (isInit) {
-                viewModel.getItemDTOs()
+                viewModel.getAllItemDTOs()
                 initViewPager()
             }
         }
@@ -53,16 +58,31 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     private fun initViewPager() {
+        activity_main_viewpager.offscreenPageLimit = 3
         activity_main_viewpager.adapter = NavigationPagerAdapter(this, 3)
         activity_main_viewpager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
 
+                var navController: NavController? = null
                 when (position) {
-                    0 -> activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_home
-                    1 -> activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_dressroom
-                    2 -> activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_mypage
+                    0 -> {
+                        navController = (supportFragmentManager.fragments[0].childFragmentManager.findFragmentById(R.id.nav_host_home) as NavHostFragment).navController
+                        activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_home
+                    }
+                    1 -> {
+                        navController = (supportFragmentManager.fragments[1].childFragmentManager.findFragmentById(R.id.nav_host_dressroom) as NavHostFragment).navController
+                        activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_dressroom
+                    }
+                    2 -> {
+                        navController = (supportFragmentManager.fragments[2].childFragmentManager.findFragmentById(R.id.nav_host_mypage) as NavHostFragment).navController
+                        activity_main_bottom_nav.selectedItemId = R.id.menu_bottom_nav_action_mypage
+                    }
+                }
+
+                onBackPressedDispatcher.addCallback {
+                    navController!!.navigateUp()
                 }
             }
         })

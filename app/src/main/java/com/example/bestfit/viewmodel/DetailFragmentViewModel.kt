@@ -23,9 +23,6 @@ class DetailFragmentViewModel: ViewModel() {
     private val _accountDTO = MutableLiveData<AccountDTO>()
     val accountDTO: LiveData<AccountDTO> = _accountDTO
 
-    private val _dibs = MutableLiveData<Int>()
-    val dibs: LiveData<Int> = _dibs
-
     fun getScrollPosition() : Int {
         return _scrollPosition.value!!
     }
@@ -50,35 +47,5 @@ class DetailFragmentViewModel: ViewModel() {
         }
     }
 
-    fun increaseDibs() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val documentRef = db.collection("items").document(_itemDTO.value!!.id!!)
-            var newDibs: Int? = 0
 
-            db.runTransaction { transaction ->
-                newDibs = transaction.get(documentRef).toObject(ItemDTO::class.java)!!.dibs!! + 1
-                transaction.update(documentRef, "dibs", newDibs)
-            }.await()
-
-            withContext(Dispatchers.Main) {
-                _dibs.value = newDibs!!
-            }
-        }
-    }
-
-    fun decreaseDibs() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val documentRef = db.collection("items").document(_itemDTO.value!!.id!!)
-            var newDibs: Int? = 0
-
-            db.runTransaction { transaction ->
-                newDibs = transaction.get(documentRef).toObject(ItemDTO::class.java)!!.dibs!! - 1
-                transaction.update(documentRef, "dibs", newDibs)
-            }.await()
-
-            withContext(Dispatchers.Main) {
-                _dibs.value = newDibs!!
-            }
-        }
-    }
 }
