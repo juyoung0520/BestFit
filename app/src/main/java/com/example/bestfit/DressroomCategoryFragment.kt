@@ -40,7 +40,7 @@ class DressroomCategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dressroom_category, container, false)
-
+        println("oncreatview dca")
         initRecyclerView(view)
 
         when (parentFragment) {
@@ -76,8 +76,8 @@ class DressroomCategoryFragment : Fragment() {
                     })
 
                     itemRecyclerViewAdapter.setSelectionTracker(selectionTracker)
-                    itemRecyclerViewAdapter.submitList(null)
-                    itemRecyclerViewAdapter.submitList(dataViewModel.allItemDTOs.value!![categoryIndex])
+//                    itemRecyclerViewAdapter.submitList(null)
+//                    itemRecyclerViewAdapter.submitList(dataViewModel.allItemDTOs.value!![categoryIndex])
 
                     if (dressroomViewModel.getSelection() != null)
                         selectionTracker.setItemsSelected(
@@ -88,16 +88,23 @@ class DressroomCategoryFragment : Fragment() {
                     return@Observer
                 }
 
-                val selectionTracker =
-                    itemRecyclerViewAdapter.getSelectionTracker() ?: return@Observer
-
-                if (dressroomViewModel.getSelection() != null)
-                    selectionTracker.clearSelection()
-
-                itemRecyclerViewAdapter.setSelectionTracker(null)
-                itemRecyclerViewAdapter.submitList(null)
-                itemRecyclerViewAdapter.submitList(dataViewModel.allItemDTOs.value!![categoryIndex])
-                dressroomViewModel.targetCategoryIndex = null
+//                val selectionTracker =
+//                    itemRecyclerViewAdapter.getSelectionTracker() ?: return@Observer
+//
+//                println("ho")
+//
+////                println(selectionTracker.clearSelection())
+////                if (dressroomViewModel.getSelection() != null)
+////                    selectionTracker.clearSelection()
+////
+////                println("zz")
+////
+////                itemRecyclerViewAdapter.setSelectionTracker(null)
+////                itemRecyclerViewAdapter.submitList(null)
+//                itemRecyclerViewAdapter.submitList(dataViewModel.allItemDTOs.value!![categoryIndex])
+//                dressroomViewModel.targetCategoryIndex = null
+//
+//                println("wwow")
             }
         }
 
@@ -194,10 +201,10 @@ class DressroomCategoryFragment : Fragment() {
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
             val itemDTO = getItem(position)
 
-            if (selectionTracker == null)
+//            if (selectionTracker == null)
                 holder.bind(itemDTO)
-            else
-                holder.bind(itemDTO, selectionTracker!!.isSelected(itemDTO.id))
+//            else
+//                holder.bind(itemDTO, selectionTracker!!.isSelected(itemDTO.id))
         }
 
         inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -210,30 +217,43 @@ class DressroomCategoryFragment : Fragment() {
                     .into(view.item_dressroom_iv_item)
 
                 view.item_dressroom_tv_item_name.text = itemDTO.name
-                view.setOnClickListener {
-                    val navController = findNavController()
-                    val action = when (navController.currentDestination!!.id) {
-                        R.id.dressroomFragment -> DressroomFragmentDirections.actionToDetailFragment(itemDTO)
-                        R.id.accountFragment -> AccountFragmentDirections.actionToDetailFragment(itemDTO)
-                        R.id.dibsFragment -> DibsFragmentDirections.actionToDetailFragment(itemDTO)
-                        else -> null
+
+                if (selectionTracker == null) {
+                    view.setOnClickListener {
+                        val navController = findNavController()
+                        val action = when (navController.currentDestination!!.id) {
+                            R.id.dressroomFragment -> DressroomFragmentDirections.actionToDetailFragment(
+                                itemDTO
+                            )
+                            R.id.accountFragment -> AccountFragmentDirections.actionToDetailFragment(
+                                itemDTO
+                            )
+                            R.id.dibsFragment -> DibsFragmentDirections.actionToDetailFragment(
+                                itemDTO
+                            )
+                            else -> null
+                        }
+
+                        navController.navigate(action!!)
                     }
 
-                    navController.navigate(action!!)
+                    return
                 }
+
+                view.item_dressroom_cardview.isChecked = selectionTracker!!.isSelected(itemDTO.id)
             }
 
-            fun bind(itemDTO: ItemDTO, isSelected: Boolean) {
-                val view = itemView
-
-                Glide.with(view)
-                    .load(itemDTO.images!![0])
-                    .apply(RequestOptions().centerCrop())
-                    .into(view.item_dressroom_iv_item)
-
-                view.item_dressroom_tv_item_name.text = itemDTO.name
-                view.item_dressroom_cardview.isChecked = isSelected
-            }
+//            fun bind(itemDTO: ItemDTO, isSelected: Boolean) {
+//                val view = itemView
+//
+//                Glide.with(view)
+//                    .load(itemDTO.images!![0])
+//                    .apply(RequestOptions().centerCrop())
+//                    .into(view.item_dressroom_iv_item)
+//
+//                view.item_dressroom_tv_item_name.text = itemDTO.name
+//                view.item_dressroom_cardview.isChecked = isSelected
+//            }
 
             fun getItemDetails(viewHolder: RecyclerView.ViewHolder?): ItemDetailsLookup.ItemDetails<String> {
                 return object : ItemDetailsLookup.ItemDetails<String>() {

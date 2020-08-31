@@ -47,14 +47,14 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
-        val initObserver = Observer<Boolean> { isInit ->
-            if (isInit) {
+        val isInitializedObserver = Observer<Boolean> { isInitialized ->
+            if (isInitialized) {
                 viewModel.getAllItemDTOs()
                 initViewPager()
             }
         }
 
-        viewModel.isInitialized.observe(this, initObserver)
+        viewModel.isInitialized.observe(this, isInitializedObserver)
     }
 
     private fun initViewPager() {
