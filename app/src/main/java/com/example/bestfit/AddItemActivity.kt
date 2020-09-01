@@ -52,18 +52,23 @@ class AddItemActivity : AppCompatActivity() {
 
         val initializedObserver = Observer<Boolean> { initialized ->
             if (initialized) {
-                val itemDTO = intent.getParcelableExtra<ItemDTO>("itemDTO")
-                if (itemDTO == null)
+                val tempItemDTO = intent.getParcelableExtra<ItemDTO>("tempItemDTO")
+                if (tempItemDTO == null)
                     viewModel.setTempItemDTO(ItemDTO())
                 else {
                     activity_add_item_tv_toolbar_title.text = "아이템 수정"
-                    viewModel.setTempItemDTO(itemDTO)
+                    viewModel.setTempItemDTO(tempItemDTO)
                 }
             }
         }
 
         val itemDTOObserver = Observer<ItemDTO> { itemDTO ->
-            setResult(RESULT_OK, Intent().putExtra("itemDTO", itemDTO))
+            val tempItemDTO = intent.getParcelableExtra<ItemDTO>("tempItemDTO")
+            if (tempItemDTO == null)
+                setResult(RESULT_OK, Intent().putExtra("itemDTO", itemDTO))
+            else
+                setResult(RESULT_OK, Intent().putExtra("tempItemDTO", itemDTO))
+
             finish()
         }
 
@@ -105,7 +110,6 @@ class AddItemActivity : AppCompatActivity() {
                                 R.id.menu_activity_add_item_submit -> {
                                     if (emptyCheckAddItem())
                                         submitAddItem()
-
                                     true
                                 }
                                 else -> false
@@ -169,10 +173,9 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     fun submitAddItem() {
-        val tempItemDTO = viewModel.tempItemDTO.value!!
+        val tempItemDTO = viewModel.getTempItemDTO()!!
         if (tempItemDTO.id != null) {
             submitModifyItem()
-
             return
         }
 
@@ -214,7 +217,7 @@ class AddItemActivity : AppCompatActivity() {
         val fourthFragment = fragments[3] as AddItemFourthFragment
         val fourthFragmentView = fourthFragment.fragmentView
 
-        val tempItemDTO = viewModel.tempItemDTO.value!!
+        val tempItemDTO = viewModel.getTempItemDTO()!!
         tempItemDTO.timestamps!!.add(System.currentTimeMillis())
         tempItemDTO.name = secondFragmentView.fragment_add_item_second_text_item_name.text.toString()
         tempItemDTO.ratingReview = fourthFragmentView.fragment_add_item_fourth_rating.rating
@@ -227,7 +230,7 @@ class AddItemActivity : AppCompatActivity() {
 //            imageUris.add(uri)
 //        }
 
-//        viewModel.submitModifyItem(tempItemDTO, imageUris)
+        viewModel.submitModifyItem(tempItemDTO)
     }
 
     private fun getSearchKeywords(itemName: String): ArrayList<String> {
@@ -301,20 +304,17 @@ class AddItemActivity : AppCompatActivity() {
         if (viewModel.tempItemDTO.value!!.sizeReview == null) {
             changeViewPage(2)
             thirdFragmentView.fragment_add_item_third_error_size_review.visibility = View.VISIBLE
-
             return false
         }
 
         // fourthFragment
         if (fourthFragmentView.fragment_add_item_fourth_rating.rating.equals(0.toFloat())) {
             fourthFragmentView.fragment_add_item_fourth_error_rating.visibility = View.VISIBLE
-
             return false
         }
 
         if (fourthFragmentView.fragment_add_item_fourth_text_review.text.isNullOrEmpty()) {
             fourthFragmentView.fragment_add_item_fourth_error_review.visibility = View.VISIBLE
-
             return false
         }
 

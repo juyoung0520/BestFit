@@ -6,37 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.AccountDTO
-import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.example.bestfit.viewmodel.AccountFragmentViewModel
-import com.example.bestfit.viewmodel.DressroomFragmentViewModel
-import com.example.bestfit.viewmodel.SettingsFragmentViewModel
+import com.example.bestfit.viewmodel.DataViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_account.view.*
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 import kotlin.math.abs
 
 class AccountFragment : Fragment() {
+    private val dataViewModel: DataViewModel by activityViewModels()
     private lateinit var viewModel: AccountFragmentViewModel
 
     private val args: AccountFragmentArgs by navArgs()
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
-    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,12 +48,17 @@ class AccountFragment : Fragment() {
     }
 
     private fun initViewModel(view: View) {
-        viewModel = ViewModelProvider(this, AccountFragmentViewModel.Factory(args.uid)).get(AccountFragmentViewModel::class.java)
-
         val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
             initAccountFragment(view, accountDTO)
         }
 
+        if (args.uid == currentUid) {
+            dataViewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
+
+            return
+        }
+
+        viewModel = ViewModelProvider(this, AccountFragmentViewModel.Factory(args.uid)).get(AccountFragmentViewModel::class.java)
         viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
     }
 
@@ -100,18 +100,8 @@ class AccountFragment : Fragment() {
 
         override fun createFragment(position: Int): Fragment {
             return when (position) {
-                0 -> {
-                    val fragment = DressroomCategoryFragment()
-                    val bundle = Bundle()
-
-                    bundle.putInt("position", -1)
-
-                    fragment.arguments = bundle
-                    fragment
-                }
-                1 -> {
-                    Fragment()
-                }
+                0 -> DressroomCategoryFragment()
+                1 -> Fragment()
                 else -> Fragment()
             }
         }

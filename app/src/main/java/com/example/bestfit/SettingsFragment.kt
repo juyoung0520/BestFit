@@ -1,26 +1,34 @@
 package com.example.bestfit
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.util.InitData
-import com.example.bestfit.viewmodel.SettingsFragmentViewModel
+import com.example.bestfit.viewmodel.DataViewModel
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 
 class SettingsFragment : Fragment() {
-    private lateinit var viewModel: SettingsFragmentViewModel
+    private val dataViewModel: DataViewModel by activityViewModels()
 
     private val auth = FirebaseAuth.getInstance()
-    private val currentUid = auth.currentUser!!.uid
+
+    private val startForResult =  registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val accountDTO = result.data!!.getParcelableExtra<AccountDTO>("accountDTO")!!
+            dataViewModel.setAccountDTO(accountDTO)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,13 +51,11 @@ class SettingsFragment : Fragment() {
     }
 
     private fun initViewModel(view: View) {
-        viewModel = ViewModelProvider(this, SettingsFragmentViewModel.Factory(currentUid)).get(SettingsFragmentViewModel::class.java)
-
         val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
             initSettingsFragment(view, accountDTO)
         }
 
-        viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
+        dataViewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
     }
 
     private fun initToolbar(view: View) {
@@ -57,7 +63,8 @@ class SettingsFragment : Fragment() {
         view.fragment_settings_toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_fragment_settings_modify -> {
-
+                    val intent = Intent(context, SetProfileActivity::class.java).putExtra("accountDTO", dataViewModel.accountDTO.value)
+                    startForResult.launch(intent)
                     true
                 }
                 else -> {
