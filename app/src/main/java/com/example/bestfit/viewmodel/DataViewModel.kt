@@ -98,13 +98,20 @@ class DataViewModel : ViewModel() {
                 _allItemDTOs.value!!.add(arrayListOf())
 
             val doc = db.collection("accounts").document(currentUid).get().await()
-            val accountDTO = doc.toObject(AccountDTO::class.java)!!
+            val accountDTO = doc.toObject(AccountDTO::class.java)
 
-            withContext(Dispatchers.Main) {
-                _accountDTO.value = accountDTO
+            if (accountDTO == null) {
+                withContext(Dispatchers.Main) {
+                    _accountDTO.value = AccountDTO()
+                }
+                return@launch
+            } else {
+                withContext(Dispatchers.Main) {
+                    _accountDTO.value = accountDTO!!
+                }
             }
 
-            if (accountDTO.items.isNullOrEmpty()) {
+            if (accountDTO!!.items.isNullOrEmpty()) {
                 notifyItemDTOsChanged()
 
                 return@launch
