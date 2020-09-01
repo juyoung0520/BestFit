@@ -115,7 +115,6 @@ class DressroomCategoryFragment : Fragment() {
                 dibsViewModel.selectionItems.removeObservers(viewLifecycleOwner)
                 itemRecyclerViewAdapter.submitList(dataViewModel.dibsItemDTOs.value!!.map { it.copy() })
 
-                println("state = ${dataViewModel.getRemoveState()}")
                 if (dataViewModel.getRemoveState() == DataViewModel.REMOVE_START) {
                     dataViewModel.removeDibsItem(dibsViewModel.getSelectionItems())
                 }

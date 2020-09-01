@@ -61,7 +61,6 @@ class DibsFragment : Fragment() {
                 when (item.itemId) {
                     R.id.menu_edit_mode_remove -> {
                         dataViewModel.setRemoveState(DataViewModel.REMOVE_START)
-                        println("state = ${dataViewModel.getRemoveState()}")
                         initToolbar(view)
 
                         true
