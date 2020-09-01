@@ -1,6 +1,8 @@
 package com.example.bestfit
 
+import android.accounts.Account
 import android.content.Context
+import android.content.Intent
 import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,9 +13,13 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.bestfit.model.AccountDTO
+import com.example.bestfit.model.ItemDTO
+import com.example.bestfit.viewmodel.SetProfileActivityViewModel
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,18 +31,43 @@ import kotlinx.android.synthetic.main.fragment_set_profile_third.view.*
 import java.security.AccessController.getContext
 
 class SetProfileActivity : AppCompatActivity() {
+    private lateinit var viewModel: SetProfileActivityViewModel
     private val auth = FirebaseAuth.getInstance()
-    private val currentUid = auth.currentUser!!.uid
-    private val db = FirebaseFirestore.getInstance()
     private val fragments = arrayListOf<Fragment>()
+    private lateinit var tempAccountDTO: AccountDTO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_set_profile)
+        tempAccountDTO = intent.getParcelableExtra<AccountDTO>("accountDTO")!!
 
+        initViewModel()
         initToolbar()
-
         initViewPager()
+
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this).get(SetProfileActivityViewModel::class.java)
+
+        val initializedObserver = Observer<Boolean> { initialized ->
+            if (initialized) {
+                if (tempAccountDTO == null) {
+                    viewModel.setTempAccountDTO(AccountDTO())
+                } else {
+                    activity_set_profile_tv_toolbar_title.text = "프로필 수정"
+                    viewModel.setTempAccountDTO(tempAccountDTO)
+                }
+            }
+        }
+
+        val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
+            setResult(RESULT_OK, Intent().putExtra("accountDTO", accountDTO))
+            finish()
+        }
+
+        viewModel.initialized.observe(this, initializedObserver)
+        viewModel.accountDTO.observe(this, accountDTOObserver)
     }
 
     private fun initToolbar() {
@@ -56,8 +87,13 @@ class SetProfileActivity : AppCompatActivity() {
 
                 when (position) {
                     0 -> {
-                        activity_set_profile_toolbar.navigationIcon = null
-                        activity_set_profile_toolbar.menu.clear()
+                        if (tempAccountDTO == null) {
+                            activity_set_profile_toolbar.navigationIcon = null
+                            activity_set_profile_toolbar.menu.clear()
+                        } else {
+                            activity_set_profile_toolbar.setNavigationIcon(R.drawable.ic_close)
+                            activity_set_profile_toolbar.menu.clear()
+                        }
                     }
                     1 -> {
                         activity_set_profile_toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
@@ -71,7 +107,6 @@ class SetProfileActivity : AppCompatActivity() {
                                 R.id.menu_activity_set_profile_submit -> {
                                     if (emptyCheckSetProfile())
                                         submitSetProfile()
-
                                     true
                                 }
                                 else -> {
@@ -136,27 +171,18 @@ class SetProfileActivity : AppCompatActivity() {
     }
 
     fun submitSetProfile() {
-        val firstFragment = (fragments[0] as SetProfileFirstFragment).fragmentView
-        val secondFragment = (fragments[1] as SetProfileSecondFragment).fragmentView
-        val thirdFragment = (fragments[2] as SetProfileThirdFragment).fragmentView
-
-        val accountDTO = AccountDTO()
-        accountDTO.nickname = firstFragment.fragment_set_profile_first_text_nickname.text.toString()
-        accountDTO.sex = firstFragment.fragment_set_profile_first_group_gender.checkedButtonId == firstFragment.fragment_set_profile_first_btn_male.id
-        accountDTO.birth = firstFragment.fragment_set_profile_first_actv_birth.text.toString().toInt()
-        accountDTO.height = secondFragment.fragment_set_profile_second_text_height.text.toString().toInt()
-        accountDTO.weight = secondFragment.fragment_set_profile_second_text_weight.text.toString().toInt()
-        accountDTO.topId = secondFragment.fragment_set_profile_second_text_top.tag as String
-        accountDTO.bottomId = secondFragment.fragment_set_profile_second_text_bottom.tag as String
-        accountDTO.shoesId = secondFragment.fragment_set_profile_second_text_shoes.tag as String
-        accountDTO.message = thirdFragment.fragment_set_profile_third_text_message.text.toString()
-
-        db.collection("accounts").document(currentUid).set(accountDTO).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                println(accountDTO)
-                finish()
-            }
+        val accountDTO = viewModel.getTempAccountDTO()!!
+        if (tempAccountDTO != null) {
+            submitModifyProfile()
+            return
         }
+
+        viewModel.submitSetProfile(accountDTO)
+    }
+
+    fun submitModifyProfile() {
+        val accountDTO = viewModel.getTempAccountDTO()!!
+        viewModel.submitModifyProfile(accountDTO)
     }
 
     fun emptyCheckSetProfile() : Boolean {
@@ -170,16 +196,21 @@ class SetProfileActivity : AppCompatActivity() {
             changeViewPage(0)
             firstFragment.fragment_set_profile_first_error_nickname.visibility = View.VISIBLE
             firstFragment.fragment_set_profile_first_layout_text_nickname.animation = shake
+
             return false
         }
+
         if (firstFragment.fragment_set_profile_first_group_gender.checkedButtonId == View.NO_ID) {
             changeViewPage(0)
             firstFragment.fragment_set_profile_first_error_group_gender.visibility = View.VISIBLE
+
             return false
         }
+
         if (firstFragment.fragment_set_profile_first_actv_birth.text.isNullOrEmpty()) {
             changeViewPage(0)
             firstFragment.fragment_set_profile_first_error_birth.visibility = View.VISIBLE
+
             return false
         }
 
@@ -187,26 +218,35 @@ class SetProfileActivity : AppCompatActivity() {
         if (!secondFragment.fragment_set_profile_second_text_height.text!!.isDigitsOnly()) {
             changeViewPage(1)
             secondFragment.fragment_set_profile_second_error_user_size.visibility = View.VISIBLE
+
             return false
         }
+
         if (!secondFragment.fragment_set_profile_second_text_weight.text!!.isDigitsOnly()) {
             changeViewPage(1)
             secondFragment.fragment_set_profile_second_error_user_size.visibility = View.VISIBLE
+
             return false
         }
+
         if (secondFragment.fragment_set_profile_second_text_top.tag == null) {
             changeViewPage(1)
             secondFragment.fragment_set_profile_second_error_clothes_size.visibility = View.VISIBLE
+
             return false
         }
+
         if (secondFragment.fragment_set_profile_second_text_bottom.tag == null) {
             changeViewPage(1)
             secondFragment.fragment_set_profile_second_error_clothes_size.visibility = View.VISIBLE
+
             return false
         }
+
         if (secondFragment.fragment_set_profile_second_text_shoes.tag == null) {
             changeViewPage(1)
             secondFragment.fragment_set_profile_second_error_clothes_size.visibility = View.VISIBLE
+
             return false
         }
 

@@ -1,8 +1,11 @@
 package com.example.bestfit
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -19,6 +22,13 @@ class SettingsFragment : Fragment() {
     private val dataViewModel: DataViewModel by activityViewModels()
 
     private val auth = FirebaseAuth.getInstance()
+
+    private val startForResult =  registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val accountDTO = result.data!!.getParcelableExtra<AccountDTO>("accountDTO")!!
+            dataViewModel.setAccountDTO(accountDTO)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +63,8 @@ class SettingsFragment : Fragment() {
         view.fragment_settings_toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_fragment_settings_modify -> {
-
+                    val intent = Intent(context, SetProfileActivity::class.java).putExtra("accountDTO", dataViewModel.accountDTO.value)
+                    startForResult.launch(intent)
                     true
                 }
                 else -> {
