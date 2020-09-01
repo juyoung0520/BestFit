@@ -6,26 +6,19 @@ import android.os.Bundle
 import android.view.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.get
 import androidx.fragment.app.*
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.selection.Selection
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.example.bestfit.viewmodel.DataViewModel
 import com.example.bestfit.viewmodel.DressroomFragmentViewModel
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.android.synthetic.main.activity_add_item.*
-import kotlinx.android.synthetic.main.fragment_dressroom.*
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
 
 class DressroomFragment : Fragment() {
     private val dataViewModel: DataViewModel by activityViewModels()
     private lateinit var viewModel: DressroomFragmentViewModel
-
-    private val fragments: ArrayList<Fragment> = arrayListOf()
 
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -41,24 +34,27 @@ class DressroomFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dressroom, container, false)
 
-        initViewModel(view)
+        initViewModel()
         initToolbar(view, viewModel.isEditMode())
         initTabAdapter(view)
 
         return view
     }
 
-    private fun initViewModel(view: View) {
+    private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(DressroomFragmentViewModel::class.java)
     }
 
     private fun initToolbar(view: View, isEditMode: Boolean = false) {
-        if (isEditMode)
-            viewModel.targetCategoryIndex = view.fragment_dressroom_viewpager.currentItem
-
         view.fragment_dressroom_toolbar.menu.clear()
         view.fragment_dressroom_tab.visibility = if (isEditMode) View.GONE else View.VISIBLE
         view.fragment_dressroom_viewpager.isUserInputEnabled = !isEditMode
+
+        if (isEditMode) {
+            viewModel.clearSelectionItems()
+            viewModel.targetCategoryIndex = view.fragment_dressroom_viewpager.currentItem
+            viewModel.lastClickItem = null
+        }
 
         viewModel.setEditMode(isEditMode)
 
@@ -66,24 +62,14 @@ class DressroomFragment : Fragment() {
             view.fragment_dressroom_toolbar.title = "삭제할 아이템을 선택하세요"
             view.fragment_dressroom_toolbar.setNavigationIcon(R.drawable.ic_close)
             view.fragment_dressroom_toolbar.setNavigationOnClickListener {
-                viewModel.targetCategoryIndex = null
-                view.fragment_dressroom_viewpager.adapter = TabOfCategoryPagerAdapter()
-//                notifyItemChanged(view.fragment_dressroom_viewpager.currentItem)
-//                findNavController().navigate(DressroomFragmentDirections.actionDressroomFragmentSelf())
-//                view.fragment_dressroom_viewpager[view.fragment_dressroom_viewpager.currentItem].invalidate()
-//                    .notifyItemChanged(view.fragment_dressroom_viewpager.currentItem)
-
+                dataViewModel.setRemoveState(DataViewModel.REMOVE_CANCEL)
                 initToolbar(view)
             }
             view.fragment_dressroom_toolbar.inflateMenu(R.menu.menu_edit_mode)
             view.fragment_dressroom_toolbar.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.menu_edit_mode_remove -> {
-                        // 삭제 처리
-                        view.fragment_dressroom_viewpager.adapter!!.notifyItemChanged(viewModel.targetCategoryIndex!!)
-                        viewModel.targetCategoryIndex = null
-                        viewModel.setSelection(null)
-                        println(viewModel.getSelection())
+                        dataViewModel.setRemoveState(DataViewModel.REMOVE_START)
                         initToolbar(view)
 
                         true
@@ -134,7 +120,6 @@ class DressroomFragment : Fragment() {
             bundle.putInt("categoryIndex", position)
             fragment.arguments = bundle
 
-            fragments.add(fragment)
             return fragment
         }
     }

@@ -4,14 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DressroomFragmentViewModel : ViewModel() {
+class DibsFragmentViewModel : ViewModel() {
     private val _isEditMode = MutableLiveData(false)
     val isEditMode: LiveData<Boolean> = _isEditMode
 
     private val _selectionItems = MutableLiveData<ArrayList<String>>(arrayListOf())
     val selectionItems: LiveData<ArrayList<String>> = _selectionItems
 
-    var targetCategoryIndex: Int? = null
     var lastClickItem: String? = null
 
     fun isEditMode(): Boolean {

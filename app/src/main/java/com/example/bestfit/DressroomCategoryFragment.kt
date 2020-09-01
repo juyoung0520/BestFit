@@ -2,17 +2,13 @@ package com.example.bestfit
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.selection.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -22,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.viewmodel.AccountFragmentViewModel
 import com.example.bestfit.viewmodel.DataViewModel
+import com.example.bestfit.viewmodel.DibsFragmentViewModel
 import com.example.bestfit.viewmodel.DressroomFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
@@ -30,6 +27,7 @@ class DressroomCategoryFragment : Fragment() {
     private val dataViewModel: DataViewModel by activityViewModels()
     private lateinit var dressroomViewModel: DressroomFragmentViewModel
     private lateinit var accountViewModel: AccountFragmentViewModel
+    private lateinit var dibsViewModel: DibsFragmentViewModel
 
     private lateinit var itemRecyclerViewAdapter: ItemRecyclerViewAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
@@ -40,71 +38,39 @@ class DressroomCategoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dressroom_category, container, false)
-        println("oncreatview dca")
+
         initRecyclerView(view)
 
         when (parentFragment) {
             is AccountFragment -> initAccountViewModel()
-            is DressroomFragment -> initDressroomViewModel(view, requireArguments().getInt("categoryIndex"))
+            is DressroomFragment -> initDressroomViewModel(requireArguments().getInt("categoryIndex"))
             is DibsFragment -> initDibsViewModel()
         }
 
         return view
     }
 
-    private fun initDressroomViewModel(view: View, categoryIndex: Int) {
+    private fun initDressroomViewModel(categoryIndex: Int) {
         dressroomViewModel = ViewModelProvider(this.requireParentFragment()).get(DressroomFragmentViewModel::class.java)
 
         val isEditModeObserver = Observer<Boolean> { isEditMode ->
-            if (dressroomViewModel.targetCategoryIndex == categoryIndex) {
-                println("test $isEditMode")
-                if (isEditMode) {
-                    val selectionTracker = SelectionTracker.Builder<String>(
-                        "dressroom-selection",
-                        view.fragment_dressroom_category_recyclerview,
-                        ItemIdKeyProvider(itemRecyclerViewAdapter),
-                        ItemLookUp(view.fragment_dressroom_category_recyclerview),
-                        StorageStrategy.createStringStorage()
-                    ).withSelectionPredicate(SelectionPredicates.createSelectAnything()).build()
-
-                    selectionTracker.addObserver(object :
-                        SelectionTracker.SelectionObserver<String>() {
-                        override fun onSelectionChanged() {
-                            dressroomViewModel.setSelection(selectionTracker.selection)
-                            super.onSelectionChanged()
-                        }
-                    })
-
-                    itemRecyclerViewAdapter.setSelectionTracker(selectionTracker)
-//                    itemRecyclerViewAdapter.submitList(null)
-//                    itemRecyclerViewAdapter.submitList(dataViewModel.allItemDTOs.value!![categoryIndex])
-
-                    if (dressroomViewModel.getSelection() != null)
-                        selectionTracker.setItemsSelected(
-                            dressroomViewModel.getSelection()!!,
-                            true
-                        )
-
-                    return@Observer
+            if (dressroomViewModel.targetCategoryIndex != null && dressroomViewModel.targetCategoryIndex == categoryIndex) {
+                val selectionItemsObserver = Observer<ArrayList<String>> { _ ->
+                    itemRecyclerViewAdapter.submitList(dataViewModel.allItemDTOs.value!![categoryIndex].map { it.copy() })
                 }
 
-//                val selectionTracker =
-//                    itemRecyclerViewAdapter.getSelectionTracker() ?: return@Observer
-//
-//                println("ho")
-//
-////                println(selectionTracker.clearSelection())
-////                if (dressroomViewModel.getSelection() != null)
-////                    selectionTracker.clearSelection()
-////
-////                println("zz")
-////
-////                itemRecyclerViewAdapter.setSelectionTracker(null)
-////                itemRecyclerViewAdapter.submitList(null)
-//                itemRecyclerViewAdapter.submitList(dataViewModel.allItemDTOs.value!![categoryIndex])
-//                dressroomViewModel.targetCategoryIndex = null
-//
-//                println("wwow")
+                if (isEditMode)
+                    dressroomViewModel.selectionItems.observe(viewLifecycleOwner, selectionItemsObserver)
+                else {
+                    dressroomViewModel.targetCategoryIndex = null
+
+                    dressroomViewModel.selectionItems.removeObservers(viewLifecycleOwner)
+                    itemRecyclerViewAdapter.submitList(dataViewModel.allItemDTOs.value!![categoryIndex].map { it.copy() })
+
+                    if (dataViewModel.getRemoveState() == DataViewModel.REMOVE_START) {
+                        dataViewModel.removeItemDTOs(dressroomViewModel.getSelectionItems())
+                    }
+                }
             }
         }
 
@@ -136,6 +102,28 @@ class DressroomCategoryFragment : Fragment() {
     }
 
     private fun initDibsViewModel() {
+        dibsViewModel = ViewModelProvider(this.requireParentFragment()).get(DibsFragmentViewModel::class.java)
+
+        val isEditModeObserver = Observer<Boolean> { isEditMode ->
+            val selectionItemsObserver = Observer<ArrayList<String>> { _ ->
+                itemRecyclerViewAdapter.submitList(dataViewModel.dibsItemDTOs.value!!.map { it.copy() })
+            }
+
+            if (isEditMode)
+                dibsViewModel.selectionItems.observe(viewLifecycleOwner, selectionItemsObserver)
+            else {
+                dibsViewModel.selectionItems.removeObservers(viewLifecycleOwner)
+                itemRecyclerViewAdapter.submitList(dataViewModel.dibsItemDTOs.value!!.map { it.copy() })
+
+                println("state = ${dataViewModel.getRemoveState()}")
+                if (dataViewModel.getRemoveState() == DataViewModel.REMOVE_START) {
+                    dataViewModel.removeDibsItem(dibsViewModel.getSelectionItems())
+                }
+            }
+        }
+
+        dibsViewModel.isEditMode.observe(viewLifecycleOwner, isEditModeObserver)
+
         val dibsItemDTOsObserver = Observer<ArrayList<ItemDTO>> { dibsItemDTOs ->
             itemRecyclerViewAdapter.submitList(dibsItemDTOs.map { it.copy() })
         }
@@ -151,7 +139,7 @@ class DressroomCategoryFragment : Fragment() {
         view.fragment_dressroom_category_recyclerview.layoutManager = layoutManager
     }
 
-    class DiffItemCallback : DiffUtil.ItemCallback<ItemDTO>() {
+    inner class DiffItemCallback : DiffUtil.ItemCallback<ItemDTO>() {
         override fun areItemsTheSame(
             oldItem: ItemDTO,
             newItem: ItemDTO
@@ -163,22 +151,31 @@ class DressroomCategoryFragment : Fragment() {
             oldItem: ItemDTO,
             newItem: ItemDTO
         ): Boolean {
-            // 드레스룸에서 찜 표시 하려면 이거 수정해야겠다.
+            val navController = findNavController()
+            when (navController.currentDestination!!.id) {
+                R.id.dressroomFragment -> {
+                    return if (dressroomViewModel.isEditMode())
+                        dressroomViewModel.lastClickItem != newItem.id
+                    else if (!dressroomViewModel.getSelectionItems().isNullOrEmpty())
+                        !dressroomViewModel.isSelected(newItem.id!!)
+                    else
+                        oldItem.timestamps!!.size == newItem.timestamps!!.size
+                }
+                R.id.dibsFragment -> {
+                    return if (dibsViewModel.isEditMode())
+                        dibsViewModel.lastClickItem != newItem.id
+                    else if (!dibsViewModel.getSelectionItems().isNullOrEmpty())
+                        !dibsViewModel.isSelected(newItem.id!!)
+                    else
+                        oldItem.timestamps!!.size == newItem.timestamps!!.size
+                }
+            }
+
             return oldItem.timestamps!!.size == newItem.timestamps!!.size
         }
     }
 
     inner class ItemRecyclerViewAdapter: ListAdapter<ItemDTO, ItemRecyclerViewAdapter.ItemViewHolder>(DiffItemCallback()) {
-        private var selectionTracker: SelectionTracker<String>? = null
-
-        fun setSelectionTracker(selectionTracker: SelectionTracker<String>?) {
-            this.selectionTracker = selectionTracker
-        }
-
-        fun getSelectionTracker(): SelectionTracker<String>? {
-            return selectionTracker
-        }
-
         override fun onCurrentListChanged(
             previousList: MutableList<ItemDTO>,
             currentList: MutableList<ItemDTO>
@@ -201,13 +198,71 @@ class DressroomCategoryFragment : Fragment() {
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
             val itemDTO = getItem(position)
 
-//            if (selectionTracker == null)
-                holder.bind(itemDTO)
-//            else
-//                holder.bind(itemDTO, selectionTracker!!.isSelected(itemDTO.id))
+            val navController = findNavController()
+            when (navController.currentDestination!!.id) {
+                R.id.dressroomFragment -> holder.bindEditMode(itemDTO, dressroomViewModel.isEditMode(), dressroomViewModel.isSelected(itemDTO.id!!))
+                R.id.dibsFragment -> holder.bindEditMode(itemDTO, dibsViewModel.isEditMode(), dibsViewModel.isSelected(itemDTO.id!!))
+                R.id.accountFragment -> holder.bind(itemDTO)
+            }
         }
 
         inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            fun bindEditMode(itemDTO: ItemDTO, isEditMode: Boolean, isSelected: Boolean) {
+                val view = itemView
+
+                if (isEditMode)
+                    view.item_dressroom_cardview.isChecked = isSelected
+                else
+                    view.item_dressroom_cardview.isChecked = false
+
+                if (!itemDTO.images.isNullOrEmpty()) {
+                    Glide.with(view)
+                        .load(itemDTO.images!![0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(view.item_dressroom_iv_item)
+                }
+
+                view.item_dressroom_tv_item_name.text = itemDTO.name
+
+                view.setOnClickListener {
+                    val navController = findNavController()
+                    when (navController.currentDestination!!.id) {
+                        R.id.dressroomFragment -> {
+                            val isEditMode = dressroomViewModel.isEditMode()
+                            val isSelected = dressroomViewModel.isSelected(itemDTO.id!!)
+
+                            if (isEditMode) {
+                                if (!isSelected)
+                                    dressroomViewModel.select(itemDTO.id!!)
+                                else
+                                    dressroomViewModel.deselect(itemDTO.id!!)
+
+                                return@setOnClickListener
+                            }
+
+                            val action = DressroomFragmentDirections.actionToDetailFragment(itemDTO)
+                            navController.navigate(action)
+                        }
+                        R.id.dibsFragment -> {
+                            val isEditMode = dibsViewModel.isEditMode()
+                            val isSelected = dibsViewModel.isSelected(itemDTO.id!!)
+
+                            if (isEditMode) {
+                                if (!isSelected)
+                                    dibsViewModel.select(itemDTO.id!!)
+                                else
+                                    dibsViewModel.deselect(itemDTO.id!!)
+
+                                return@setOnClickListener
+                            }
+
+                            val action = DibsFragmentDirections.actionToDetailFragment(itemDTO)
+                            navController.navigate(action)
+                        }
+                    }
+                }
+            }
+
             fun bind(itemDTO: ItemDTO) {
                 val view = itemView
 
@@ -218,88 +273,13 @@ class DressroomCategoryFragment : Fragment() {
 
                 view.item_dressroom_tv_item_name.text = itemDTO.name
 
-                if (selectionTracker == null) {
-                    view.setOnClickListener {
-                        val navController = findNavController()
-                        val action = when (navController.currentDestination!!.id) {
-                            R.id.dressroomFragment -> DressroomFragmentDirections.actionToDetailFragment(
-                                itemDTO
-                            )
-                            R.id.accountFragment -> AccountFragmentDirections.actionToDetailFragment(
-                                itemDTO
-                            )
-                            R.id.dibsFragment -> DibsFragmentDirections.actionToDetailFragment(
-                                itemDTO
-                            )
-                            else -> null
-                        }
+                view.setOnClickListener {
+                    val navController = findNavController()
+                    val action = AccountFragmentDirections.actionToDetailFragment(itemDTO)
 
-                        navController.navigate(action!!)
-                    }
-
-                    return
-                }
-
-                view.item_dressroom_cardview.isChecked = selectionTracker!!.isSelected(itemDTO.id)
-            }
-
-//            fun bind(itemDTO: ItemDTO, isSelected: Boolean) {
-//                val view = itemView
-//
-//                Glide.with(view)
-//                    .load(itemDTO.images!![0])
-//                    .apply(RequestOptions().centerCrop())
-//                    .into(view.item_dressroom_iv_item)
-//
-//                view.item_dressroom_tv_item_name.text = itemDTO.name
-//                view.item_dressroom_cardview.isChecked = isSelected
-//            }
-
-            fun getItemDetails(viewHolder: RecyclerView.ViewHolder?): ItemDetailsLookup.ItemDetails<String> {
-                return object : ItemDetailsLookup.ItemDetails<String>() {
-                    override fun getSelectionKey(): String? {
-                        return getItem(position).id
-                    }
-
-                    override fun getPosition(): Int {
-                        if (viewHolder == null)
-                            return RecyclerView.NO_POSITION
-
-                        return viewHolder.layoutPosition
-                    }
-
-                    override fun inSelectionHotspot(e: MotionEvent): Boolean {
-                        return true
-                    }
+                    navController.navigate(action)
                 }
             }
-        }
-    }
-
-    class ItemIdKeyProvider(private val adapter: ItemRecyclerViewAdapter)
-        : ItemKeyProvider<String>(SCOPE_CACHED) {
-
-        override fun getKey(position: Int): String? {
-            return adapter.currentList[position].id
-                ?: throw IllegalStateException("RecyclerView adapter is not set!")
-        }
-
-        override fun getPosition(key: String): Int {
-            return adapter.currentList.indexOfFirst { itemDTO -> itemDTO.id == key }
-        }
-    }
-
-    class ItemLookUp(private val recyclerView: RecyclerView) : ItemDetailsLookup<String>() {
-        @Nullable
-        override fun getItemDetails(@NonNull motionEvent: MotionEvent): ItemDetails<String>? {
-            val view = recyclerView.findChildViewUnder(motionEvent.x, motionEvent.y)
-            if (view != null) {
-                val viewHolder =
-                    recyclerView.getChildViewHolder(view) as ItemRecyclerViewAdapter.ItemViewHolder
-                return viewHolder.getItemDetails(viewHolder)
-            }
-
-            return null
         }
     }
 }

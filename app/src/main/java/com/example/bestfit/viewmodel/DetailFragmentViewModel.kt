@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class DetailFragmentViewModel: ViewModel() {
+class DetailFragmentViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
