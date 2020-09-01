@@ -62,7 +62,7 @@ class AddItemActivity : AppCompatActivity() {
             if (tempItemDTO == null)
                 setResult(RESULT_OK, Intent().putExtra("itemDTO", itemDTO))
             else
-                setResult(RESULT_OK, Intent().putExtra("tempItemDTO", tempItemDTO))
+                setResult(RESULT_OK, Intent().putExtra("tempItemDTO", itemDTO))
 
             finish()
         }
@@ -105,7 +105,6 @@ class AddItemActivity : AppCompatActivity() {
                                 R.id.menu_activity_add_item_submit -> {
                                     if (emptyCheckAddItem())
                                         submitAddItem()
-
                                     true
                                 }
                                 else -> false
@@ -169,7 +168,7 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     fun submitAddItem() {
-        val tempItemDTO = viewModel.tempItemDTO.value!!
+        val tempItemDTO = viewModel.getTempItemDTO()!!
         if (tempItemDTO.id != null) {
             submitModifyItem()
             return
@@ -213,7 +212,7 @@ class AddItemActivity : AppCompatActivity() {
         val fourthFragment = fragments[3] as AddItemFourthFragment
         val fourthFragmentView = fourthFragment.fragmentView
 
-        val tempItemDTO = viewModel.tempItemDTO.value!!
+        val tempItemDTO = viewModel.getTempItemDTO()!!
         tempItemDTO.timestamps!!.add(System.currentTimeMillis())
         tempItemDTO.name = secondFragmentView.fragment_add_item_second_text_item_name.text.toString()
         tempItemDTO.ratingReview = fourthFragmentView.fragment_add_item_fourth_rating.rating
@@ -300,7 +299,6 @@ class AddItemActivity : AppCompatActivity() {
         if (viewModel.tempItemDTO.value!!.sizeReview == null) {
             changeViewPage(2)
             thirdFragmentView.fragment_add_item_third_error_size_review.visibility = View.VISIBLE
-
             return false
         }
 

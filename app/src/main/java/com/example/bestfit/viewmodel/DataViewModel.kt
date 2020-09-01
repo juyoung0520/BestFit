@@ -104,6 +104,10 @@ class DataViewModel : ViewModel() {
         }
     }
 
+    fun setAccountDTO(accountDTO: AccountDTO) {
+        _accountDTO.value = accountDTO
+    }
+
     // itemDTOs 로딩할 때 호출
     fun getAllItemDTOs() {
         viewModelScope.launch(Dispatchers.IO) {

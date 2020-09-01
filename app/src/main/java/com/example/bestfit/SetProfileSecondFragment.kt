@@ -11,8 +11,11 @@ import android.widget.NumberPicker
 import androidx.annotation.Nullable
 import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.util.InitData
+import com.example.bestfit.viewmodel.SetProfileActivityViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -26,6 +29,8 @@ import kotlinx.android.synthetic.main.item_dialogpicker.view.*
 import kotlin.math.max
 
 class SetProfileSecondFragment : Fragment() {
+    private lateinit var viewModel: SetProfileActivityViewModel
+
     lateinit var fragmentView: View
 
     override fun onCreateView(
@@ -35,6 +40,7 @@ class SetProfileSecondFragment : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_set_profile_second, container, false)
 
+        initViewModel()
         fragmentView.fragment_set_profile_second_text_height.setOnFocusChangeListener { v, hasFocus ->
             if (!fragmentView.fragment_set_profile_second_text_height.text!!.isDigitsOnly()) {
                 fragmentView.fragment_set_profile_second_error_user_size.visibility = View.GONE
@@ -68,7 +74,7 @@ class SetProfileSecondFragment : Fragment() {
         }
 
         fragmentView.fragment_set_profile_second_text_top.setOnFocusChangeListener { v, hasFocus ->
-            if (fragmentView.fragment_set_profile_second_text_top.tag == null) {
+            if (fragmentView.fragment_set_profile_second_error_clothes_size.visibility == View.VISIBLE) {
                 fragmentView.fragment_set_profile_second_error_clothes_size.visibility = View.GONE
             }
 
@@ -85,7 +91,7 @@ class SetProfileSecondFragment : Fragment() {
         }
 
         fragmentView.fragment_set_profile_second_text_bottom.setOnFocusChangeListener { v, hasFocus ->
-            if (fragmentView.fragment_set_profile_second_text_bottom.tag == null) {
+            if (fragmentView.fragment_set_profile_second_error_clothes_size.visibility == View.VISIBLE) {
                 fragmentView.fragment_set_profile_second_error_clothes_size.visibility = View.GONE
             }
 
@@ -102,7 +108,7 @@ class SetProfileSecondFragment : Fragment() {
         }
 
         fragmentView.fragment_set_profile_second_text_shoes.setOnFocusChangeListener { v, hasFocus ->
-            if (fragmentView.fragment_set_profile_second_text_shoes.tag == null) {
+            if (fragmentView.fragment_set_profile_second_error_clothes_size.visibility == View.VISIBLE) {
                 fragmentView.fragment_set_profile_second_error_clothes_size.visibility = View.GONE
             }
 
@@ -125,6 +131,47 @@ class SetProfileSecondFragment : Fragment() {
         return fragmentView
     }
 
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(requireActivity()).get(SetProfileActivityViewModel::class.java)
+
+        val tempAccountDTOObserver = Observer<AccountDTO> { tempAccountDTO ->
+            initViewFromAccountDTO()
+        }
+
+        viewModel.tempAccountDTO.observe(viewLifecycleOwner, tempAccountDTOObserver)
+    }
+
+    private fun initViewFromAccountDTO() {
+        val accountDTO = viewModel.getTempAccountDTO()!!
+
+        if (accountDTO.height != null) {
+            fragmentView.fragment_set_profile_second_text_height.setText(accountDTO.height.toString())
+        }
+
+        if (accountDTO.weight != null) {
+            fragmentView.fragment_set_profile_second_text_weight.setText(accountDTO.weight.toString())
+        }
+
+        if (accountDTO.topId != null) {
+            val top = InitData.getSizeString("01",accountDTO.topId.toString())
+            fragmentView.fragment_set_profile_second_text_top.setText(top)
+            fragmentView.fragment_set_profile_second_text_top.tag = accountDTO.topId
+        }
+
+        if (accountDTO.bottomId != null) {
+            val bottom = InitData.getSizeString("03", accountDTO.bottomId.toString())
+            fragmentView.fragment_set_profile_second_text_bottom.setText(bottom)
+            fragmentView.fragment_set_profile_second_text_bottom.tag = accountDTO.bottomId
+        }
+
+        if (accountDTO.shoesId != null) {
+            val shoes = InitData.getSizeString("04", accountDTO.shoesId.toString())
+            fragmentView.fragment_set_profile_second_text_shoes.setText(shoes)
+            fragmentView.fragment_set_profile_second_text_shoes.tag = accountDTO.shoesId
+        }
+
+    }
+
     private fun initDialogNumberPicker(view: EditText, minValue: Int, maxValue: Int, defaultValue: Int, suffix: String) {
         val dialog = MaterialAlertDialogBuilder(requireContext())
         val dialogPickerView = LayoutInflater.from(context).inflate(R.layout.item_dialogpicker, null)
@@ -140,6 +187,11 @@ class SetProfileSecondFragment : Fragment() {
         dialog.setNegativeButton("취소", DialogInterface.OnClickListener { _, _ ->  })
         dialog.setPositiveButton("확인", DialogInterface.OnClickListener { _, _ ->
             view.setText(picker.value.toString())
+            if (suffix == "cm")
+                viewModel.tempAccountDTO.value!!.height = picker.value
+
+            if (suffix == "kg")
+                viewModel.tempAccountDTO.value!!.weight = picker.value
         })
         dialog.setView(dialogPickerView)
         dialog.show()
@@ -162,6 +214,14 @@ class SetProfileSecondFragment : Fragment() {
         dialog.setPositiveButton("확인", DialogInterface.OnClickListener { _, _ ->
             view.tag = InitData.sizeFormatDTOs[InitData.getSizeFormatIndex(sizeFormatId)].listId[picker.value]
             view.setText(displayedArray[picker.value])
+            if (sizeFormatId == "01")
+                viewModel.tempAccountDTO.value!!.topId = view.tag.toString()
+
+            if (sizeFormatId == "03")
+                viewModel.tempAccountDTO.value!!.bottomId = view.tag.toString()
+
+            if (sizeFormatId == "04")
+                viewModel.tempAccountDTO.value!!.shoesId = view.tag.toString()
         })
         dialog.setView(dialogPickerView)
         dialog.show()
