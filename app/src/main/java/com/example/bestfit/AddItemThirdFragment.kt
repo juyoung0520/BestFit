@@ -19,8 +19,6 @@ class AddItemThirdFragment  : Fragment() {
     private lateinit var viewModel: AddItemActivityViewModel
 
     lateinit var fragmentView: View
-    var selectedSizeFormatId: String? = null
-    var selectedSizeId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -113,7 +111,6 @@ class AddItemThirdFragment  : Fragment() {
 
             if (!isChecked) {
                 viewModel.tempItemDTO.value!!.sizeId = null
-
                 return@addOnButtonCheckedListener
             }
 
@@ -146,7 +143,6 @@ class AddItemThirdFragment  : Fragment() {
 
             if (group.checkedButtonId == -1) {
                 viewModel.tempItemDTO.value!!.sizeId = null
-
                 return@addOnButtonCheckedListener
             }
 

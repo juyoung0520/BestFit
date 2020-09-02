@@ -4,35 +4,24 @@ import androidx.lifecycle.*
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class DetailFragmentViewModel: ViewModel() {
+class DetailFragmentViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
 
+    private val _scrollPosition = MutableLiveData(0)
+
     private val _itemDTO = MutableLiveData<ItemDTO>()
     val itemDTO: LiveData<ItemDTO> = _itemDTO
 
-    private val _scrollPosition = MutableLiveData<Int>(0)
-
     private val _accountDTO = MutableLiveData<AccountDTO>()
     val accountDTO: LiveData<AccountDTO> = _accountDTO
-
-    private val _dibs = MutableLiveData<Int>()
-    val dibs: LiveData<Int> = _dibs
-
-    fun setItemDTO(itemDTO: ItemDTO) {
-        _itemDTO.value = itemDTO
-
-        if (_itemDTO.value!!.uid != currentUid)
-            getAccountDTO(_itemDTO.value!!.uid!!)
-    }
 
     fun getScrollPosition() : Int {
         return _scrollPosition.value!!
@@ -42,14 +31,11 @@ class DetailFragmentViewModel: ViewModel() {
         _scrollPosition.value = position
     }
 
-    private fun notifyDTOChanged() {
-        viewModelScope.launch(Dispatchers.Main) {
-            _accountDTO.value = _accountDTO.value
-        }
-    }
+    fun setItemDTO(itemDTO: ItemDTO) {
+        _itemDTO.value = itemDTO
 
-    fun notifyItemDTOModified() {
-        notifyDTOChanged()
+        if (_itemDTO.value!!.uid != currentUid)
+            getAccountDTO(_itemDTO.value!!.uid!!)
     }
 
     private fun getAccountDTO(uid: String) {
@@ -61,35 +47,5 @@ class DetailFragmentViewModel: ViewModel() {
         }
     }
 
-    fun increaseDibs() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val documentRef = db.collection("items").document(_itemDTO.value!!.id!!)
-            var newDibs: Int? = 0
 
-            db.runTransaction { transaction ->
-                newDibs = transaction.get(documentRef).toObject(ItemDTO::class.java)!!.dibs!! + 1
-                transaction.update(documentRef, "dibs", newDibs)
-            }.await()
-
-            withContext(Dispatchers.Main) {
-                _dibs.value = newDibs!!
-            }
-        }
-    }
-
-    fun decreaseDibs() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val documentRef = db.collection("items").document(_itemDTO.value!!.id!!)
-            var newDibs: Int? = 0
-
-            db.runTransaction { transaction ->
-                newDibs = transaction.get(documentRef).toObject(ItemDTO::class.java)!!.dibs!! - 1
-                transaction.update(documentRef, "dibs", newDibs)
-            }.await()
-
-            withContext(Dispatchers.Main) {
-                _dibs.value = newDibs!!
-            }
-        }
-    }
 }

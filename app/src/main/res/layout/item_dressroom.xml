@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_dressroom_cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="3dp"
     app:cardCornerRadius="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:checkable="true"
     android:layout_margin="6dp">
 
     <LinearLayout
