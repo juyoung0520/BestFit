@@ -1,10 +1,14 @@
 package com.example.bestfit
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.activity.addCallback
+import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -28,12 +32,18 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
 
+    private val startForResult =  registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val accountDTO = result.data!!.getParcelableExtra<AccountDTO>("accountDTO")!!
+            viewModel.setAccountDTO(accountDTO)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initViewModel()
-        checkSetProfile()
 
         activity_main_bottom_nav.setOnNavigationItemSelectedListener(this)
 
@@ -54,7 +64,13 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             }
         }
 
-        viewModel.isInitialized.observe(this, isInitializedObserver)
+        val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
+            if (accountDTO.nickname == null)
+                checkSetProfile()
+        }
+
+        viewModel.isInitialized.observe(this, initObserver)
+        viewModel.accountDTO.observe(this, accountDTOObserver)
     }
 
     private fun initViewPager() {
@@ -114,14 +130,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     private fun checkSetProfile() {
-        db.collection("accounts").document(currentUid).get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                if (task.result?.data == null) {
-                    val intent = Intent(this, SetProfileActivity::class.java)
-                    startActivity(intent)
-                }
-            }
-        }
+        val intent = Intent(this, SetProfileActivity::class.java).putExtra("accountDTO", viewModel.accountDTO.value)
+        startForResult.launch(intent)
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {

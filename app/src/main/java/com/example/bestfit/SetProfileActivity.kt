@@ -52,7 +52,7 @@ class SetProfileActivity : AppCompatActivity() {
 
         val initializedObserver = Observer<Boolean> { initialized ->
             if (initialized) {
-                if (tempAccountDTO == null) {
+                if (tempAccountDTO.nickname == null ) {
                     viewModel.setTempAccountDTO(AccountDTO())
                 } else {
                     activity_set_profile_tv_toolbar_title.text = "프로필 수정"
@@ -87,7 +87,7 @@ class SetProfileActivity : AppCompatActivity() {
 
                 when (position) {
                     0 -> {
-                        if (tempAccountDTO == null) {
+                        if (tempAccountDTO.nickname == null) {
                             activity_set_profile_toolbar.navigationIcon = null
                             activity_set_profile_toolbar.menu.clear()
                         } else {
@@ -172,7 +172,7 @@ class SetProfileActivity : AppCompatActivity() {
 
     fun submitSetProfile() {
         val accountDTO = viewModel.getTempAccountDTO()!!
-        if (tempAccountDTO != null) {
+        if (tempAccountDTO.nickname != null) {
             submitModifyProfile()
             return
         }
