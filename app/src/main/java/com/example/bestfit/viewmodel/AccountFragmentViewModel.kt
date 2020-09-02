@@ -5,6 +5,7 @@ import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +14,11 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class AccountFragmentViewModel(uid: String) : ViewModel() {
+    private val auth = FirebaseAuth.getInstance()
+    private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
+
+    private val _isExpanded = MutableLiveData(true)
 
     private val _accountDTO = MutableLiveData<AccountDTO>()
     val accountDTO: LiveData<AccountDTO> = _accountDTO
@@ -28,7 +33,16 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
     }
 
     init {
-        getItemDTOs(uid)
+        if (uid != currentUid)
+            getItemDTOs(uid)
+    }
+
+    fun isExpanded(): Boolean {
+        return _isExpanded.value!!
+    }
+
+    fun setExpanded(isExpanded: Boolean) {
+        _isExpanded.value = isExpanded
     }
 
     private fun notifyItemDTOsChanged() {
@@ -50,7 +64,6 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
 
             if (accountDTO.items!!.isNullOrEmpty()) {
                 notifyItemDTOsChanged()
-
                 return@launch
             }
 

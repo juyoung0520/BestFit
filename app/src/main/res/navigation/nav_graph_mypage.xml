@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph_settings"
-    app:startDestination="@id/settingsFragment">
+    app:startDestination="@id/myPageFragment">
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.bestfit.SettingsFragment"
-        android:label="SettingsFragment" >
+        android:id="@+id/myPageFragment"
+        android:name="com.example.bestfit.MyPageFragment"
+        android:label="MyPageFragment" >
         <action
             android:id="@+id/action_to_dibsFragment"
             app:destination="@id/dibsFragment"/>

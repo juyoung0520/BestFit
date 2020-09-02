@@ -22,17 +22,17 @@ class AddItemActivityViewModel : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
     private val storage = FirebaseStorage.getInstance()
 
-    private val _initialized = SingleLiveEvent<Boolean>()
-    val initialized: SingleLiveEvent<Boolean> = _initialized
+    private val _isInitialized = SingleLiveEvent<Boolean>()
+    val isInitialized: SingleLiveEvent<Boolean> = _isInitialized
 
     private val _itemDTO = MutableLiveData<ItemDTO>()
     val itemDTO: LiveData<ItemDTO> = _itemDTO
 
     private val _tempItemDTO = MutableLiveData<ItemDTO>()
-    val tempItemDTO: MutableLiveData<ItemDTO> = _tempItemDTO
+    val tempItemDTO: LiveData<ItemDTO> = _tempItemDTO
 
     init {
-        _initialized.value = true
+        _isInitialized.value = true
     }
 
     fun getTempItemDTO(): ItemDTO? {
