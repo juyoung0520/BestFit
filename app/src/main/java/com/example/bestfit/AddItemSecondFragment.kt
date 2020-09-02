@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -32,6 +33,10 @@ class AddItemSecondFragment  : Fragment() {
         fragmentView.fragment_add_item_second_text_item_name.setOnFocusChangeListener { view, b ->
             if (fragmentView.fragment_add_item_second_error_item_name.visibility == View.VISIBLE)
                 fragmentView.fragment_add_item_second_error_item_name.visibility = View.GONE
+        }
+
+        fragmentView.fragment_add_item_second_text_item_name.doAfterTextChanged {
+            viewModel.tempItemDTO.value!!.name = fragmentView.fragment_add_item_second_text_item_name.text.toString()
         }
 
         fragmentView.fragment_add_item_second_btn_submit.setOnClickListener {
