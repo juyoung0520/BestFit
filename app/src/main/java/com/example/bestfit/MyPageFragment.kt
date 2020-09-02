@@ -45,8 +45,8 @@ class MyPageFragment : Fragment() {
             initMyPageFragment(view, accountDTO)
         }
 
-        dataViewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
-    }
+    dataViewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
+}
 
     private fun initToolbar(view: View) {
         view.fragment_mypage_toolbar.inflateMenu(R.menu.menu_fragment_mypage)
