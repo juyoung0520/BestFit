@@ -131,7 +131,7 @@ class DataViewModel : ViewModel() {
             }
 
             if (accountDTO!!.items.isNullOrEmpty()) {
-                notifyItemDTOsChanged()
+                notifyAllItemDTOsChanged()
 
                 return@launch
             }

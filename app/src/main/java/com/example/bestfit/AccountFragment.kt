@@ -118,18 +118,17 @@ class AccountFragment : Fragment() {
 
     private fun initAccountFragment(view: View, accountDTO: AccountDTO) {
         if (accountDTO.photo.isNullOrEmpty())
-            view.fragment_account_iv_profile.setImageResource(R.drawable.ic_profile_photo)
+            view.fragment_account_iv_profile.setImageResource(R.drawable.ic_profile_120)
         else
             Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_account_iv_profile)
 
         view.fragment_account_toolbar_title.text = "${accountDTO.nickname}님의 프로필"
         view.fragment_account_tv_nickname.text = accountDTO.nickname
-        view.fragment_account_tv_user_size.text = "${accountDTO.height} cm / ${accountDTO.weight} kg"
+        view.fragment_account_tv_user_size.text = "${accountDTO.height} cm . ${accountDTO.weight} kg"
 
         val top = InitData.getSizeString("01", accountDTO.topId!!)
         val bottom = InitData.getSizeString("03", accountDTO.bottomId!!)
         val shoes = InitData.getSizeString("04", accountDTO.shoesId!!)
-        view.fragment_account_tv_user_detail_size.text = "TOP " + top + " / BOTTOM "+ bottom + " / SHOES " + shoes
 
         view.fragment_account_tv_message.text = accountDTO.message
     }

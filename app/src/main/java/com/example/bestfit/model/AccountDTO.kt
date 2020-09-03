@@ -15,7 +15,9 @@ data class AccountDTO(
     var shoesId: String? = null,
     var message: String? = null,
     var items: ArrayList<String>? = arrayListOf(),
-    var dibsItems: ArrayList<String>? = arrayListOf()
+    var dibsItems: ArrayList<String>? = arrayListOf(),
+    var follower: ArrayList<String>? = arrayListOf(),
+    var following: ArrayList<String>? = arrayListOf()
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -34,6 +36,12 @@ data class AccountDTO(
         arrayListOf<String>().apply {
             parcel.readList(this, String::class.java.classLoader)
         },
+        arrayListOf<String>().apply {
+            parcel.readList(this, String::class.java.classLoader)
+        },
+        arrayListOf<String>().apply {
+            parcel.readList(this, String::class.java.classLoader)
+        }
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -49,6 +57,8 @@ data class AccountDTO(
         parcel.writeString(message)
         parcel.writeList(items)
         parcel.writeList(dibsItems)
+        parcel.writeList(follower)
+        parcel.writeList(following)
     }
 
     override fun describeContents(): Int {

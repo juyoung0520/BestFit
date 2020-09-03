@@ -65,19 +65,19 @@ class MyPageFragment : Fragment() {
 
     private fun initMyPageFragment(view: View, accountDTO: AccountDTO) {
         if (accountDTO.photo.isNullOrEmpty())
-            view.fragment_mypage_iv_profile.setImageResource(R.drawable.ic_profile_photo)
+            view.fragment_mypage_iv_profile.setImageResource(R.drawable.ic_profile_120)
         else
             Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_mypage_iv_profile)
 
           view.fragment_mypage_tv_nickname.text = accountDTO.nickname
 //                view.fragment_mypage_tv_user_height.text = accountDTO.height.toString() + " cm"
 //                view.fragment_mypage_tv_user_weight.text = accountDTO.weight.toString() + " kg"
-          view.fragment_mypage_tv_user_size.text = accountDTO.height.toString() + " cm / " + accountDTO.weight.toString() + " kg"
+          view.fragment_mypage_tv_user_size.text = "${accountDTO.height} cm . ${accountDTO.weight} kg"
 
-        val top = InitData.getSizeString("01", accountDTO.topId!!)
-        val bottom = InitData.getSizeString("03", accountDTO.bottomId!!)
-        val shoes = InitData.getSizeString("04", accountDTO.shoesId!!)
-        view.fragment_mypage_tv_user_detail_size.text = "TOP " + top + " / BOTTOM "+ bottom + " / SHOES " + shoes
+//        val top = InitData.getSizeString("01", accountDTO.topId!!)
+//        val bottom = InitData.getSizeString("03", accountDTO.bottomId!!)
+//        val shoes = InitData.getSizeString("04", accountDTO.shoesId!!)
+//        view.fragment_mypage_tv_user_detail_size.text = "TOP " + top + " / BOTTOM "+ bottom + " / SHOES " + shoes
 
         view.fragment_mypage_tv_message.text = accountDTO.message
 

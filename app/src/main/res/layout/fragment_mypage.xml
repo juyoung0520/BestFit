@@ -21,223 +21,281 @@
             android:orientation="vertical"
             android:layout_marginBottom="30dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/fragment_mypage_iv_profile"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:src="@drawable/jinu_profile"
-                        android:foreground="@drawable/image_edge_profile"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="end"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true">
-
-                        <TextView
-                            android:id="@+id/fragment_mypage_tv_nickname"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="두부낑"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="30sp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="15dp"/>
-
-                        <TextView
-                            android:id="@+id/fragment_mypage_tv_user_size"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="165 cm / 45 kg"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:id="@+id/fragment_mypage_tv_user_detail_size"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="55 size / 26 in / 245 mm"
-                            android:textStyle="bold"/>
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/fragment_mypage_tv_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/profile_message"
-                    android:textSize="15sp"
-                    android:textColor="@color/colorDarkGray"
-                    android:layout_marginTop="20dp"/>
-
-                <LinearLayout
-                    android:id="@+id/fragment_mypage_layout_dibs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="30dp">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_favorite_filled"
-                        android:layout_gravity="center"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="찜한 목록"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:layout_gravity="center"
-                        android:layout_margin="10dp"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+                android:layout_margin="20dp"
                 app:cardElevation="4dp"
-                app:cardCornerRadius="40dp">
+                app:cardCornerRadius="30dp"
+                app:cardBackgroundColor="@color/colorWhite">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_margin="30dp">
+                    android:layout_margin="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/fragment_mypage_iv_profile"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:src="@drawable/ic_profile_120" />
+
+                        <LinearLayout
+                            android:id="@+id/fragment_mypage_layout_user"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="end"
+                            android:layout_centerInParent="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="10dp">
+
+                            <TextView
+                                android:id="@+id/fragment_mypage_tv_nickname"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="두부낑"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="26sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/fragment_mypage_tv_user_size"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="165 cm . 45 kg" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="20대 . 여자"/>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+<!--                    <com.google.android.material.chip.Chip-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="팔로우"-->
+<!--                        android:textColor="@color/colorWhite"-->
+<!--                        app:chipBackgroundColor="@color/colorPrimary" />-->
 
                     <TextView
+                        android:id="@+id/fragment_mypage_tv_message"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="설정"
-                        android:textSize="16sp"
-                        android:textColor="@color/colorBlack"
-                        android:textStyle="bold" />
+                        android:text="@string/profile_message"
+                        android:layout_margin="20dp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:text="친구 관리"
-                            android:textColor="@color/colorDarkGray"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:text="알림 설정"
-                            android:textColor="@color/colorDarkGray"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"/>
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="정보"
-                        android:textSize="16sp"
-                        android:textColor="@color/colorBlack"
-                        android:textStyle="bold"
-                        android:layout_marginTop="15dp" />
+                        android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        <LinearLayout
+                            android:id="@+id/fragment_mypage_layout_dibs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:text="고객센터"
-                            android:textColor="@color/colorDarkGray"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:textSize="26sp"
+                                android:textStyle="bold"/>
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:text="공지사항"
-                            android:textColor="@color/colorDarkGray"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="아이템"
+                                android:textSize="15sp" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:text="서비스 이용약관"
-                            android:textColor="@color/colorDarkGray"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"/>
+                        </LinearLayout>
 
-                    </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/fragment_mypage_layout_follower"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="계정"
-                        android:textSize="16sp"
-                        android:textColor="@color/colorBlack"
-                        android:textStyle="bold"
-                        android:layout_marginTop="15dp" />
+                            <TextView
+                                android:id="@+id/fragment_mypage_tv_follower"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="47"
+                                android:textSize="26sp"
+                                android:textStyle="bold"/>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="팔로워"
+                                android:textSize="15sp" />
 
-                        <TextView
-                            android:id="@+id/fragment_mypage_tv_signOut"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:text="로그아웃"
-                            android:textColor="@color/colorDarkGray"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"/>
+                        </LinearLayout>
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:text="회원 탈퇴"
-                            android:textColor="@color/colorDarkGray"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"/>
+                        <LinearLayout
+                            android:id="@+id/fragment_mypage_layout_following"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:id="@+id/fragment_mypage_tv_following"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="47"
+                                android:textSize="26sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="팔로잉"
+                                android:textSize="15sp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="설정"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="친구 관리"
+                        android:textColor="@color/colorDarkGray"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="알림 설정"
+                        android:textColor="@color/colorDarkGray"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="정보"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
+                    android:layout_marginTop="15dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="고객센터"
+                        android:textColor="@color/colorDarkGray"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="공지사항"
+                        android:textColor="@color/colorDarkGray"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="서비스 이용약관"
+                        android:textColor="@color/colorDarkGray"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="계정"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
+                    android:layout_marginTop="15dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/fragment_mypage_tv_signOut"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="로그아웃"
+                        android:textColor="@color/colorDarkGray"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="회원 탈퇴"
+                        android:textColor="@color/colorDarkGray"
+                        android:gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 

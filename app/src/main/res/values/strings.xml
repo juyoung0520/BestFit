@@ -4,6 +4,7 @@
     <string name="facebook_signin"><b>Facebook</b>으로 로그인</string>
     <string name="profile_message">인스타 myjju99 유튜브 두부콩나물\n저의 드레스룸으로 놀러오세요~♥</string>
     <string name="itme_review">너무 이뻐요~~ 제 키가 큰 편인데 전혀 안 짧아요! 핏이 너무 이뻐요!비침도 적당하고 시원한 소재라서 좋습니다. 다음 세일 때 또 재구매 할래요~~</string>
+    <string name="follow">팔로워 <b>45</b>  팔로잉 <b>99</b></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

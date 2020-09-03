@@ -35,8 +35,7 @@
                         android:id="@+id/fragment_account_iv_profile"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
-                        android:src="@drawable/jinu_profile"
-                        android:foreground="@drawable/image_edge_profile"/>
+                        android:src="@drawable/jinu_profile" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -53,23 +52,21 @@
                             android:layout_height="wrap_content"
                             android:text="두부낑"
                             android:textColor="@color/colorBlack"
-                            android:textSize="30sp"
+                            android:textSize="26sp"
                             android:textStyle="bold"
-                            android:layout_marginBottom="15dp"/>
+                            android:layout_marginBottom="5dp"/>
 
                         <TextView
                             android:id="@+id/fragment_account_tv_user_size"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="165 cm / 45 kg"
-                            android:textStyle="bold"/>
+                            android:text="165 cm . 45 kg" />
 
                         <TextView
-                            android:id="@+id/fragment_account_tv_user_detail_size"
+                            android:id="@+id/fragment_account_tv_follow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="55 size / 26 in / 245 mm"
-                            android:textStyle="bold"/>
+                            android:text="@string/follow" />
 
                     </LinearLayout>
 
