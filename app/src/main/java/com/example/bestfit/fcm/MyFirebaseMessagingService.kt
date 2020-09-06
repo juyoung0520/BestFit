@@ -13,7 +13,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun sendRegistrationToServer(token: String?) {
-        val currentId = auth.currentUser!!.email!!
-        db.collection("accounts").document(currentId).update("token", token)
+//        val currentId = auth.currentUser!!.uid
+//        db.collection("accounts").document(currentId).update("token", token)
     }
 }

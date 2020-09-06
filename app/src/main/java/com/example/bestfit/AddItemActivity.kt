@@ -197,13 +197,13 @@ class AddItemActivity : AppCompatActivity() {
         itemDTO.review = fourthFragmentView.fragment_add_item_fourth_text_review.text.toString()
         itemDTO.searchKeywords = getSearchKeywords(itemDTO.name.toString())
 
-        val imageUris = arrayListOf<Uri>()
-        for (image in firstFragment.itemImages) {
-            val uri = FileProvider.getUriForFile(this, "com.jinu.imagepickerlib.fileprovider", File(image))
-            imageUris.add(uri)
-        }
+//        val imageUris = arrayListOf<Uri>()
+//        for (image in firstFragment.itemImages) {
+//            val uri = FileProvider.getUriForFile(this, "com.jinu.imagepickerlib.fileprovider", File(image))
+//            imageUris.add(uri)
+//        }
 
-        viewModel.submitAddItem(itemDTO, imageUris)
+//        viewModel.submitAddItem(itemDTO, imageUris)
     }
 
     private fun submitModifyItem() {

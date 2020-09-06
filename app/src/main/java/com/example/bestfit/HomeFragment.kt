@@ -1,12 +1,27 @@
 package com.example.bestfit
 
+import android.Manifest
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import com.example.bestfit.model.ItemDTO
+import com.example.bestfit.util.ImagePicker
+import com.google.android.material.transition.MaterialElevationScale
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.qingmei2.rximagepicker.core.RxImagePicker
+import com.qingmei2.rximagepicker.entity.Result
+import com.qingmei2.rximagepicker_extension.MimeType
+import com.qingmei2.rximagepicker_extension_zhihu.ZhihuConfigurationBuilder
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.item_dressroom.view.*
 
 class HomeFragment : Fragment() {
     private val auth = FirebaseAuth.getInstance()
@@ -19,11 +34,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-
-        requireActivity().window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-
-        view.progress_circular.show()
 
         initToolbar(view)
 

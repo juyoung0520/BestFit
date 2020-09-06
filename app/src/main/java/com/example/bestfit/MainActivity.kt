@@ -6,9 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
+import androidx.activity.addCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -19,18 +22,16 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.viewmodel.DataViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     private lateinit var viewModel: DataViewModel
-
-    private val auth = FirebaseAuth.getInstance()
-    private val currentUid = auth.currentUser!!.uid
-    private val db = FirebaseFirestore.getInstance()
 
     private val startForResult =  registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        showProgress()
         initViewModel()
 
         activity_main_bottom_nav.setOnNavigationItemSelectedListener(this)
@@ -54,11 +56,22 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 //        }
     }
 
+    private fun showProgress() {
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        activity_main_progress.show()
+    }
+
+    private fun hideProgress() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        activity_main_progress.hide()
+    }
+
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
         val isInitializedObserver = Observer<Boolean> { isInitialized ->
             if (isInitialized) {
+                hideProgress()
                 viewModel.getAllItemDTOs()
                 initViewPager()
             }
@@ -69,7 +82,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 checkSetProfile()
         }
 
-        viewModel.isInitialized.observe(this, initObserver)
+        viewModel.isInitialized.observe(this, isInitializedObserver)
         viewModel.accountDTO.observe(this, accountDTOObserver)
     }
 

@@ -13,16 +13,9 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="HomeFragment"
         android:layout_gravity="center"
         android:gravity="center"/>
-
-    <com.google.android.material.progressindicator.ProgressIndicator
-        android:id="@+id/progress_circular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:indicatorType="circular"
-        android:indeterminate="true" />
 
 </LinearLayout>

@@ -4,13 +4,14 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
+
 android {
     compileSdkVersion 30
 
 
     defaultConfig {
         applicationId "com.example.bestfit"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -47,7 +48,7 @@ dependencies {
     implementation 'me.relex:circleindicator:2.1.4'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
@@ -60,9 +61,9 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.0"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
-    implementation 'com.github.j1nu:imagepicker:0.0.6'
-    implementation 'com.github.MikeOrtiz:TouchImageView:3.0.1'
     implementation "androidx.recyclerview:recyclerview:1.2.0-alpha05"
-    implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc01"
+    implementation 'com.github.j1nu.RxImagePicker:rximagepicker:4.0.9'
+    implementation 'com.github.j1nu.RxImagePicker:rximagepicker_support:4.0.9'
+    implementation 'com.github.j1nu.RxImagePicker:rximagepicker_support_zhihu:4.0.9'
 
 }

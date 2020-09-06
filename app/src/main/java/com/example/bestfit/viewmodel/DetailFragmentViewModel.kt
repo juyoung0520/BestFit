@@ -46,6 +46,4 @@ class DetailFragmentViewModel : ViewModel() {
             }
         }
     }
-
-
 }

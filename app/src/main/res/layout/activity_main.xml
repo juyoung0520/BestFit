@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <com.google.android.material.progressindicator.ProgressIndicator
+        android:id="@+id/activity_main_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorType="circular"
+        android:indeterminate="true"
+        app:growMode="incoming"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"/>
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/activity_main_viewpager"
         android:layout_width="match_parent"

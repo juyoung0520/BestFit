@@ -123,15 +123,17 @@ class DataViewModel : ViewModel() {
                 withContext(Dispatchers.Main) {
                     _accountDTO.value = AccountDTO()
                 }
+
                 return@launch
-            } else {
+            }
+            else {
                 withContext(Dispatchers.Main) {
                     _accountDTO.value = accountDTO!!
                 }
             }
 
-            if (accountDTO!!.items.isNullOrEmpty()) {
-                notifyItemDTOsChanged()
+            if (accountDTO.items.isNullOrEmpty()) {
+                notifyAllItemDTOsChanged()
 
                 return@launch
             }

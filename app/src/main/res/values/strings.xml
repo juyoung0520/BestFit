@@ -6,4 +6,8 @@
     <string name="itme_review">너무 이뻐요~~ 제 키가 큰 편인데 전혀 안 짧아요! 핏이 너무 이뻐요!비침도 적당하고 시원한 소재라서 좋습니다. 다음 세일 때 또 재구매 할래요~~</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="item_card_transition_name">item_card_%1$d_%2$s</string>
+    <string name="item_card_detail_transition_name">item_card_detail</string>
 </resources>

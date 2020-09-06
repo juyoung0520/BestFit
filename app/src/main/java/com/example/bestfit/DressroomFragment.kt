@@ -6,15 +6,23 @@ import android.os.Bundle
 import android.view.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.doOnLayout
+import androidx.core.view.doOnPreDraw
+import androidx.core.view.get
+import androidx.core.view.isNotEmpty
 import androidx.fragment.app.*
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.example.bestfit.viewmodel.DataViewModel
 import com.example.bestfit.viewmodel.DressroomFragmentViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.transition.MaterialElevationScale
 import kotlinx.android.synthetic.main.fragment_dressroom.view.*
+import kotlinx.android.synthetic.main.item_dressroom.view.*
 
 class DressroomFragment : Fragment() {
     private val dataViewModel: DataViewModel by activityViewModels()

@@ -1,8 +1,8 @@
 package com.example.bestfit
 
-import android.app.Activity.RESULT_OK
-import android.content.Intent
+import android.Manifest
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
@@ -10,28 +10,42 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Observer as LifecycleObserver
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
+import com.example.bestfit.util.ImagePicker
 import com.example.bestfit.util.InitData
 import com.example.bestfit.viewmodel.AddItemActivityViewModel
-import com.jinu.imagepickerlib.PhotoPickerActivity
-import com.jinu.imagepickerlib.utils.YPhotoPickerIntent
+import com.qingmei2.rximagepicker.core.RxImagePicker
+import com.qingmei2.rximagepicker.entity.Result
+import com.qingmei2.rximagepicker_extension.MimeType
+import com.qingmei2.rximagepicker_extension_zhihu.ZhihuConfigurationBuilder
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.item_add_item_image.view.*
+
 
 class AddItemFirstFragment  : Fragment() {
     private lateinit var viewModel: AddItemActivityViewModel
 
     lateinit var fragmentView: View
-    var itemImages: ArrayList<String> = arrayListOf()
-    private val ADD_IMAGE_CODE = 1
+    private lateinit var rxImagePicker: ImagePicker
+    var itemImages: ArrayList<Uri> = arrayListOf()
+
+    val requestPermission: ActivityResultLauncher<String> = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted)
+            openGalleryAsNormal()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +54,7 @@ class AddItemFirstFragment  : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_first, container, false)
 
+        initRxImagePicker()
         initViewModel(fragmentView)
 
         fragmentView.fragment_add_item_first_layout_add.setOnClickListener {
@@ -56,28 +71,18 @@ class AddItemFirstFragment  : Fragment() {
         return fragmentView
     }
 
+    private fun initRxImagePicker() {
+        rxImagePicker = RxImagePicker.create(ImagePicker::class.java)
+    }
+
     private fun initViewModel(view: View) {
         viewModel = ViewModelProvider(requireActivity()).get(AddItemActivityViewModel::class.java)
 
-        val tempItemDTOObserver = Observer<ItemDTO> {
+        val tempItemDTOObserver = LifecycleObserver<ItemDTO> {
             initCategoryAdapter(view)
         }
 
         viewModel.tempItemDTO.observe(viewLifecycleOwner, tempItemDTOObserver)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        var images: ArrayList<String>? = null
-        if (resultCode == RESULT_OK && requestCode == ADD_IMAGE_CODE) {
-            if (data != null)
-                images = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS)
-
-            if (images != null) {
-                initImageReyclerview(images)
-            }
-        }
     }
 
     private fun initViewFromTempItemDTO(view: View) {
@@ -94,7 +99,10 @@ class AddItemFirstFragment  : Fragment() {
         }
 
         if (tempItemDTO.subCategoryId != null) {
-            val subCategory = InitData.getSubCategoryString(tempItemDTO.categoryId!!, tempItemDTO.subCategoryId!!)
+            val subCategory = InitData.getSubCategoryString(
+                tempItemDTO.categoryId!!,
+                tempItemDTO.subCategoryId!!
+            )
             view.fragment_add_item_first_actv_sub_category.setText(subCategory, false)
         }
     }
@@ -140,15 +148,16 @@ class AddItemFirstFragment  : Fragment() {
         }
     }
 
-    private fun initImageReyclerview(images: ArrayList<String>) {
+    private fun initImageReyclerview(images: ArrayList<Uri>) {
         val view = fragmentView
 
-        itemImages.clear()
-        itemImages.addAll(images)
-
         view.fragment_add_item_first_recyclerview_image.setHasFixedSize(true)
-        view.fragment_add_item_first_recyclerview_image.adapter = ImageRecyclerViewAdapter(itemImages)
-        view.fragment_add_item_first_recyclerview_image.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        view.fragment_add_item_first_recyclerview_image.adapter = ImageRecyclerViewAdapter(images)
+        view.fragment_add_item_first_recyclerview_image.layoutManager = LinearLayoutManager(
+            activity,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
 
 //        while (view.fragment_add_item_first_recyclerview_image.itemDecorationCount > 0)
 //            view.fragment_add_item_first_recyclerview_image.removeItemDecorationAt(0)
@@ -157,13 +166,47 @@ class AddItemFirstFragment  : Fragment() {
     }
 
     private fun addImage() {
-        val intent = YPhotoPickerIntent(activity)
-        intent.setMaxSelectCount(10)
-        intent.setShowCamera(true)
-        intent.setShowGif(true)
-        intent.setSelectCheckBox(false)
-        intent.setMaxGrideItemCount(3)
-        startActivityForResult(intent, ADD_IMAGE_CODE)
+        checkPermissionAndRequest()
+    }
+
+    private fun checkPermissionAndRequest() {
+        requestPermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    }
+
+    private fun openGalleryAsNormal() {
+        rxImagePicker.openGalleryAsNormal(requireActivity(),
+            ZhihuConfigurationBuilder(MimeType.ofImage(), false)
+                .capture(true)
+                .maxSelectable(9)
+                .countable(true)
+                .spanCount(3)
+                .showSingleMediaType(true)
+                .theme(R.style.Zhihu_Normal)
+                .build())
+            .subscribe(fetchUriObserver())
+    }
+
+    private fun fetchUriObserver(): Observer<Result> = object :
+        Observer<Result> {
+
+        override fun onSubscribe(d: Disposable) {
+
+        }
+
+        override fun onNext(result: Result) {
+            itemImages.add(result.uri)
+        }
+
+        override fun onError(e: Throwable) {
+            e.printStackTrace()
+        }
+
+        override fun onComplete() {
+            if (itemImages.isNotEmpty()) {
+                initImageReyclerview(ArrayList(itemImages))
+                itemImages.clear()
+            }
+        }
     }
 
     private fun submitAddItem() {
@@ -171,9 +214,13 @@ class AddItemFirstFragment  : Fragment() {
         addItemActivity.changeViewPage(false)
     }
 
-    inner class ImageRecyclerViewAdapter(private var images: ArrayList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    inner class ImageRecyclerViewAdapter(private var images: ArrayList<Uri>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_add_item_image, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(
+                R.layout.item_add_item_image,
+                parent,
+                false
+            )
 
             return CustomViewHolder(view)
         }

@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnLayout
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,6 +23,7 @@ import com.example.bestfit.viewmodel.AccountFragmentViewModel
 import com.example.bestfit.viewmodel.DataViewModel
 import com.example.bestfit.viewmodel.DibsFragmentViewModel
 import com.example.bestfit.viewmodel.DressroomFragmentViewModel
+import com.google.android.material.transition.MaterialElevationScale
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
 
@@ -223,7 +227,7 @@ class DressroomCategoryFragment : Fragment() {
 
                 view.item_dressroom_tv_item_name.text = itemDTO.name
 
-                view.setOnClickListener {
+                view.item_dressroom_cardview.setOnClickListener {
                     val navController = findNavController()
                     when (navController.currentDestination!!.id) {
                         R.id.dressroomFragment -> {
@@ -240,7 +244,7 @@ class DressroomCategoryFragment : Fragment() {
                             }
 
                             val action = DressroomFragmentDirections.actionToDetailFragment(itemDTO)
-                            navController.navigate(action)
+                            findNavController().navigate(action)
                         }
                         R.id.dibsFragment -> {
                             val isEditMode = dibsViewModel.isEditMode()
