@@ -55,21 +55,6 @@ class DetailFragment : Fragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            drawingViewId = R.id.nav_host_dressroom
-            duration = 300 //resources.getInteger(R.integer.reply_motion_duration_large).toLong()
-            scrimColor = Color.TRANSPARENT
-            setAllContainerColors(requireContext().obtainStyledAttributes(
-                intArrayOf(R.attr.colorSurface)
-            ).use {
-                it.getColor(0, Color.MAGENTA)
-            })
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
