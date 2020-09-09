@@ -163,7 +163,7 @@ class DetailFragment : Fragment() {
         view.fragment_detail_collapsingtoolbarlayout.title = "${accountDTO.nickname}님의\n${viewModel.itemDTO.value!!.name}"
 
         if (accountDTO.photo.isNullOrEmpty())
-            view.fragment_detail_iv_profile.setImageResource(R.drawable.ic_profile_photo)
+            view.fragment_detail_iv_profile.setImageResource(R.drawable.ic_profile_120)
         else {
             Glide.with(view).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(view.fragment_detail_iv_profile)
         }
