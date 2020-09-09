@@ -1,5 +1,6 @@
 package com.example.bestfit.viewmodel
 
+import android.accounts.Account
 import androidx.lifecycle.*
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
@@ -51,6 +52,12 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
         }
     }
 
+    private fun notifyAccountDTOChanged() {
+        viewModelScope.launch(Dispatchers.Main) {
+            _accountDTO.value = _accountDTO.value
+        }
+    }
+
     private fun getItemDTOs(uid: String) {
         viewModelScope.launch(Dispatchers.IO) {
             _itemDTOs.value!!.clear()
@@ -83,4 +90,35 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
             notifyItemDTOsChanged()
         }
     }
+
+    fun addFollower(uid: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val docRef = db.collection("accounts").document(uid)
+
+            db.runTransaction { transaction ->
+                val accountDTO = transaction.get(docRef).toObject(AccountDTO::class.java)
+                accountDTO!!.follower!!.add(currentUid)
+                transaction.update(docRef, "follower", accountDTO!!.follower)
+            }.await()
+
+            _accountDTO.value!!.follower!!.add(currentUid)
+            notifyAccountDTOChanged()
+        }
+    }
+
+    fun removeFollower(uid: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val docRef = db.collection("accounts").document(uid)
+
+            db.runTransaction { transaction ->
+                val accountDTO = transaction.get(docRef).toObject(AccountDTO::class.java)
+                accountDTO!!.follower!!.remove(currentUid)
+                transaction.update(docRef, "follower", accountDTO!!.follower)
+            }.await()
+
+            _accountDTO.value!!.follower!!.remove(currentUid)
+            notifyAccountDTOChanged()
+        }
+    }
+
 }

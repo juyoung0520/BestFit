@@ -84,7 +84,7 @@
                         android:id="@+id/fragment_detail_btn_dibs"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:button="@drawable/check_box_default"
+                        android:button="@drawable/check_box_dibs"
                         android:layout_gravity="center" />
 
                     <TextView

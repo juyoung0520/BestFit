@@ -239,6 +239,12 @@ class DataViewModel : ViewModel() {
         }
     }
 
+    private fun notifyAccountDTOChanged() {
+        viewModelScope.launch(Dispatchers.Main) {
+            _accountDTO.value = _accountDTO.value
+        }
+    }
+
     fun getDibsItemDTOs() {
         viewModelScope.launch(Dispatchers.IO) {
             _dibsItemDTOs.value!!.clear()
@@ -373,5 +379,35 @@ class DataViewModel : ViewModel() {
             return false
 
         return _accountDTO.value!!.dibsItems!!.contains(itemId)
+    }
+
+    fun addFollowing(uid: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val docRef = db.collection("accounts").document(currentUid)
+
+            db.runTransaction { transaction ->
+                val accountDTO = transaction.get(docRef).toObject(AccountDTO::class.java)
+                accountDTO!!.following!!.add(uid)
+                transaction.update(docRef, "following", accountDTO.following)
+            }.await()
+
+            _accountDTO.value!!.following!!.add(uid)
+            notifyAccountDTOChanged()
+        }
+    }
+
+    fun removeFollowing(uid: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val docRef = db.collection("accounts").document(currentUid)
+
+            db.runTransaction { transaction ->
+                val accountDTO = transaction.get(docRef).toObject(AccountDTO::class.java)
+                accountDTO!!.following!!.remove(uid)
+                transaction.update(docRef, "following", accountDTO.following)
+            }.await()
+
+            _accountDTO.value!!.following!!.remove(uid)
+            notifyAccountDTOChanged()
+        }
     }
 }

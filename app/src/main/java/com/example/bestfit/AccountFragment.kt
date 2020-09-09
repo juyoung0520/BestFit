@@ -21,6 +21,7 @@ import com.example.bestfit.viewmodel.DataViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_account.view.*
 import kotlinx.android.synthetic.main.fragment_mypage.view.*
 import kotlin.math.abs
@@ -125,11 +126,29 @@ class AccountFragment : Fragment() {
         view.fragment_account_toolbar_title.text = "${accountDTO.nickname}님의 프로필"
         view.fragment_account_tv_nickname.text = accountDTO.nickname
         view.fragment_account_tv_user_size.text = "${accountDTO.height} cm . ${accountDTO.weight} kg"
-
-        val top = InitData.getSizeString("01", accountDTO.topId!!)
-        val bottom = InitData.getSizeString("03", accountDTO.bottomId!!)
-        val shoes = InitData.getSizeString("04", accountDTO.shoesId!!)
-
         view.fragment_account_tv_message.text = accountDTO.message
+        //view.fragment_account_tv_items.text = 아이템 수 ...
+        view.fragment_account_tv_follower.text = accountDTO.follower!!.size.toString()
+        view.fragment_account_tv_following.text = accountDTO.following!!.size.toString()
+        view.fragment_account_tv_user_info.text = if (accountDTO.sex!!) "남자" else "여자" //나이 추가..
+
+        if (args.uid != currentUid) {
+            if (!accountDTO.follower.isNullOrEmpty() && accountDTO.follower!!.contains(currentUid)) {
+                view.fragment_account_btn_follow.isChecked = true
+                view.fragment_account_btn_follow.setText("팔로잉")
+            }
+
+            view.fragment_account_btn_follow.setOnCheckedChangeListener { compoundButton, b ->
+                if (view.fragment_account_btn_follow.isChecked) {
+                    viewModel.addFollower(args.uid)
+                    dataViewModel.addFollowing(args.uid)
+                    view.fragment_account_btn_follow.setText("팔로잉")
+                } else {
+                    viewModel.removeFollower(args.uid)
+                    dataViewModel.removeFollowing(args.uid)
+                    view.fragment_account_btn_follow.setText("팔로우")
+                }
+            }
+        }
     }
 }
