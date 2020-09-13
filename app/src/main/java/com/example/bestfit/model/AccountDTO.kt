@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class AccountDTO(
+    var id: String? = null,
     var photo: String? = null,
     var nickname: String? = null,
     var sex: Boolean? = null,
@@ -20,6 +21,7 @@ data class AccountDTO(
     var following: ArrayList<String>? = arrayListOf()
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
@@ -45,6 +47,7 @@ data class AccountDTO(
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
         parcel.writeString(photo)
         parcel.writeString(nickname)
         parcel.writeValue(sex)

@@ -84,7 +84,7 @@ class MyPageFragment : Fragment() {
         view.fragment_mypage_tv_nickname.text = accountDTO.nickname
         view.fragment_mypage_tv_user_size.text = "${accountDTO.height} cm . ${accountDTO.weight} kg"
         view.fragment_mypage_tv_user_info.text = if (accountDTO.sex!!) "남자" else "여자" //나이 추가..
-        //view.fragment_account_tv_items.text = 아이템 수 ...
+        view.fragment_mypage_tv_items.text = accountDTO.items!!.size.toString()
         view.fragment_mypage_tv_follower.text = accountDTO.follower!!.size.toString()
         view.fragment_mypage_tv_following.text = accountDTO.following!!.size.toString()
         view.fragment_mypage_tv_message.text = accountDTO.message
