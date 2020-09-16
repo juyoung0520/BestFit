@@ -243,19 +243,16 @@ class DetailFragment : Fragment() {
         restoreScrollPosition(view)
     }
 
-    inner class ImagePagerAdapter(private val images: ArrayList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    inner class ImagePagerAdapter(private val images: ArrayList<String>) : RecyclerView.Adapter<ImagePagerAdapter.ImageViewHolder>()  {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
             val iv = ImageView(context)
             iv.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
             return ImageViewHolder(iv)
         }
 
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            val viewHolder = holder as ImageViewHolder
-            val view = viewHolder.itemView as ImageView
-
-            viewHolder.bind(view, images[position])
+        override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+            holder.bind(images[position])
         }
 
         override fun getItemCount(): Int {
@@ -263,11 +260,13 @@ class DetailFragment : Fragment() {
         }
 
         inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            fun bind(view: ImageView, image: String) {
-                Glide.with(view)
+            fun bind(image: String) {
+                val iv = itemView as ImageView
+
+                Glide.with(iv)
                     .load(image)
                     .apply(RequestOptions().centerCrop())
-                    .into(view)
+                    .into(iv)
             }
         }
     }

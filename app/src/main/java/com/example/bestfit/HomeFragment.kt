@@ -7,10 +7,12 @@ import android.view.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.ImagePicker
+import com.example.bestfit.viewmodel.DataViewModel
 import com.google.android.material.transition.MaterialElevationScale
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,6 +26,8 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
 
 class HomeFragment : Fragment() {
+    private val dataViewModel: DataViewModel by activityViewModels()
+
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
@@ -36,6 +40,7 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         initToolbar(view)
+        test()
 
         return view
     }
@@ -45,8 +50,9 @@ class HomeFragment : Fragment() {
         view.fragment_home_toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_fragment_home_search -> {
-                    val action = HomeFragmentDirections.actionToSearchFragment()
-                    findNavController().navigate(action)
+                    dataViewModel.testAddItem()
+//                    val action = HomeFragmentDirections.actionToSearchFragment()
+//                    findNavController().navigate(action)
 
                     true
                 }
@@ -55,5 +61,17 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun test() {
+        dataViewModel.accountDTO.observe(viewLifecycleOwner, { accountDTO ->
+            test2()
+        })
+    }
+
+    private fun test2() {
+        dataViewModel.items.observe(viewLifecycleOwner, { items ->
+            println(items)
+        })
     }
 }
