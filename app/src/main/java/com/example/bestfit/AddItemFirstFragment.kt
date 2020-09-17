@@ -149,10 +149,8 @@ class AddItemFirstFragment  : Fragment() {
         view.fragment_add_item_first_recyclerview_image.setHasFixedSize(true)
         view.fragment_add_item_first_recyclerview_image.adapter = ImageRecyclerViewAdapter(itemImages)
         view.fragment_add_item_first_recyclerview_image.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-
 //        while (view.fragment_add_item_first_recyclerview_image.itemDecorationCount > 0)
 //            view.fragment_add_item_first_recyclerview_image.removeItemDecorationAt(0)
-
 //        view.fragment_add_item_first_recyclerview_image.addItemDecoration(ItemDecoration())
     }
 

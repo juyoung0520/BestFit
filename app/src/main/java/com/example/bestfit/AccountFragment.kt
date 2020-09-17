@@ -1,5 +1,6 @@
 package com.example.bestfit
 
+import android.app.AppComponentFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_account.view.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.fragment_mypage.view.*
+import kotlinx.android.synthetic.main.tab.view.*
 import kotlin.math.abs
 
 class AccountFragment : Fragment() {
@@ -89,7 +91,6 @@ class AccountFragment : Fragment() {
 
     private fun initTabAdapter(view: View) {
         val tabArray = arrayListOf("드레스룸", "게시글")
-
         view.fragment_account_viewpager.adapter = TabPagerAdapter()
         TabLayoutMediator(view.fragment_account_tab, view.fragment_account_viewpager) { tab, position ->
             tab.text = tabArray[position]

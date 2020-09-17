@@ -81,7 +81,7 @@ class DressroomFragment : Fragment() {
             return
         }
 
-        view.fragment_dressroom_toolbar.title = "나의 드레스룸"
+        view.fragment_dressroom_toolbar.title = "드레스룸"
         view.fragment_dressroom_toolbar.navigationIcon = null
         view.fragment_dressroom_toolbar.inflateMenu(R.menu.menu_fragment_dressroom)
         view.fragment_dressroom_toolbar.setOnMenuItemClickListener { item ->

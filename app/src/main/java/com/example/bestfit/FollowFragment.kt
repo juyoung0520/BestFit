@@ -8,16 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.bestfit.model.AccountDTO
-import com.example.bestfit.viewmodel.AccountFragmentViewModel
 import com.example.bestfit.viewmodel.DataViewModel
 import com.example.bestfit.viewmodel.FollowFramgentViewModel
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.fragment_account.view.*
 import kotlinx.android.synthetic.main.fragment_follow.view.*
 
 class FollowFragment : Fragment() {
@@ -75,7 +71,7 @@ class FollowFragment : Fragment() {
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> {
-                    val fragment = FollowerFragment()
+                    val fragment = FollowRecyclerViewFragment()
                     val bundle = Bundle()
                     bundle.putString("follow", "er")
                     fragment.arguments = bundle
@@ -83,7 +79,7 @@ class FollowFragment : Fragment() {
                     return fragment
                 }
                 1 -> {
-                    val fragment = FollowerFragment()
+                    val fragment = FollowRecyclerViewFragment()
                     val bundle = Bundle()
                     bundle.putString("follow", "ing")
                     fragment.arguments = bundle

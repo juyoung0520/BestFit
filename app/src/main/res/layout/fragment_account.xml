@@ -223,7 +223,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabMode="fixed"
-            app:tabIndicatorColor="@color/colorPrimary"/>
+            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabTextAppearance="@style/TabTextAppearance"/>
 
         <LinearLayout
             android:layout_width="match_parent"

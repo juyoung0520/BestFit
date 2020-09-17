@@ -6,19 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import com.example.bestfit.model.AccountDTO
+import com.example.bestfit.viewmodel.DataViewModel
 import com.example.bestfit.viewmodel.FollowFramgentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_follow.view.*
 
-class FollowerFragment: Fragment() {
+class FollowRecyclerViewFragment: Fragment() {
     private lateinit var viewModel: FollowFramgentViewModel
+    private val dataViewModel: DataViewModel by activityViewModels()
 
     private lateinit var followRecyclerViewAdapter: FollowRecyclerViewAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
@@ -30,20 +33,16 @@ class FollowerFragment: Fragment() {
     ): View? {
         val fragmentView =  inflater.inflate(R.layout.fragment_dressroom_category, container, false)
 
-        initViewModel(fragmentView)
+        initFollowViewModel(fragmentView)
         initRecyclerView(fragmentView)
 
         return fragmentView
     }
 
-    private fun initViewModel(view: View) {
+    private fun initFollowViewModel(view: View) {
         viewModel = ViewModelProvider(requireParentFragment()).get(FollowFramgentViewModel::class.java)
 
         val accountDTOsObserver = Observer<ArrayList<AccountDTO>> { accountDTOs ->
-            if (requireArguments().getString("follow") == "er")
-                println("팔로워"+accountDTOs.size)
-            else
-                println("팔로잉"+accountDTOs.size)
             followRecyclerViewAdapter.submitList(accountDTOs.map { it.copy() })
         }
 
@@ -52,6 +51,16 @@ class FollowerFragment: Fragment() {
         else
             viewModel.followingAccountDTOs.observe(viewLifecycleOwner, accountDTOsObserver)
     }
+
+    private fun initDataViewModel(view: View) {
+
+        val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
+            
+        }
+
+        dataViewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
+    }
+
 
     private fun initRecyclerView(view: View) {
         followRecyclerViewAdapter = FollowRecyclerViewAdapter()
@@ -86,7 +95,6 @@ class FollowerFragment: Fragment() {
 
         inner class FollowViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             fun bind(accountDTO: AccountDTO) {
-                println("주영")
                 itemView.item_follow_tv_nickname.text = accountDTO.nickname
             }
         }
