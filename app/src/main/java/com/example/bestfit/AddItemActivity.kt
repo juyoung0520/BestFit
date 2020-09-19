@@ -265,12 +265,12 @@ class AddItemActivity : AppCompatActivity() {
             return false
         }
 
-        if (firstFragment.itemImages.size == 0) {
-            changeViewPage(0)
-            firstFragmentView.fragment_add_item_first_error_image.visibility = View.VISIBLE
-
-            return false
-        }
+//        if (firstFragment.itemImages.size == 0) {
+//            changeViewPage(0)
+//            firstFragmentView.fragment_add_item_first_error_image.visibility = View.VISIBLE
+//
+//            return false
+//        }
 
         // secondFragment
         // tempitemdto로 변경 필요

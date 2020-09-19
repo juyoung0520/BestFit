@@ -1,8 +1,7 @@
 package com.example.bestfit
 
-import android.Manifest
+import android.app.Activity
 import android.graphics.Rect
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.TypedValue
@@ -10,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
@@ -21,15 +20,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
-import com.example.bestfit.util.ImagePicker
 import com.example.bestfit.util.InitData
 import com.example.bestfit.viewmodel.AddItemActivityViewModel
-import com.qingmei2.rximagepicker.core.RxImagePicker
-import com.qingmei2.rximagepicker.entity.Result
-import com.qingmei2.rximagepicker_extension.MimeType
-import com.qingmei2.rximagepicker_extension_zhihu.ZhihuConfigurationBuilder
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
+import com.jinu.jjimagepicker.widget.JJImagePickerIntent
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.item_add_item_image.view.*
 
@@ -38,13 +31,14 @@ class AddItemFirstFragment  : Fragment() {
     private lateinit var viewModel: AddItemActivityViewModel
 
     lateinit var fragmentView: View
-    private lateinit var rxImagePicker: ImagePicker
-    var itemImages: ArrayList<Uri> = arrayListOf()
 
-    val requestPermission: ActivityResultLauncher<String> = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()) { isGranted ->
-        if (isGranted)
-            openGalleryAsNormal()
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val selectedUris = result.data!!.getStringArrayListExtra("selectedUris")
+            if (selectedUris != null) {
+                initImageReyclerview(selectedUris)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -54,7 +48,6 @@ class AddItemFirstFragment  : Fragment() {
     ): View? {
         fragmentView = inflater.inflate(R.layout.fragment_add_item_first, container, false)
 
-        initRxImagePicker()
         initViewModel(fragmentView)
 
         fragmentView.fragment_add_item_first_layout_add.setOnClickListener {
@@ -69,10 +62,6 @@ class AddItemFirstFragment  : Fragment() {
         }
 
         return fragmentView
-    }
-
-    private fun initRxImagePicker() {
-        rxImagePicker = RxImagePicker.create(ImagePicker::class.java)
     }
 
     private fun initViewModel(view: View) {
@@ -148,7 +137,7 @@ class AddItemFirstFragment  : Fragment() {
         }
     }
 
-    private fun initImageReyclerview(images: ArrayList<Uri>) {
+    private fun initImageReyclerview(images: ArrayList<String>) {
         val view = fragmentView
 
         view.fragment_add_item_first_recyclerview_image.setHasFixedSize(true)
@@ -166,47 +155,11 @@ class AddItemFirstFragment  : Fragment() {
     }
 
     private fun addImage() {
-        checkPermissionAndRequest()
-    }
+        val intent = JJImagePickerIntent(requireContext())
+        intent.setCountable(true)
+        intent.setMaxSelectable(9)
 
-    private fun checkPermissionAndRequest() {
-        requestPermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    }
-
-    private fun openGalleryAsNormal() {
-        rxImagePicker.openGalleryAsNormal(requireActivity(),
-            ZhihuConfigurationBuilder(MimeType.ofImage(), false)
-                .capture(true)
-                .maxSelectable(9)
-                .countable(true)
-                .spanCount(3)
-                .showSingleMediaType(true)
-                .theme(R.style.Zhihu_Normal)
-                .build())
-            .subscribe(fetchUriObserver())
-    }
-
-    private fun fetchUriObserver(): Observer<Result> = object :
-        Observer<Result> {
-
-        override fun onSubscribe(d: Disposable) {
-
-        }
-
-        override fun onNext(result: Result) {
-            itemImages.add(result.uri)
-        }
-
-        override fun onError(e: Throwable) {
-            e.printStackTrace()
-        }
-
-        override fun onComplete() {
-            if (itemImages.isNotEmpty()) {
-                initImageReyclerview(ArrayList(itemImages))
-                itemImages.clear()
-            }
-        }
+        startForResult.launch(intent)
     }
 
     private fun submitAddItem() {
@@ -214,7 +167,7 @@ class AddItemFirstFragment  : Fragment() {
         addItemActivity.changeViewPage(false)
     }
 
-    inner class ImageRecyclerViewAdapter(private var images: ArrayList<Uri>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    inner class ImageRecyclerViewAdapter(private var images: ArrayList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(
                 R.layout.item_add_item_image,
