@@ -93,6 +93,16 @@ class MyPageFragment : Fragment() {
             val action = MyPageFragmentDirections.actionToDibsFragment()
             findNavController().navigate(action)
         }
+
+        view.fragment_mypage_layout_follower.setOnClickListener {
+            val action = MyPageFragmentDirections.actionToFollowFragment(accountDTO)
+            findNavController().navigate(action)
+        }
+
+        view.fragment_mypage_layout_following.setOnClickListener {
+            val action = MyPageFragmentDirections.actionToFollowFragment(accountDTO)
+            findNavController().navigate(action)
+        }
     }
 
 }

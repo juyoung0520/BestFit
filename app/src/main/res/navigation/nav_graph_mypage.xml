@@ -9,6 +9,9 @@
         <action
             android:id="@+id/action_to_dibsFragment"
             app:destination="@id/dibsFragment"/>
+        <action
+            android:id="@+id/action_to_followFragment"
+            app:destination="@id/followFragment"/>
     </fragment>
     <fragment
         android:id="@+id/dibsFragment"

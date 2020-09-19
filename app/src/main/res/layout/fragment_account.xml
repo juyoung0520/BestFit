@@ -187,7 +187,8 @@
                                 android:background="@drawable/check_box_follow"
                                 android:layout_gravity="center"
                                 android:layout_marginRight="10dp"
-                                style="@style/Widget.AppCompat.Button"/>
+                                style="@style/Widget.AppCompat.Button"
+                                android:visibility="visible"/>
 
                         </LinearLayout>
 

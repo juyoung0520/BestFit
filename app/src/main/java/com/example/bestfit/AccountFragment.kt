@@ -1,6 +1,7 @@
 package com.example.bestfit
 
 import android.app.AppComponentFactory
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -135,6 +136,8 @@ class AccountFragment : Fragment() {
         view.fragment_account_tv_user_info.text = if (accountDTO.sex!!) "남자" else "여자" //나이 추가..
 
         if (args.uid != currentUid) {
+            view.fragment_account_btn_follow.visibility = View.VISIBLE
+
             if (!accountDTO.follower.isNullOrEmpty() && accountDTO.follower!!.contains(currentUid)) {
                 view.fragment_account_btn_follow.isChecked = true
                 view.fragment_account_btn_follow.setText("팔로잉")
@@ -151,6 +154,8 @@ class AccountFragment : Fragment() {
                     view.fragment_account_btn_follow.setText("팔로우")
                 }
             }
+        } else {
+            view.fragment_account_btn_follow.visibility = View.GONE
         }
 
         view.fragment_account_layout_follower.setOnClickListener {
