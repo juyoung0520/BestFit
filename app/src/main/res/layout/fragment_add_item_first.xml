@@ -163,18 +163,31 @@
 
     </LinearLayout>
 
+<!--    <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/fragment_add_item_first_btn_submit"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="다음"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textColor="@color/colorPrimary"-->
+<!--        android:background="@drawable/btn_edge"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginEnd="30dp"-->
+<!--        android:layout_marginRight="30dp" />-->
+
+
     <Button
         android:id="@+id/fragment_add_item_first_btn_submit"
         android:layout_width="80dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:text="다음"
-        android:textStyle="bold"
-        android:background="@drawable/btn_default"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        style="@style/Widget.MaterialComponents.Button"/>
+        style="@style/OutlinedButton"/>
 
 </RelativeLayout>

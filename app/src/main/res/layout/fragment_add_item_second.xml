@@ -108,6 +108,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        style="@style/Widget.MaterialComponents.Button"/>
+        style="@style/Widget.MaterialComponents.Button" />
 
 </RelativeLayout>

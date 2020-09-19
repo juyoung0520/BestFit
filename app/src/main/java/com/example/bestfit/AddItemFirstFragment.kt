@@ -1,7 +1,6 @@
 package com.example.bestfit
 
-import android.app.Activity.RESULT_OK
-import android.content.Intent
+import android.app.Activity
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
@@ -10,9 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Observer as LifecycleObserver
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,17 +22,24 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.example.bestfit.viewmodel.AddItemActivityViewModel
-import com.jinu.imagepickerlib.PhotoPickerActivity
-import com.jinu.imagepickerlib.utils.YPhotoPickerIntent
+import com.jinu.jjimagepicker.widget.JJImagePickerIntent
 import kotlinx.android.synthetic.main.fragment_add_item_first.view.*
 import kotlinx.android.synthetic.main.item_add_item_image.view.*
+
 
 class AddItemFirstFragment  : Fragment() {
     private lateinit var viewModel: AddItemActivityViewModel
 
     lateinit var fragmentView: View
-    var itemImages: ArrayList<String> = arrayListOf()
-    private val ADD_IMAGE_CODE = 1
+
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val selectedUris = result.data!!.getStringArrayListExtra("selectedUris")
+            if (selectedUris != null) {
+                initImageReyclerview(selectedUris)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,25 +67,11 @@ class AddItemFirstFragment  : Fragment() {
     private fun initViewModel(view: View) {
         viewModel = ViewModelProvider(requireActivity()).get(AddItemActivityViewModel::class.java)
 
-        val tempItemDTOObserver = Observer<ItemDTO> {
+        val tempItemDTOObserver = LifecycleObserver<ItemDTO> {
             initCategoryAdapter(view)
         }
 
         viewModel.tempItemDTO.observe(viewLifecycleOwner, tempItemDTOObserver)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        var images: ArrayList<String>? = null
-        if (resultCode == RESULT_OK && requestCode == ADD_IMAGE_CODE) {
-            if (data != null)
-                images = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS)
-
-            if (images != null) {
-                initImageReyclerview(images)
-            }
-        }
     }
 
     private fun initViewFromTempItemDTO(view: View) {
@@ -94,7 +88,10 @@ class AddItemFirstFragment  : Fragment() {
         }
 
         if (tempItemDTO.subCategoryId != null) {
-            val subCategory = InitData.getSubCategoryString(tempItemDTO.categoryId!!, tempItemDTO.subCategoryId!!)
+            val subCategory = InitData.getSubCategoryString(
+                tempItemDTO.categoryId!!,
+                tempItemDTO.subCategoryId!!
+            )
             view.fragment_add_item_first_actv_sub_category.setText(subCategory, false)
         }
     }
@@ -143,9 +140,6 @@ class AddItemFirstFragment  : Fragment() {
     private fun initImageReyclerview(images: ArrayList<String>) {
         val view = fragmentView
 
-        itemImages.clear()
-        itemImages.addAll(images)
-
         view.fragment_add_item_first_recyclerview_image.setHasFixedSize(true)
         view.fragment_add_item_first_recyclerview_image.adapter = ImageRecyclerViewAdapter(itemImages)
         view.fragment_add_item_first_recyclerview_image.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
@@ -155,13 +149,11 @@ class AddItemFirstFragment  : Fragment() {
     }
 
     private fun addImage() {
-        val intent = YPhotoPickerIntent(activity)
-        intent.setMaxSelectCount(10)
-        intent.setShowCamera(true)
-        intent.setShowGif(true)
-        intent.setSelectCheckBox(false)
-        intent.setMaxGrideItemCount(3)
-        startActivityForResult(intent, ADD_IMAGE_CODE)
+        val intent = JJImagePickerIntent(requireContext())
+        intent.setCountable(true)
+        intent.setMaxSelectable(9)
+
+        startForResult.launch(intent)
     }
 
     private fun submitAddItem() {
@@ -171,7 +163,11 @@ class AddItemFirstFragment  : Fragment() {
 
     inner class ImageRecyclerViewAdapter(private var images: ArrayList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_add_item_image, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(
+                R.layout.item_add_item_image,
+                parent,
+                false
+            )
 
             return CustomViewHolder(view)
         }

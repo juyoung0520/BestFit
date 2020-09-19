@@ -10,6 +10,7 @@
         <item name="android:dropDownListViewStyle">@style/SpinnerStyle</item>
         <item name="android:actionMenuTextAppearance">@style/ToolbarMenu</item>
         <item name="materialButtonStyle">@style/MaterialButton</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.MaterialComponents.Button.OutlinedButton</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
@@ -43,6 +44,15 @@
         <item name="cornerRadius">15dp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="strokeColor">@color/colorPrimary</item>
+        <item name="strokeWidth">1.7dp</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     
     <style name="CorneredTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxCornerRadiusTopStart">15dp</item>
@@ -56,6 +66,11 @@
         <item name="boxCornerRadiusTopEnd">15dp</item>
         <item name="boxCornerRadiusBottomStart">15dp</item>
         <item name="boxCornerRadiusBottomEnd">15dp</item>
+    </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="SpinnerStyle" parent="Widget.AppCompat.ListView.DropDown">
