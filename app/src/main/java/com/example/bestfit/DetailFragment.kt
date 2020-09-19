@@ -2,14 +2,19 @@ package com.example.bestfit
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageView
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.TintTypedArray.obtainStyledAttributes
+import androidx.core.content.res.use
+import androidx.core.view.ViewCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -25,7 +30,9 @@ import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.util.InitData
 import com.example.bestfit.viewmodel.DataViewModel
 import com.example.bestfit.viewmodel.DetailFragmentViewModel
+import com.google.android.material.transition.MaterialContainerTransform
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -55,11 +62,22 @@ class DetailFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
 
+//        showProgress(view)
+
         initViewModel(view)
         initToolbar(view)
         initScrollView(view)
 
         return view
+    }
+
+    private fun showProgress(view: View) {
+//        view.fragment_detail_progress.show()
+    }
+
+    private fun hideProgress(view: View) {
+//        view.fragment_detail_progress.visibility = View.GONE
+//        view.fragment_detail_progress.hide()
     }
 
     private fun initViewModel(view: View) {
@@ -175,6 +193,9 @@ class DetailFragment : Fragment() {
         val bottom = InitData.getSizeString("03", accountDTO.bottomId!!)
         val shoes = InitData.getSizeString("04", accountDTO.shoesId!!)
         //view.fragment_detail_tv_user_detail_size.text = "Top $top / Bottom $bottom / Shoes $shoes"
+
+//        hideProgress(view)
+//        view.fragment_detail_collapsingtoolbarlayout.visibility = View.VISIBLE
     }
 
     private fun initDetailFragment(view: View, itemDTO: ItemDTO) {
@@ -222,19 +243,16 @@ class DetailFragment : Fragment() {
         restoreScrollPosition(view)
     }
 
-    inner class ImagePagerAdapter(private val images: ArrayList<String>) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    inner class ImagePagerAdapter(private val images: ArrayList<String>) : RecyclerView.Adapter<ImagePagerAdapter.ImageViewHolder>()  {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
             val iv = ImageView(context)
             iv.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
             return ImageViewHolder(iv)
         }
 
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            val viewHolder = holder as ImageViewHolder
-            val view = viewHolder.itemView as ImageView
-
-            viewHolder.bind(view, images[position])
+        override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+            holder.bind(images[position])
         }
 
         override fun getItemCount(): Int {
@@ -242,11 +260,13 @@ class DetailFragment : Fragment() {
         }
 
         inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            fun bind(view: ImageView, image: String) {
-                Glide.with(view)
+            fun bind(image: String) {
+                val iv = itemView as ImageView
+
+                Glide.with(iv)
                     .load(image)
                     .apply(RequestOptions().centerCrop())
-                    .into(view)
+                    .into(iv)
             }
         }
     }

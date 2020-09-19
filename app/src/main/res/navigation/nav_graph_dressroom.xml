@@ -10,10 +10,7 @@
         android:label="DressroomFragment" >
         <action
             android:id="@+id/action_to_detailFragment"
-            app:destination="@id/detailFragment" />
-        <action
-            android:id="@+id/action_dressroomFragment_self"
-            app:destination="@id/dressroomFragment" />
+            app:destination="@id/detailFragment"/>
     </fragment>
     <fragment
         android:id="@+id/detailFragment"

@@ -32,6 +32,8 @@ class DataViewModel : ViewModel() {
     private val _allItemDTOs = MutableLiveData<ArrayList<ArrayList<ItemDTO>>>(arrayListOf())
     val allItemDTOs: LiveData<ArrayList<ArrayList<ItemDTO>>> = _allItemDTOs
 
+    lateinit var items: MutableLiveData<ArrayList<String>>
+
     companion object {
         const val REMOVE_CANCEL = 0
         const val REMOVE_START = 1
@@ -47,6 +49,17 @@ class DataViewModel : ViewModel() {
 
     init {
         getInitialData()
+    }
+    private fun initLiveData(accountDTO: AccountDTO) {
+        viewModelScope.launch(Dispatchers.Main) {
+            items = MutableLiveData(accountDTO.items)
+            _accountDTO.value = accountDTO
+        }
+    }
+
+    fun testAddItem() {
+        _accountDTO.value!!.items!!.add("teetst")
+        items.value = items.value!!
     }
 
     // initialData
@@ -123,14 +136,18 @@ class DataViewModel : ViewModel() {
                 withContext(Dispatchers.Main) {
                     _accountDTO.value = AccountDTO()
                 }
+
                 return@launch
-            } else {
+            }
+            else {
                 withContext(Dispatchers.Main) {
-                    _accountDTO.value = accountDTO!!
+//                    _accountDTO.value = accountDTO!!
+                    // @@@@@@@@@@@@@@@@@@@ Test Code
+                    initLiveData(accountDTO)
                 }
             }
 
-            if (accountDTO!!.items.isNullOrEmpty()) {
+            if (accountDTO.items.isNullOrEmpty()) {
                 notifyAllItemDTOsChanged()
 
                 return@launch
