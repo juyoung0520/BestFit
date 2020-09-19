@@ -83,4 +83,16 @@
 <!--        <item name="android:textStyle">bold</item>-->
     </style>
 
+    <style name="TabTextAppearance" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TitleTextAppearance">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.03</item>
+    </style>
+
 </resources>

@@ -1,5 +1,7 @@
 package com.example.bestfit
 
+import android.app.AppComponentFactory
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +25,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_account.view.*
+import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.fragment_mypage.view.*
+import kotlinx.android.synthetic.main.tab.view.*
 import kotlin.math.abs
 
 class AccountFragment : Fragment() {
@@ -88,7 +92,6 @@ class AccountFragment : Fragment() {
 
     private fun initTabAdapter(view: View) {
         val tabArray = arrayListOf("드레스룸", "게시글")
-
         view.fragment_account_viewpager.adapter = TabPagerAdapter()
         TabLayoutMediator(view.fragment_account_tab, view.fragment_account_viewpager) { tab, position ->
             tab.text = tabArray[position]
@@ -127,12 +130,14 @@ class AccountFragment : Fragment() {
         view.fragment_account_tv_nickname.text = accountDTO.nickname
         view.fragment_account_tv_user_size.text = "${accountDTO.height} cm . ${accountDTO.weight} kg"
         view.fragment_account_tv_message.text = accountDTO.message
-        //view.fragment_account_tv_items.text = 아이템 수 ...
+        view.fragment_account_tv_items.text = accountDTO.items!!.size.toString()
         view.fragment_account_tv_follower.text = accountDTO.follower!!.size.toString()
         view.fragment_account_tv_following.text = accountDTO.following!!.size.toString()
         view.fragment_account_tv_user_info.text = if (accountDTO.sex!!) "남자" else "여자" //나이 추가..
 
         if (args.uid != currentUid) {
+            view.fragment_account_btn_follow.visibility = View.VISIBLE
+
             if (!accountDTO.follower.isNullOrEmpty() && accountDTO.follower!!.contains(currentUid)) {
                 view.fragment_account_btn_follow.isChecked = true
                 view.fragment_account_btn_follow.setText("팔로잉")
@@ -149,6 +154,18 @@ class AccountFragment : Fragment() {
                     view.fragment_account_btn_follow.setText("팔로우")
                 }
             }
+        } else {
+            view.fragment_account_btn_follow.visibility = View.GONE
+        }
+
+        view.fragment_account_layout_follower.setOnClickListener {
+            val action = AccountFragmentDirections.actionToFollowFragment(accountDTO)
+            findNavController().navigate(action)
+        }
+
+        view.fragment_account_layout_following.setOnClickListener {
+            val action = AccountFragmentDirections.actionToFollowFragment(accountDTO)
+            findNavController().navigate(action)
         }
     }
 }

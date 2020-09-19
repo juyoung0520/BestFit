@@ -9,6 +9,9 @@
         <action
             android:id="@+id/action_to_dibsFragment"
             app:destination="@id/dibsFragment"/>
+        <action
+            android:id="@+id/action_to_followFragment"
+            app:destination="@id/followFragment"/>
     </fragment>
     <fragment
         android:id="@+id/dibsFragment"
@@ -39,5 +42,19 @@
         <action
             android:id="@+id/action_to_detailFragment"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_to_followFragment"
+            app:destination="@id/followFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/followFragment"
+        android:name="com.example.bestfit.FollowFragment"
+        android:label="FollowFragment" >
+        <argument
+            android:name="accountDTO"
+            app:argType="com.example.bestfit.model.AccountDTO" />
+        <action
+            android:id="@+id/action_to_accountFragment"
+            app:destination="@id/accountFragment" />
     </fragment>
 </navigation>
