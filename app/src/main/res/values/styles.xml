@@ -68,11 +68,6 @@
         <item name="boxCornerRadiusBottomEnd">15dp</item>
     </style>
 
-    <style name="TabTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
     <style name="SpinnerStyle" parent="Widget.AppCompat.ListView.DropDown">
 <!--        <item name="android:divider">@color/colorDivision</item>-->
 <!--        <item name="android:dividerHeight">2dp</item>-->

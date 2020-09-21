@@ -146,11 +146,11 @@ class AccountFragment : Fragment() {
             view.fragment_account_btn_follow.setOnCheckedChangeListener { compoundButton, b ->
                 if (view.fragment_account_btn_follow.isChecked) {
                     viewModel.addFollower(args.uid)
-                    dataViewModel.addFollowing(args.uid)
+                    dataViewModel.addFollowing(args.uid, accountDTO)
                     view.fragment_account_btn_follow.setText("팔로잉")
                 } else {
                     viewModel.removeFollower(args.uid)
-                    dataViewModel.removeFollowing(args.uid)
+                    dataViewModel.removeFollowing(args.uid, accountDTO)
                     view.fragment_account_btn_follow.setText("팔로우")
                 }
             }

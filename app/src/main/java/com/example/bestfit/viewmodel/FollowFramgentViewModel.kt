@@ -27,6 +27,10 @@ class FollowFramgentViewModel: ViewModel() {
         _accountDTO.value = accountDTO
     }
 
+    fun getAccountDTO(): AccountDTO {
+        return _accountDTO.value!!
+    }
+
     private fun notifyFollowerAccountDTOsChanged() {
         viewModelScope.launch(Dispatchers.Main) {
             _followerAccountDTOs.value = _followerAccountDTOs.value
@@ -73,5 +77,25 @@ class FollowFramgentViewModel: ViewModel() {
 
             notifyFollowingAccountDTOsChanged()
         }
+    }
+
+    fun addFollower(accountDTO: AccountDTO) {
+        if (_accountDTO.value!!.follower!!.contains(accountDTO))
+            return
+
+        _followerAccountDTOs.value!!.add(accountDTO)
+        _accountDTO.value!!.follower!!.add(accountDTO.id!!)
+
+        notifyFollowerAccountDTOsChanged()
+    }
+
+    fun removeFollower(accountDTO: AccountDTO) {
+        if (!(_accountDTO.value!!.follower!!.contains(accountDTO)))
+            return
+
+        _followerAccountDTOs.value!!.remove(accountDTO)
+        _accountDTO.value!!.follower!!.remove(accountDTO.id!!)
+
+        notifyFollowerAccountDTOsChanged()
     }
 }
