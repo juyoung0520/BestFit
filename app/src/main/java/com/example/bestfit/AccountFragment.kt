@@ -20,6 +20,7 @@ import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.util.InitData
 import com.example.bestfit.viewmodel.AccountFragmentViewModel
 import com.example.bestfit.viewmodel.DataViewModel
+import com.example.bestfit.viewmodel.SingleLiveEvent
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
@@ -53,8 +54,16 @@ class AccountFragment : Fragment() {
     }
 
     private fun initViewModel(view: View) {
-        viewModel = ViewModelProvider(this, AccountFragmentViewModel.Factory(args.uid)).get(AccountFragmentViewModel::class.java)
+        if (args.uid != currentUid) {
+            viewModel = ViewModelProvider(this, AccountFragmentViewModel.Factory(args.uid)).get(AccountFragmentViewModel::class.java)
+           // initFollowingObserver(args.uid)
+        }
 
+        initAccountDTOObserver(view)
+
+    }
+
+    private fun initAccountDTOObserver(view: View) {
         val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
             initAccountFragment(view, accountDTO)
         }
@@ -64,6 +73,20 @@ class AccountFragment : Fragment() {
         else
             viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
     }
+
+//    private fun initFollowingObserver(uid: String) {
+//        val followingAccountDTOsObserver = Observer<ArrayList<AccountDTO>> {
+//            val accountDTO = dataViewModel.getAccountDTO()
+//
+//            if (accountDTO.following!!.contains(uid)) {
+//                viewModel.addFollower(accountDTO)
+//            } else{
+//                viewModel.removeFollower(accountDTO)
+//            }
+//
+//        }
+//        dataViewModel.followingAccountDTOs.observe(viewLifecycleOwner, followingAccountDTOsObserver)
+//    }
 
     private fun initToolbar(view: View) {
         view.fragment_account_appbarlayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
@@ -137,6 +160,7 @@ class AccountFragment : Fragment() {
 
         if (args.uid != currentUid) {
             view.fragment_account_btn_follow.visibility = View.VISIBLE
+            println(accountDTO.follower)
 
             if (!accountDTO.follower.isNullOrEmpty() && accountDTO.follower!!.contains(currentUid)) {
                 view.fragment_account_btn_follow.isChecked = true
@@ -145,10 +169,12 @@ class AccountFragment : Fragment() {
 
             view.fragment_account_btn_follow.setOnCheckedChangeListener { compoundButton, b ->
                 if (view.fragment_account_btn_follow.isChecked) {
+                    println("in btn follow soccl")
                     viewModel.addFollower(args.uid)
                     dataViewModel.addFollowing(args.uid, accountDTO)
                     view.fragment_account_btn_follow.setText("팔로잉")
                 } else {
+                    println("in else, btn follow soccl")
                     viewModel.removeFollower(args.uid)
                     dataViewModel.removeFollowing(args.uid, accountDTO)
                     view.fragment_account_btn_follow.setText("팔로우")

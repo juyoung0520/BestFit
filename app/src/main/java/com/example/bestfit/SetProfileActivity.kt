@@ -52,7 +52,7 @@ class SetProfileActivity : AppCompatActivity() {
 
         val initializedObserver = Observer<Boolean> { initialized ->
             if (initialized) {
-                if (tempAccountDTO.id == null ) {
+                if (tempAccountDTO.id == null) {
                     viewModel.setTempAccountDTO(AccountDTO())
                 } else {
                     activity_set_profile_tv_toolbar_title.text = "프로필 수정"

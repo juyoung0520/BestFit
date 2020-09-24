@@ -80,7 +80,7 @@ class FollowFramgentViewModel: ViewModel() {
     }
 
     fun addFollower(accountDTO: AccountDTO) {
-        if (_accountDTO.value!!.follower!!.contains(accountDTO))
+        if (_accountDTO.value!!.follower!!.contains(accountDTO.id))
             return
 
         _followerAccountDTOs.value!!.add(accountDTO)
@@ -90,9 +90,10 @@ class FollowFramgentViewModel: ViewModel() {
     }
 
     fun removeFollower(accountDTO: AccountDTO) {
-        if (!(_accountDTO.value!!.follower!!.contains(accountDTO)))
+        if (!(_accountDTO.value!!.follower!!.contains(accountDTO.id)))
             return
 
+        println("remove in FollowFragmentViewModel")
         _followerAccountDTOs.value!!.remove(accountDTO)
         _accountDTO.value!!.follower!!.remove(accountDTO.id!!)
 

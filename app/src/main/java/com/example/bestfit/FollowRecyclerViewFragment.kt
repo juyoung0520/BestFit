@@ -72,17 +72,21 @@ class FollowRecyclerViewFragment: Fragment() {
     }
 
     private fun initFollowingObserver(uid: String) {
-        val myAccountDTOObserver = Observer<AccountDTO> { myAccountDTO ->
-            if (myAccountDTO.following!!.contains(uid)) {
-                println("add")
-                viewModel.addFollower(myAccountDTO)
+        val followingAccountDTOsObserver = Observer<ArrayList<AccountDTO>> {
+            val accountDTO = dataViewModel.getAccountDTO()
+
+            println(accountDTO.following)
+            println(uid)
+            println(accountDTO.following!!.contains(uid))
+
+            if (accountDTO.following!!.contains(uid)) {
+                viewModel.addFollower(accountDTO)
             } else{
-                println("remove")
-                viewModel.removeFollower(myAccountDTO)
+                viewModel.removeFollower(accountDTO)
             }
 
         }
-        dataViewModel.accountDTO.observe(viewLifecycleOwner, myAccountDTOObserver)
+        dataViewModel.followingAccountDTOs.observe(viewLifecycleOwner, followingAccountDTOsObserver)
     }
 
 

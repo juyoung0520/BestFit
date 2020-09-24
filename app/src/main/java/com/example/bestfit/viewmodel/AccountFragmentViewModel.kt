@@ -18,6 +18,7 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
     private val currentUid = auth.currentUser!!.uid
     private val db = FirebaseFirestore.getInstance()
+    private var initialized: Boolean = false
 
     private val _isExpanded = MutableLiveData(true)
 
@@ -60,6 +61,7 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
 
     private fun getItemDTOs(uid: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            println("in getItemDTOs in AccountFragmentViewModel")
             _itemDTOs.value!!.clear()
 
             val doc = db.collection("accounts").document(uid).get().await()
@@ -67,6 +69,7 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
 
             withContext(Dispatchers.Main) {
                 _accountDTO.value = accountDTO
+                initialized = true
             }
 
             if (accountDTO.items!!.isNullOrEmpty()) {
@@ -93,6 +96,7 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
 
     fun addFollower(uid: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            println("in addFollower in AccountFragmentViewModel")
             val docRef = db.collection("accounts").document(uid)
 
             db.runTransaction { transaction ->
@@ -105,9 +109,21 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
             notifyAccountDTOChanged()
         }
     }
+//
+//    fun addFollower(accountDTO: AccountDTO) {
+//        if (!initialized)
+//            return
+//
+//        if (_accountDTO.value!!.follower!!.contains(accountDTO.id))
+//            return
+//
+//        println("add")
+//        notifyAccountDTOChanged()
+//    }
 
     fun removeFollower(uid: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            println("in removeFollower in AccountFramgnetViewModel")
             val docRef = db.collection("accounts").document(uid)
 
             db.runTransaction { transaction ->
@@ -120,5 +136,16 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
             notifyAccountDTOChanged()
         }
     }
+
+//    fun removeFollower(accountDTO: AccountDTO) {
+//        if (!initialized)
+//           return
+//
+//        if (!(_accountDTO.value!!.follower!!.contains(accountDTO.id)))
+//            return
+//
+//        println("remove")
+//        notifyAccountDTOChanged()
+//    }
 
 }

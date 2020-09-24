@@ -40,7 +40,9 @@ class SetProfileActivityViewModel : ViewModel() {
 
     fun submitSetProfile(accountDTO: AccountDTO) {
         viewModelScope.launch(Dispatchers.IO) {
-            db.collection("accounts").document(currentUid).set(accountDTO).await()
+            val doc = db.collection("accounts").document(currentUid).set(accountDTO).await()
+            val accountDTO = doc.
+            db.collection("accounts").document(currentUid).update("id", doc.)
 
             withContext(Dispatchers.Main) {
                 _accountDTO.value = accountDTO
