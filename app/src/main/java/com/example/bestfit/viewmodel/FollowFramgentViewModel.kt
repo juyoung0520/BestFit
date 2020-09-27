@@ -74,4 +74,33 @@ class FollowFramgentViewModel: ViewModel() {
             notifyFollowingAccountDTOsChanged()
         }
     }
+
+    fun addFollower(accountDTO: AccountDTO) {
+        if (_accountDTO.value!!.follower!!.contains(accountDTO.id))
+            return
+
+        println("in addFollower, FollowFragmentViewModel")
+
+        _followerAccountDTOs.value!!.add(accountDTO)
+        _accountDTO.value!!.follower!!.add(accountDTO.id!!)
+
+        notifyFollowerAccountDTOsChanged()
+    }
+
+    fun removeFollower(accountDTO: AccountDTO) {
+        if (!(_accountDTO.value!!.follower!!.contains(accountDTO.id)))
+            return
+
+        println("in removeFollower, FollowFragmentViewModel")
+        println(_followerAccountDTOs.value)
+        println(accountDTO.id)
+
+        val index = _followerAccountDTOs.value!!.indexOfFirst { DTO -> DTO.id == accountDTO.id }
+        _followerAccountDTOs.value!!.removeAt(index)
+        _accountDTO.value!!.follower!!.remove(accountDTO.id!!)
+
+        println(_followerAccountDTOs.value)
+
+        notifyFollowerAccountDTOsChanged()
+    }
 }

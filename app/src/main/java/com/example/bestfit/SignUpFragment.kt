@@ -102,8 +102,8 @@ class SignUpFragment : Fragment() {
                     view.fragment_signup_layout_text_password.error = "비밀번호 형식이 틀렸습니다. 다시 입력해 주세요."
                 }
 
-                println(task.exception)
-                Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show()
+//                println(task.exception)
+//                Toast.makeText(context, "fail", Toast.LENGTH_SHORT).show()
             }
         }
     }

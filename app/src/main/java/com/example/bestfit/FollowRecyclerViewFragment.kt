@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.bestfit.model.AccountDTO
+import com.example.bestfit.viewmodel.AccountFragmentViewModel
 import com.example.bestfit.viewmodel.DataViewModel
 import com.example.bestfit.viewmodel.FollowFramgentViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -26,6 +28,9 @@ class FollowRecyclerViewFragment: Fragment() {
     private lateinit var followRecyclerViewAdapter: FollowRecyclerViewAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
 
+    private val auth = FirebaseAuth.getInstance()
+    private val currentUid = auth.currentUser!!.uid
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,32 +38,52 @@ class FollowRecyclerViewFragment: Fragment() {
     ): View? {
         val fragmentView =  inflater.inflate(R.layout.fragment_dressroom_category, container, false)
 
-        initFollowViewModel(fragmentView)
+        initViewModel(fragmentView)
         initRecyclerView(fragmentView)
 
         return fragmentView
     }
 
-    private fun initFollowViewModel(view: View) {
-        viewModel = ViewModelProvider(requireParentFragment()).get(FollowFramgentViewModel::class.java)
+    private fun initViewModel(view: View) {
+        val uid = requireArguments().getString("uid")
 
+        if (uid != currentUid) {
+            viewModel = ViewModelProvider(requireParentFragment()).get(FollowFramgentViewModel::class.java)
+            initFollowingObserver(uid!!)
+        }
+        initAccountDTOsObserver(uid == currentUid)
+    }
+
+    private fun initAccountDTOsObserver(isMine: Boolean) {
         val accountDTOsObserver = Observer<ArrayList<AccountDTO>> { accountDTOs ->
+            println("!!submit!!")
             followRecyclerViewAdapter.submitList(accountDTOs.map { it.copy() })
         }
 
-        if (requireArguments().getString("follow") == "er")
-            viewModel.followerAccountDTOs.observe(viewLifecycleOwner, accountDTOsObserver)
-        else
-            viewModel.followingAccountDTOs.observe(viewLifecycleOwner, accountDTOsObserver)
+        when (requireArguments().getString("follow")) {
+            "er" -> {
+                if (isMine) dataViewModel.followerAccountDTOs.observe(viewLifecycleOwner, accountDTOsObserver)
+                else viewModel.followerAccountDTOs.observe(viewLifecycleOwner, accountDTOsObserver)
+            }
+            "ing" -> {
+                if (isMine) dataViewModel.followingAccountDTOs.observe(viewLifecycleOwner, accountDTOsObserver)
+                else viewModel.followingAccountDTOs.observe(viewLifecycleOwner, accountDTOsObserver)
+            }
+        }
     }
 
-    private fun initDataViewModel(view: View) {
+    private fun initFollowingObserver(uid: String) {
+        val followingAccountDTOsObserver = Observer<ArrayList<AccountDTO>> {
+            val accountDTO = dataViewModel.getAccountDTO()
 
-        val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
-            
+            if (accountDTO.following!!.contains(uid)) {
+                viewModel.addFollower(accountDTO)
+            } else{
+                viewModel.removeFollower(accountDTO)
+            }
+
         }
-
-        dataViewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
+        dataViewModel.followingAccountDTOs.observe(viewLifecycleOwner, followingAccountDTOsObserver)
     }
 
 
