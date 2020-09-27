@@ -73,14 +73,13 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             if (isInitialized) {
                 hideProgress()
                 viewModel.getAllItemDTOs()
+                initViewPager()
             }
         }
 
         val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
             if (accountDTO.nickname == null)
                 checkSetProfile()
-            else
-                initViewPager()
         }
 
         viewModel.isInitialized.observe(this, isInitializedObserver)

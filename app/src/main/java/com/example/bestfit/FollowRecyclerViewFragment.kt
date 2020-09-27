@@ -56,6 +56,7 @@ class FollowRecyclerViewFragment: Fragment() {
 
     private fun initAccountDTOsObserver(isMine: Boolean) {
         val accountDTOsObserver = Observer<ArrayList<AccountDTO>> { accountDTOs ->
+            println("!!submit!!")
             followRecyclerViewAdapter.submitList(accountDTOs.map { it.copy() })
         }
 
@@ -74,10 +75,6 @@ class FollowRecyclerViewFragment: Fragment() {
     private fun initFollowingObserver(uid: String) {
         val followingAccountDTOsObserver = Observer<ArrayList<AccountDTO>> {
             val accountDTO = dataViewModel.getAccountDTO()
-
-            println(accountDTO.following)
-            println(uid)
-            println(accountDTO.following!!.contains(uid))
 
             if (accountDTO.following!!.contains(uid)) {
                 viewModel.addFollower(accountDTO)

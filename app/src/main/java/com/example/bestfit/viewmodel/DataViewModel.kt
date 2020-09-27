@@ -492,7 +492,9 @@ class DataViewModel : ViewModel() {
             }.await()
 
             _accountDTO.value!!.following!!.remove(uid)
-            _followingAccountDTOs.value!!.remove(followingAccountDTO)
+            val index = _followingAccountDTOs.value!!.indexOfFirst { DTO -> DTO.id == followingAccountDTO.id }
+            if (index != -1)
+                _followingAccountDTOs.value!!.removeAt(index)
 
             notifyAccountDTOChanged()
             notifyFollowingAccountDTOsChanged()

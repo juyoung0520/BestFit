@@ -73,7 +73,7 @@ class AccountFragment : Fragment() {
         else
             viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
     }
-
+//
 //    private fun initFollowingObserver(uid: String) {
 //        val followingAccountDTOsObserver = Observer<ArrayList<AccountDTO>> {
 //            val accountDTO = dataViewModel.getAccountDTO()
@@ -86,7 +86,7 @@ class AccountFragment : Fragment() {
 //
 //        }
 //        dataViewModel.followingAccountDTOs.observe(viewLifecycleOwner, followingAccountDTOsObserver)
-//    }
+   // }
 
     private fun initToolbar(view: View) {
         view.fragment_account_appbarlayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
@@ -143,6 +143,13 @@ class AccountFragment : Fragment() {
         }
     }
 
+    private fun checkFollowState(view: View, isFollowing: Boolean, accountDTO: AccountDTO) {
+        if (!accountDTO.follower.isNullOrEmpty()) {
+            view.fragment_account_btn_follow.isChecked = isFollowing
+            view.fragment_account_btn_follow.setText(if (isFollowing) "팔로잉" else "팔로우")
+       }
+    }
+
     private fun initAccountFragment(view: View, accountDTO: AccountDTO) {
         if (accountDTO.photo.isNullOrEmpty())
             view.fragment_account_iv_profile.setImageResource(R.drawable.ic_profile_120)
@@ -160,25 +167,23 @@ class AccountFragment : Fragment() {
 
         if (args.uid != currentUid) {
             view.fragment_account_btn_follow.visibility = View.VISIBLE
-            println(accountDTO.follower)
 
-            if (!accountDTO.follower.isNullOrEmpty() && accountDTO.follower!!.contains(currentUid)) {
-                view.fragment_account_btn_follow.isChecked = true
-                view.fragment_account_btn_follow.setText("팔로잉")
-            }
+            checkFollowState(view, accountDTO.follower!!.contains(currentUid), accountDTO)
 
-            view.fragment_account_btn_follow.setOnCheckedChangeListener { compoundButton, b ->
+            view.fragment_account_btn_follow.setOnClickListener {
+
                 if (view.fragment_account_btn_follow.isChecked) {
-                    println("in btn follow soccl")
+                    println("btn"+view.fragment_account_btn_follow.isChecked)
                     viewModel.addFollower(args.uid)
                     dataViewModel.addFollowing(args.uid, accountDTO)
                     view.fragment_account_btn_follow.setText("팔로잉")
                 } else {
-                    println("in else, btn follow soccl")
+                    println("btn"+view.fragment_account_btn_follow.isChecked)
                     viewModel.removeFollower(args.uid)
                     dataViewModel.removeFollowing(args.uid, accountDTO)
                     view.fragment_account_btn_follow.setText("팔로우")
                 }
+
             }
         } else {
             view.fragment_account_btn_follow.visibility = View.GONE

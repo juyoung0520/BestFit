@@ -61,7 +61,7 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
 
     private fun getItemDTOs(uid: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            println("in getItemDTOs in AccountFragmentViewModel")
+            println("in getItemDTOs, AccountFragmentViewModel")
             _itemDTOs.value!!.clear()
 
             val doc = db.collection("accounts").document(uid).get().await()
@@ -96,7 +96,7 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
 
     fun addFollower(uid: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            println("in addFollower in AccountFragmentViewModel")
+            println("in addFollower1, AccountFragmentViewModel")
             val docRef = db.collection("accounts").document(uid)
 
             db.runTransaction { transaction ->
@@ -104,26 +104,24 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
                 accountDTO!!.follower!!.add(currentUid)
                 transaction.update(docRef, "follower", accountDTO!!.follower)
             }.await()
-
-            _accountDTO.value!!.follower!!.add(currentUid)
-            notifyAccountDTOChanged()
         }
     }
-//
-//    fun addFollower(accountDTO: AccountDTO) {
-//        if (!initialized)
-//            return
-//
-//        if (_accountDTO.value!!.follower!!.contains(accountDTO.id))
-//            return
-//
-//        println("add")
-//        notifyAccountDTOChanged()
-//    }
+
+    fun addFollower(accountDTO: AccountDTO) {
+        if (!initialized)
+            return
+
+        if (_accountDTO.value!!.follower!!.contains(accountDTO.id))
+            return
+        println("in addFollower2, AccountFragmentViewModel")
+
+        _accountDTO.value!!.follower!!.add(accountDTO.id!!)
+        notifyAccountDTOChanged()
+    }
 
     fun removeFollower(uid: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            println("in removeFollower in AccountFramgnetViewModel")
+            println("in removeFollower1, AccountFramgnetViewModel")
             val docRef = db.collection("accounts").document(uid)
 
             db.runTransaction { transaction ->
@@ -131,21 +129,20 @@ class AccountFragmentViewModel(uid: String) : ViewModel() {
                 accountDTO!!.follower!!.remove(currentUid)
                 transaction.update(docRef, "follower", accountDTO!!.follower)
             }.await()
-
-            _accountDTO.value!!.follower!!.remove(currentUid)
-            notifyAccountDTOChanged()
         }
     }
 
-//    fun removeFollower(accountDTO: AccountDTO) {
-//        if (!initialized)
-//           return
-//
-//        if (!(_accountDTO.value!!.follower!!.contains(accountDTO.id)))
-//            return
-//
-//        println("remove")
-//        notifyAccountDTOChanged()
-//    }
+    fun removeFollower(accountDTO: AccountDTO) {
+        if (!initialized)
+           return
+
+        if (!(_accountDTO.value!!.follower!!.contains(accountDTO.id)))
+            return
+
+        println("in removeFollower2, AccountFragmentViewModel")
+
+        _accountDTO.value!!.follower!!.remove(accountDTO.id!!)
+        notifyAccountDTOChanged()
+    }
 
 }

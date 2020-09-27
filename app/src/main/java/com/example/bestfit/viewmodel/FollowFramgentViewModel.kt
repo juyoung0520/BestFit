@@ -27,10 +27,6 @@ class FollowFramgentViewModel: ViewModel() {
         _accountDTO.value = accountDTO
     }
 
-    fun getAccountDTO(): AccountDTO {
-        return _accountDTO.value!!
-    }
-
     private fun notifyFollowerAccountDTOsChanged() {
         viewModelScope.launch(Dispatchers.Main) {
             _followerAccountDTOs.value = _followerAccountDTOs.value
@@ -83,6 +79,8 @@ class FollowFramgentViewModel: ViewModel() {
         if (_accountDTO.value!!.follower!!.contains(accountDTO.id))
             return
 
+        println("in addFollower, FollowFragmentViewModel")
+
         _followerAccountDTOs.value!!.add(accountDTO)
         _accountDTO.value!!.follower!!.add(accountDTO.id!!)
 
@@ -93,9 +91,15 @@ class FollowFramgentViewModel: ViewModel() {
         if (!(_accountDTO.value!!.follower!!.contains(accountDTO.id)))
             return
 
-        println("remove in FollowFragmentViewModel")
-        _followerAccountDTOs.value!!.remove(accountDTO)
+        println("in removeFollower, FollowFragmentViewModel")
+        println(_followerAccountDTOs.value)
+        println(accountDTO.id)
+
+        val index = _followerAccountDTOs.value!!.indexOfFirst { DTO -> DTO.id == accountDTO.id }
+        _followerAccountDTOs.value!!.removeAt(index)
         _accountDTO.value!!.follower!!.remove(accountDTO.id!!)
+
+        println(_followerAccountDTOs.value)
 
         notifyFollowerAccountDTOsChanged()
     }
