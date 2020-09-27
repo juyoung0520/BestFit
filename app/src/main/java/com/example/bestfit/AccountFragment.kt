@@ -54,10 +54,10 @@ class AccountFragment : Fragment() {
     }
 
     private fun initViewModel(view: View) {
-        if (args.uid != currentUid) {
-            viewModel = ViewModelProvider(this, AccountFragmentViewModel.Factory(args.uid)).get(AccountFragmentViewModel::class.java)
-           // initFollowingObserver(args.uid)
-        }
+        viewModel = ViewModelProvider(this, AccountFragmentViewModel.Factory(args.uid)).get(AccountFragmentViewModel::class.java)
+
+        if (args.uid != currentUid)
+            initFollowingObserver(args.uid)
 
         initAccountDTOObserver(view)
 
@@ -73,20 +73,20 @@ class AccountFragment : Fragment() {
         else
             viewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
     }
-//
-//    private fun initFollowingObserver(uid: String) {
-//        val followingAccountDTOsObserver = Observer<ArrayList<AccountDTO>> {
-//            val accountDTO = dataViewModel.getAccountDTO()
-//
-//            if (accountDTO.following!!.contains(uid)) {
-//                viewModel.addFollower(accountDTO)
-//            } else{
-//                viewModel.removeFollower(accountDTO)
-//            }
-//
-//        }
-//        dataViewModel.followingAccountDTOs.observe(viewLifecycleOwner, followingAccountDTOsObserver)
-   // }
+
+    private fun initFollowingObserver(uid: String) {
+        val followingAccountDTOsObserver = Observer<ArrayList<AccountDTO>> {
+            val accountDTO = dataViewModel.getAccountDTO()
+
+            if (accountDTO.following!!.contains(uid)) {
+                viewModel.addFollower(accountDTO)
+            } else{
+                viewModel.removeFollower(accountDTO)
+            }
+
+        }
+        dataViewModel.followingAccountDTOs.observe(viewLifecycleOwner, followingAccountDTOsObserver)
+    }
 
     private fun initToolbar(view: View) {
         view.fragment_account_appbarlayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { p0, p1 ->
