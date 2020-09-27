@@ -132,7 +132,7 @@ class AccountFragment : Fragment() {
                     val fragment = DressroomCategoryFragment()
                     val bundle = Bundle()
 
-                    bundle.putBoolean("isMyAccount", true)
+                    bundle.putBoolean("isMyAccount", args.uid == currentUid)
 
                     fragment.arguments = bundle
                     return fragment
