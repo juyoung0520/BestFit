@@ -422,7 +422,7 @@ class DataViewModel : ViewModel() {
 
     fun getFollowerAccountDTOs() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (followerAccountDTOs.value!!.isNotEmpty())
+            if (_followerAccountDTOs.value!!.isNotEmpty())
                 return@launch
 
             val tasks = _accountDTO.value!!.follower!!.map { uid ->
@@ -443,11 +443,11 @@ class DataViewModel : ViewModel() {
 
     fun getFollowingAccountDTOs() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (followingAccountDTOs.value!!.isNotEmpty())
+            if (_followingAccountDTOs.value!!.isNotEmpty())
                 return@launch
 
-            val tempList = _accountDTO.value!!.following!!.dropLast(_followingAccountDTOs.value!!.size).reversed()
-            val tasks = tempList.map { uid ->
+           // val tempList = _accountDTO.value!!.following!!.dropLast(_followingAccountDTOs.value!!.size).reversed()
+            val tasks =  _accountDTO.value!!.following!!.map { uid ->
                 db.collection("accounts").document(uid).get()
             }
 
