@@ -456,7 +456,7 @@ class DataViewModel : ViewModel() {
                 val doc = task.result as DocumentSnapshot
                 val accountDTO = doc.toObject(AccountDTO::class.java)!!
 
-                _followingAccountDTOs.value!!.add(0, accountDTO)
+                _followingAccountDTOs.value!!.add(accountDTO)
             }
 
             notifyFollowingAccountDTOsChanged()
