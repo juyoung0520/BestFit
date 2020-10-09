@@ -9,6 +9,9 @@
         <action
             android:id="@+id/action_to_searchFragment"
             app:destination="@id/searchFragment"/>
+        <action
+            android:id="@+id/action_to_detailFragment"
+            app:destination="@id/detailFragment"/>
     </fragment>
     <fragment
         android:id="@+id/searchFragment"

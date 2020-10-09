@@ -28,7 +28,6 @@ import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_account.view.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.fragment_mypage.view.*
-import kotlinx.android.synthetic.main.tab.view.*
 import kotlin.math.abs
 
 class AccountFragment : Fragment() {

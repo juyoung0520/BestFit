@@ -26,6 +26,9 @@ class DataViewModel : ViewModel() {
     private val _isInitialized = MutableLiveData(false)
     val isInitialized: LiveData<Boolean> = _isInitialized
 
+    private val _isInitializedAccountDTO = MutableLiveData(false)
+    val isInitializedAccountDTO: LiveData<Boolean> = _isInitializedAccountDTO
+
     private val _accountDTO = MutableLiveData<AccountDTO>()
     val accountDTO: LiveData<AccountDTO> = _accountDTO
 
@@ -60,6 +63,10 @@ class DataViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.Main) {
             items = MutableLiveData(accountDTO.items)
             _accountDTO.value = accountDTO
+
+            withContext(Dispatchers.Main) {
+                _isInitializedAccountDTO.value = true
+            }
         }
     }
 
@@ -159,7 +166,6 @@ class DataViewModel : ViewModel() {
 
             if (accountDTO.items.isNullOrEmpty()) {
                 notifyAllItemDTOsChanged()
-
                 return@launch
             }
 
@@ -422,7 +428,7 @@ class DataViewModel : ViewModel() {
 
     fun getFollowerAccountDTOs() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (followerAccountDTOs.value!!.isNotEmpty())
+            if (_followerAccountDTOs.value!!.isNotEmpty())
                 return@launch
 
             val tasks = _accountDTO.value!!.follower!!.map { uid ->
@@ -443,11 +449,11 @@ class DataViewModel : ViewModel() {
 
     fun getFollowingAccountDTOs() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (followingAccountDTOs.value!!.isNotEmpty())
+            if (_followingAccountDTOs.value!!.isNotEmpty())
                 return@launch
 
-            val tempList = _accountDTO.value!!.following!!.dropLast(_followingAccountDTOs.value!!.size).reversed()
-            val tasks = tempList.map { uid ->
+           // val tempList = _accountDTO.value!!.following!!.dropLast(_followingAccountDTOs.value!!.size).reversed()
+            val tasks =  _accountDTO.value!!.following!!.map { uid ->
                 db.collection("accounts").document(uid).get()
             }
 
@@ -456,7 +462,7 @@ class DataViewModel : ViewModel() {
                 val doc = task.result as DocumentSnapshot
                 val accountDTO = doc.toObject(AccountDTO::class.java)!!
 
-                _followingAccountDTOs.value!!.add(0, accountDTO)
+                _followingAccountDTOs.value!!.add(accountDTO)
             }
 
             notifyFollowingAccountDTOsChanged()

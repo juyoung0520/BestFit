@@ -37,14 +37,14 @@ class FollowFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_follow, container, false)
 
-        initViewModel(view)
+        initViewModel()
         initToolbar(view)
         initTapAdapter(view)
 
         return view
     }
 
-    private fun initViewModel(view: View) {
+    private fun initViewModel() {
         if (args.accountDTO.id != currentUid) {
             viewModel = ViewModelProvider(this).get(FollowFramgentViewModel::class.java)
             viewModel.setAccountDTO(args.accountDTO)
@@ -52,7 +52,6 @@ class FollowFragment : Fragment() {
             viewModel.getFollowingAccountDTOs()
         } else {
             dataViewModel.getFollowerAccountDTOs()
-            dataViewModel.getFollowingAccountDTOs()
         }
     }
 
