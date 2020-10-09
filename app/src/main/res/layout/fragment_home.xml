@@ -23,9 +23,9 @@
             android:text="팔로잉 후기"
             android:textColor="@color/colorBlack"
             android:textStyle="bold"
-            android:textSize="17sp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"/>
+            android:textSize="19sp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_home_profile_recyclerview"

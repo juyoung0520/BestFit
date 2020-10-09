@@ -13,11 +13,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.viewmodel.AccountFragmentViewModel
 import com.example.bestfit.viewmodel.DataViewModel
 import com.example.bestfit.viewmodel.FollowFramgentViewModel
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.android.synthetic.main.fragment_account.view.*
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
 import kotlinx.android.synthetic.main.item_follow.view.*
 
@@ -121,6 +124,12 @@ class FollowRecyclerViewFragment: Fragment() {
         inner class FollowViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             fun bind(accountDTO: AccountDTO) {
                 itemView.item_follow_tv_nickname.text = accountDTO.nickname
+
+                if (accountDTO.photo.isNullOrEmpty())
+                    itemView.item_follow_iv_profile.setImageResource(R.drawable.ic_profile_120)
+                else
+                    Glide.with(itemView).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(itemView.item_follow_iv_profile)
+
             }
         }
     }

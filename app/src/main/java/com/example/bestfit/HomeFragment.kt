@@ -12,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.viewmodel.DataViewModel
@@ -20,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
+import kotlinx.android.synthetic.main.item_follow.view.*
 import kotlinx.android.synthetic.main.item_profile.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -40,7 +43,8 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        initAccountDTOObserver()
+        isInitializedAccountDTOObserver()
+        initFollowItemDTOsObserver()
         initToolbar(view)
         initProfileRecyclerView(view)
         initItemRecyclerViewAdapter(view)
@@ -48,13 +52,13 @@ class HomeFragment : Fragment() {
         return view
     }
 
-    private fun initAccountDTOObserver() {
-        val accountDTOObserver = Observer<AccountDTO> { accountDTO ->
-            initFollowAccountDTOsObserver() // 일단 이렇게 해놨는데 어카운트 초기화되고 팔로잉 get 하는 방법 생각해보기
-            initFollowItemDTOsObserver()
+    private fun isInitializedAccountDTOObserver() {
+        val isInitializedAccountDTOObserver = Observer<Boolean> { isInitialized ->
+            if (isInitialized)
+                initFollowAccountDTOsObserver()
         }
 
-        dataViewModel.accountDTO.observe(viewLifecycleOwner, accountDTOObserver)
+        dataViewModel.isInitializedAccountDTO.observe(viewLifecycleOwner, isInitializedAccountDTOObserver)
     }
 
     private fun initFollowAccountDTOsObserver() {
@@ -62,7 +66,6 @@ class HomeFragment : Fragment() {
 
         val followingAccountDTOsObserver = Observer<ArrayList<AccountDTO>> { following ->
             profileRecyclerViewAdapter.submitList(following.map { it.copy() })
-
         }
 
         dataViewModel.followingAccountDTOs.observe(viewLifecycleOwner, followingAccountDTOsObserver)
@@ -131,17 +134,24 @@ class HomeFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ProfileViewHolder, position: Int) {
             val accountDTO = getItem(position)
-            holder.bind(accountDTO)
+            holder.bind(accountDTO, position)
         }
 
         inner class ProfileViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-            fun bind(accountDTO: AccountDTO) {
+            fun bind(accountDTO: AccountDTO, position: Int) {
                 itemView.item_profile_tv_nickname.text = accountDTO.nickname
+
+                if (accountDTO.photo.isNullOrEmpty())
+                    itemView.item_profile_iv_profile.setImageResource(R.drawable.ic_profile_120)
+                else
+                    Glide.with(itemView).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(itemView.item_profile_iv_profile)
+
+                if (position == 0)
+                    viewModel.getItemDTOs(accountDTO)
 
                 itemView.setOnClickListener {
                     viewModel.getItemDTOs(accountDTO)
-                    println("submit")
                 }
             }
 
@@ -180,6 +190,18 @@ class HomeFragment : Fragment() {
 
             fun bind(itemDTO: ItemDTO) {
                 itemView.item_dressroom_tv_item_name.text = itemDTO.name
+
+                Glide.with(itemView)
+                    .load(itemDTO.images!![0])
+                    .apply(RequestOptions().centerCrop())
+                    .into(itemView.item_dressroom_iv_item)
+
+                itemView.setOnClickListener {
+                    val navController = findNavController()
+                    val action = HomeFragmentDirections.actionToDetailFragment(itemDTO)
+
+                    navController.navigate(action)
+                }
             }
         }
     }

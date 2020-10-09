@@ -26,6 +26,9 @@ class DataViewModel : ViewModel() {
     private val _isInitialized = MutableLiveData(false)
     val isInitialized: LiveData<Boolean> = _isInitialized
 
+    private val _isInitializedAccountDTO = MutableLiveData(false)
+    val isInitializedAccountDTO: LiveData<Boolean> = _isInitializedAccountDTO
+
     private val _accountDTO = MutableLiveData<AccountDTO>()
     val accountDTO: LiveData<AccountDTO> = _accountDTO
 
@@ -60,6 +63,10 @@ class DataViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.Main) {
             items = MutableLiveData(accountDTO.items)
             _accountDTO.value = accountDTO
+
+            withContext(Dispatchers.Main) {
+                _isInitializedAccountDTO.value = true
+            }
         }
     }
 
@@ -159,7 +166,6 @@ class DataViewModel : ViewModel() {
 
             if (accountDTO.items.isNullOrEmpty()) {
                 notifyAllItemDTOsChanged()
-
                 return@launch
             }
 
