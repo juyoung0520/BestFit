@@ -22,7 +22,7 @@ import com.example.bestfit.viewmodel.FollowFramgentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_account.view.*
 import kotlinx.android.synthetic.main.fragment_dressroom_category.view.*
-import kotlinx.android.synthetic.main.item_follow.view.*
+import kotlinx.android.synthetic.main.item_follow_list.view.*
 
 class FollowRecyclerViewFragment: Fragment() {
     private lateinit var viewModel: FollowFramgentViewModel
@@ -111,7 +111,7 @@ class FollowRecyclerViewFragment: Fragment() {
 
     inner class FollowRecyclerViewAdapter: ListAdapter<AccountDTO, FollowRecyclerViewAdapter.FollowViewHolder>(DiffFollowCallback()) {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_follow, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_follow_list, parent, false)
             return FollowViewHolder(view)
         }
 

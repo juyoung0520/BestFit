@@ -110,7 +110,6 @@
                                 android:id="@+id/fragment_mypage_tv_items"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="1"
                                 android:textSize="20sp"
                                 android:textStyle="bold"/>
 
@@ -134,7 +133,6 @@
                                 android:id="@+id/fragment_mypage_tv_follower"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="47"
                                 android:textSize="20sp"
                                 android:textStyle="bold"/>
 
@@ -158,7 +156,6 @@
                                 android:id="@+id/fragment_mypage_tv_following"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="47"
                                 android:textSize="20sp"
                                 android:textStyle="bold"/>
 

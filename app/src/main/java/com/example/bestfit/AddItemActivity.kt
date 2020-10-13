@@ -105,6 +105,7 @@ class AddItemActivity : AppCompatActivity() {
                                 R.id.menu_activity_add_item_submit -> {
                                     if (emptyCheckAddItem())
                                         submitAddItem()
+
                                     true
                                 }
                                 else -> false
@@ -202,7 +203,7 @@ class AddItemActivity : AppCompatActivity() {
 //            val uri = FileProvider.getUriForFile(this, "com.jinu.imagepickerlib.fileprovider", File(image))
 //            imageUris.add(uri)
 //        }
-
+//
 //        viewModel.submitAddItem(itemDTO, imageUris)
     }
 
