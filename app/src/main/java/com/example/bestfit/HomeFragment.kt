@@ -1,41 +1,46 @@
 package com.example.bestfit
 
-import android.accounts.Account
 import android.os.Bundle
-import android.view.*
-import androidx.appcompat.view.menu.MenuView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.createViewModelLazy
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagedList
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.*
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bestfit.model.AccountDTO
 import com.example.bestfit.model.ItemDTO
 import com.example.bestfit.viewmodel.DataViewModel
 import com.example.bestfit.viewmodel.HomeFragmentViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.firebase.ui.firestore.paging.FirestorePagingAdapter
+import com.firebase.ui.firestore.paging.FirestorePagingOptions
+import com.firebase.ui.firestore.paging.LoadingState
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.item_dressroom.view.*
 import kotlinx.android.synthetic.main.item_profile.view.*
 import kotlinx.android.synthetic.main.item_recommend.view.*
-import java.util.*
-import kotlin.collections.ArrayList
+
 
 class HomeFragment : Fragment() {
     private val dataViewModel: DataViewModel by activityViewModels()
     private lateinit var viewModel: HomeFragmentViewModel
+    private lateinit var options: FirestorePagingOptions<ItemDTO>
 
     private lateinit var followProfileRecyclerViewAdapter: FollowProfileRecyclerViewAdapter
     private lateinit var followProfileLayoutManager: RecyclerView.LayoutManager
     private lateinit var followItemRecyclerViewAdapter: FollowItemRecyclerViewAdapter
     private lateinit var followItemLayoutManager: RecyclerView.LayoutManager
-    private lateinit var itemRecyclerViewAdapter: ItemRecyclerViewAdapter
+    private lateinit var itemPagedListAdapter: ItemDTOPagedListAdapter
     private lateinit var itemLayoutManager: RecyclerView.LayoutManager
 
     override fun onCreateView(
@@ -47,8 +52,10 @@ class HomeFragment : Fragment() {
 
         isInitializedAccountDTOObserver()
         initFollowItemDTOsObserver()
-        initItemDTOsObserver()
+        //initItemDTOsObserver()
+
         initToolbar(view)
+        //initScrollView(view)
         initFollowProfileRecyclerView(view)
         initFollowItemRecyclerView(view)
         initItemReyclerView(view)
@@ -62,7 +69,10 @@ class HomeFragment : Fragment() {
                 initFollowAccountDTOsObserver()
         }
 
-        dataViewModel.isInitializedAccountDTO.observe(viewLifecycleOwner, isInitializedAccountDTOObserver)
+        dataViewModel.isInitializedAccountDTO.observe(
+            viewLifecycleOwner,
+            isInitializedAccountDTOObserver
+        )
     }
 
     private fun initFollowAccountDTOsObserver() {
@@ -85,14 +95,14 @@ class HomeFragment : Fragment() {
         viewModel.followerItemDTOs.observe(viewLifecycleOwner, followingItemDTOsObserver)
     }
 
-    private fun initItemDTOsObserver() {
-
-        val itemDTOsObserver = Observer<ArrayList<ItemDTO>> { itemDTOs ->
-           itemRecyclerViewAdapter.submitList(itemDTOs.map { it.copy() })
-        }
-
-        viewModel.itemDTOs.observe(viewLifecycleOwner, itemDTOsObserver)
-    }
+//    private fun initItemDTOsObserver() {
+//
+//        val itemDTOsObserver = Observer<PagedList<ItemDTO>> { itemDTOs ->
+//            itemPagedListAdapter.submitList(itemDTOs)
+//        }
+//
+//        viewModel.pagedList.observe(viewLifecycleOwner, itemDTOsObserver)
+//    }
 
     private fun initToolbar(view: View) {
         view.fragment_home_toolbar.inflateMenu(R.menu.menu_fragment_home)
@@ -111,9 +121,34 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun initFollowProfileRecyclerView(view:View) {
+//    private fun initScrollView(view: View) {
+//        view.fragment_home_scrollview.setOnScrollChangeListener(object : NestedScrollView.OnScrollChangeListener {
+//            override fun onScrollChange(
+//                v: NestedScrollView?,
+//                scrollX: Int,
+//                scrollY: Int,
+//                oldScrollX: Int,
+//                oldScrollY: Int
+//            ) {
+//                if (v!!.getChildAt(v.childCount -1) != null) {
+//                    if ((scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight)) &&
+//                        scrollY > oldScrollY) {
+//                        println("end scroll")
+//                        viewModel.getAllItemDTOs()
+//                    }
+//                }
+//            }
+//
+//        })
+//    }
+
+    private fun initFollowProfileRecyclerView(view: View) {
         followProfileRecyclerViewAdapter = FollowProfileRecyclerViewAdapter()
-        followProfileLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        followProfileLayoutManager = LinearLayoutManager(
+            context,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
 
         view.fragment_home_follow_profile_recyclerview.adapter = followProfileRecyclerViewAdapter
         view.fragment_home_follow_profile_recyclerview.layoutManager = followProfileLayoutManager
@@ -128,25 +163,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun initItemReyclerView(view: View) {
-        itemRecyclerViewAdapter = ItemRecyclerViewAdapter()
+        options = FirestorePagingOptions.Builder<ItemDTO>()
+            .setLifecycleOwner(viewLifecycleOwner)
+            .setQuery(viewModel.getQuery(), viewModel.getConfing(), ItemDTO::class.java)
+            .build()
+
+        itemPagedListAdapter = ItemDTOPagedListAdapter()
         itemLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        view.fragment_home_recommend_item_recyclerview.adapter = itemRecyclerViewAdapter
+        view.fragment_home_recommend_item_recyclerview.adapter = itemPagedListAdapter
         view.fragment_home_recommend_item_recyclerview.layoutManager = itemLayoutManager
-
-        view.fragment_home_recommend_item_recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!view.fragment_home_recommend_item_recyclerview.canScrollVertically(-1)) {
-                    // false면 끝
-                    println("최상단")
-                } else if (!view.fragment_home_recommend_item_recyclerview.canScrollVertically(1)) {
-                    println("최하단")
-                } else {
-                    println("중간")
-                }
-            }
-        })
     }
 
     inner class DiffProfileCallback: DiffUtil.ItemCallback<AccountDTO>() {
@@ -176,10 +202,16 @@ class HomeFragment : Fragment() {
         }
     }
 
-    inner class FollowProfileRecyclerViewAdapter: ListAdapter<AccountDTO, FollowProfileRecyclerViewAdapter.FollowProfileViewHolder>(DiffProfileCallback()){
+    inner class FollowProfileRecyclerViewAdapter: ListAdapter<AccountDTO, FollowProfileRecyclerViewAdapter.FollowProfileViewHolder>(
+        DiffProfileCallback()
+    ){
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowProfileViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_profile, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(
+                R.layout.item_profile,
+                parent,
+                false
+            )
             return FollowProfileViewHolder(view)
         }
 
@@ -196,7 +228,9 @@ class HomeFragment : Fragment() {
                 if (accountDTO.photo.isNullOrEmpty())
                     itemView.item_profile_iv_profile.setImageResource(R.drawable.ic_profile_120)
                 else
-                    Glide.with(itemView).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(itemView.item_profile_iv_profile)
+                    Glide.with(itemView).load(accountDTO.photo).apply(RequestOptions().centerCrop()).into(
+                        itemView.item_profile_iv_profile
+                    )
 
                 if (position == 0)
                     viewModel.getItemDTOs(accountDTO)
@@ -209,10 +243,16 @@ class HomeFragment : Fragment() {
         }
     }
 
-    inner class FollowItemRecyclerViewAdapter: ListAdapter<ItemDTO, FollowItemRecyclerViewAdapter.FollowItemViewHolder>(DiffItemCallback()) {
+    inner class FollowItemRecyclerViewAdapter: ListAdapter<ItemDTO, FollowItemRecyclerViewAdapter.FollowItemViewHolder>(
+        DiffItemCallback()
+    ) {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowItemViewHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_dressroom, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(
+                R.layout.item_dressroom,
+                parent,
+                false
+            )
             return FollowItemViewHolder(view)
         }
 
@@ -241,30 +281,52 @@ class HomeFragment : Fragment() {
         }
     }
 
-    inner class ItemRecyclerViewAdapter: ListAdapter<ItemDTO, ItemRecyclerViewAdapter.ItemViewHolder>(DiffItemCallback()) {
-        override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
-        ): ItemRecyclerViewAdapter.ItemViewHolder {
+    inner class ItemDTOPagedListAdapter:
+       FirestorePagingAdapter<ItemDTO, ItemDTOPagedListAdapter.ItemViewHolder>(options) {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recommend, parent, false)
             return ItemViewHolder(view)
         }
 
-        override fun onBindViewHolder(
-            holder: ItemRecyclerViewAdapter.ItemViewHolder,
-            position: Int
-        ) {
-            val itemDTO = getItem(position)
-            holder.bind(itemDTO)
+        override fun onBindViewHolder(p0: ItemViewHolder, p1: Int, p2: ItemDTO) {
+            p0.bind(p2, p1)
+        }
+
+        override fun onLoadingStateChanged(state: LoadingState) {
+            super.onLoadingStateChanged(state)
+
+            when (state) {
+                LoadingState.LOADING_MORE -> {
+
+                }
+
+                LoadingState.LOADING_INITIAL -> {
+
+                }
+
+                LoadingState.LOADED -> {
+
+                }
+
+                LoadingState.FINISHED -> {
+
+                }
+
+                LoadingState.ERROR -> {
+
+                }
+            }
         }
 
         inner class ItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-            fun bind(itemDTO: ItemDTO) {
+            fun bind(itemDTO: ItemDTO, position: Int) {
                 itemView.item_recommend_tv_item_name.text = itemDTO.name
+
+                println("bind " + position)
             }
         }
-
     }
 
 }

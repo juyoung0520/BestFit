@@ -63,5 +63,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
     implementation "androidx.recyclerview:recyclerview:1.2.0-alpha05"
     implementation 'com.github.j1nu:jjimagepicker:1.0.1'
-
+    implementation "androidx.paging:paging-runtime:2.1.2"
+    implementation "android.arch.paging:runtime:2.1.1"
+    implementation "com.firebaseui:firebase-ui-firestore:5.0.0"
 }
